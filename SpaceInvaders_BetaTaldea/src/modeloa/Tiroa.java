@@ -1,3 +1,4 @@
+package modeloa;
 
 public class Tiroa extends Pixel{
 

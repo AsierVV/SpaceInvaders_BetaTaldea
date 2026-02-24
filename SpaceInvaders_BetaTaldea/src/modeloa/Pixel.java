@@ -1,3 +1,4 @@
+package modeloa;
 import java.util.Observable;
 
 public abstract class Pixel extends Observable{

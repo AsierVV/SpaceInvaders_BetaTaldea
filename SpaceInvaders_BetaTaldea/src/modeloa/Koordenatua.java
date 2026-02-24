@@ -1,3 +1,4 @@
+package modeloa;
 
 public class Koordenatua {
 	private int kordX;
@@ -8,4 +9,7 @@ public class Koordenatua {
 		this.kordY = pY;
 	}
 	
+	public void getKordX() {
+		
+	}
 }

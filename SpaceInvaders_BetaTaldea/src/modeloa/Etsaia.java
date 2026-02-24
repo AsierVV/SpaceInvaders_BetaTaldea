@@ -1,8 +1,8 @@
+package modeloa;
 
-public class Hegazkina extends Pixel{
+public class Etsaia extends Pixel{
 
 	
-
 	@Override
 	public void koordenatuakEguneratu() {}
 }
