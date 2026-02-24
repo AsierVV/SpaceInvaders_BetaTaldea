@@ -16,5 +16,5 @@ public class Tableroa {
 	
 	 public Gelaxka getPixel(int errenkadak, int zutabeak) {
 	        return tableroMatrizea[errenkadak][zutabeak];
-	    }
+	 }
 }

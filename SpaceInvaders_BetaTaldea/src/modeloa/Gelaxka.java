@@ -8,4 +8,5 @@ public class Gelaxka {
 		this.gelaxkaPosizioa = pKoord;
 		this.mota = new Hutsunea();
 	}
+	
 }
