@@ -7,7 +7,8 @@ public class Tableroa {
 
         for (int i = 0; i < errenkadak; i++) {
             for (int j = 0; j < zutabeak; j++) {
-                tableroMatrizea[i][j] = new Pixel();
+                Pixel p = new Hutsunea();
+            	tableroMatrizea[i][j] = p;
             }
         }
     }

@@ -1,7 +1,8 @@
 
 public class Hegazkina extends Pixel{
 
-	public void hhhh() {
-		//cdddddasdASGHHHH
-	}
+	
+
+	@Override
+	public void koordenatuakEguneratu() {}
 }
