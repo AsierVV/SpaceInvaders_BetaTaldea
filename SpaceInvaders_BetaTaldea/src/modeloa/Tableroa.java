@@ -17,4 +17,9 @@ public class Tableroa {
 	 public Gelaxka getPixel(int errenkadak, int zutabeak) {
 	        return tableroMatrizea[errenkadak][zutabeak];
 	 }
+	 
+	 public void setHegazkina() {
+		 Hegazkina h = new Hegazkina();
+		 tableroMatrizea[50][55].setMota(h); 
+	 }
 }
