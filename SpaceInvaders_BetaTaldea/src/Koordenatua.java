@@ -6,5 +6,6 @@ public class Koordenatua {
 	public Koordenatua(int pX, int pY){
 		this.kordX = pX;
 		this.kordY = pY;
-		}
+	}
+	
 }
