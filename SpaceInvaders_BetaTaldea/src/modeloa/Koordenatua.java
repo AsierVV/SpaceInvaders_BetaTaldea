@@ -9,7 +9,10 @@ public class Koordenatua {
 		this.kordY = pY;
 	}
 	
-	public void getKordX() {
-		
+	public int getKordX() {
+		return this.kordX;
+	}
+	public int getKordY() {
+		return this.kordY;
 	}
 }
