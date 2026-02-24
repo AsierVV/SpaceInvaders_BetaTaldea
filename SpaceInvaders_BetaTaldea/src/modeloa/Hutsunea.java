@@ -1,3 +1,4 @@
+package modeloa;
 
 public class Hutsunea extends Pixel{
 

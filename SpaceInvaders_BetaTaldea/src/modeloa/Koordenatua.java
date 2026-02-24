@@ -1,3 +1,4 @@
+package modeloa;
 
 public class Koordenatua {
 	private int kordX;
