@@ -4,8 +4,8 @@ import java.util.Observable;
 public abstract class Pixel extends Observable{
 	protected Koordenatua pixelKoord;
 	
-    public Pixel() {
-        this.pixelKoord = null;
+    public Pixel(Koordenatua k) {
+        this.pixelKoord = k;
     }
     
     public Koordenatua getPosizioa() {
