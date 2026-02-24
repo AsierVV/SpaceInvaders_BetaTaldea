@@ -15,4 +15,10 @@ public class Koordenatua {
 	public int getKordY() {
 		return this.kordY;
 	}
+	public void setX(int pX) {
+		this.kordX = pX;
+	}
+	public void setY(int pY) {
+		this.kordY = pY;
+	}
 }
