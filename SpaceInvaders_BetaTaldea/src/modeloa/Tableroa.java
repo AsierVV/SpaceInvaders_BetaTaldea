@@ -3,13 +3,13 @@ package modeloa;
 public class Tableroa {
 	private Gelaxka[][] tableroMatrizea;
 	
-	public Tableroa(int errenkadak, int zutabeak) {
-        tableroMatrizea = new Gelaxka[errenkadak][zutabeak];
-
-        for (int i = 0; i < errenkadak; i++) {
-            for (int j = 0; j < zutabeak; j++) {
-                Gelaxka p = new Gelaxka();
-            	tableroMatrizea[i][j] = p;
+	public Tableroa() {
+        tableroMatrizea = new Gelaxka[100][60];
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 60; j++) {
+            	Koordenatua k = new Koordenatua(i,j);
+                Gelaxka g = new Gelaxka(k);
+            	tableroMatrizea[i][j] = g;
             }
         }
     }
