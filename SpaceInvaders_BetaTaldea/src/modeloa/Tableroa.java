@@ -95,7 +95,6 @@ public class Tableroa extends Observable {
 	 
 	 // === HEGAZKINAREN MUGIMENDUA ===
 	 public void mugituHegazkina(int dx, int dy) {
-		 
 		 int xZaharra = hegazkina.getPosizioa().getX();
 	     int yZaharra = hegazkina.getPosizioa().getY();
 	
@@ -116,7 +115,10 @@ public class Tableroa extends Observable {
 	 
 	 // === ETSAIEN MUGIMENDUA ===
 	 public void mugituEtsaiak() {
-		 for (Etsaia e : etsaiak) {
+		 Iterator<Etsaia> it = etsaiak.iterator();
+		 while (it.hasNext()) {
+			 Etsaia e = it.next();
+			 
 			 int xZaharra = e.getPosizioa().getX();
 		     int yZaharra = e.getPosizioa().getY();
 	
@@ -141,7 +143,6 @@ public class Tableroa extends Observable {
 	 public void mugituTiroa() {
 		 Iterator<Tiroa> it = tiroak.iterator();
 		 while (it.hasNext()) {
-			 
 			 Tiroa t = it.next();
 			 
 			 int xZaharra = t.getPosizioa().getX();
