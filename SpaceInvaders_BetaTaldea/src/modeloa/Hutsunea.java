@@ -2,11 +2,7 @@ package modeloa;
 
 public class Hutsunea extends Pixel{
 
-	public Hutsunea(Koordenatua k) {
-		super(k);
+	public Hutsunea(Koordenatua pPosizioa) {
+		super(pPosizioa);
 	}
-	
-	@Override
-	public void koordenatuakEguneratu() {}
-	
 }

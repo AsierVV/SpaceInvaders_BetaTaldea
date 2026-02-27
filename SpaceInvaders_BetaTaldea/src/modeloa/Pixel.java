@@ -1,16 +1,19 @@
 package modeloa;
-import java.util.Observable;
 
-public abstract class Pixel extends Observable{
-	protected Koordenatua pixelKoord;
+public abstract class Pixel{
 	
-    public Pixel(Koordenatua k) {
-        this.pixelKoord = k;
+	protected Koordenatua posizioa;
+	
+    public Pixel(Koordenatua pPosizioa) {
+        this.posizioa = pPosizioa;
     }
     
     public Koordenatua getPosizioa() {
-        return pixelKoord;
+        return posizioa;
     }
     
-    public abstract void koordenatuakEguneratu();
+    public void setPosizioa(Koordenatua pPosizioa) {
+    	this.posizioa = pPosizioa;
+    }
+    
 }
