@@ -15,10 +15,10 @@ public class Hegazkina extends Pixel{
 	}
 	
 	public void mugituGora() {
-		posizioa.setX(posizioa.getY() - 1);
+		posizioa.setY(posizioa.getY() - 1);
 	}
 	
 	public void mugituBehera() {
-		posizioa.setX(posizioa.getY() + 1);
+		posizioa.setY(posizioa.getY() + 1);
 	}
 }
