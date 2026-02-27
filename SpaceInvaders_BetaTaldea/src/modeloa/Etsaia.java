@@ -1,6 +1,7 @@
 package modeloa;
 
 public class Etsaia extends Pixel{
+	
 	private boolean bizirik;
 	private int mugimenduAbiadura;
 	
@@ -24,16 +25,20 @@ public class Etsaia extends Pixel{
         this.mugimenduAbiadura = mugimenduAbiadura;
     }
 	
+    /* El override este lo he quitado de pixel, creo que no tenia mucho sentido
 	@Override
 	public void koordenatuakEguneratu() {
-        int xOrain = this.pixelKoord.getKordX();
-        int yOrain = this.pixelKoord.getKordY();
+	*/
+    public void mugituEtsaia() {
+        int xOrain = this.posizioa.getX();
+        int yOrain = this.posizioa.getY();
         
-        // Generar movimiento aleatorio (0, 1, o 2)
+        // Ausazko mugimendua sortu (0, 1, edo 2)
         int mugimenduMota = (int) (Math.random() * 3);
         
         int xBerria = xOrain;
-        int yBerria = yOrain + 1;  // Siempre baja 1 posición
+        // Esto es asi? Yo entiendo en el enunciado que el etsaia puede no bajar y solo ir hacia un lado, se le pregunta el lunes
+        int yBerria = yOrain + 1;  // Beti jeisten du posizio 1
         
         switch (mugimenduMota) {
             case 0: // Solo hacia abajo
@@ -47,11 +52,13 @@ public class Etsaia extends Pixel{
                 break;
         }
         
-        // Actualizar coordenadas
-        this.pixelKoord.setX(xBerria);
-        this.pixelKoord.setY(yBerria);
+        // Koordenatuak eguneratu
+        posizioa.setX(xBerria);
+        posizioa.setY(yBerria);
         
+        /* Con el cambio que hecho esto solo deberia de ir en tableroa, nose si esta del todo bien
         setChanged();
         notifyObservers("mugitu");
+        */
 	}
 }
