@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 
 
@@ -19,9 +22,14 @@ public class Tableroa extends Observable {
 	private List<Etsaia> etsaiak;
 	private List<Tiroa> tiroak;
 	
+	private Timer timerEtsaiak;
+	private Timer timerTiroak;
+	
 	private final int zabalera = 100;
     private final int altuera = 60;
-	
+    private final int abiaduraEtsaiak = 200;
+    private final int abiaduraTiroak = 50;
+    
     public Tableroa() {
 		
         tableroMatrizea = new Gelaxka[zabalera][altuera];
@@ -36,7 +44,25 @@ public class Tableroa extends Observable {
         
         sortuHegazkina();
         sortuEtsaiak();
+        
+        timerEtsaiak = new Timer(abiaduraEtsaiak, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mugituEtsaiak();
+            }
+        });
+        
+        timerTiroak = new Timer(abiaduraTiroak, new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e) {
+                mugituTiroak();
+            }
+        });
+        
+        timerEtsaiak.start();
+        timerTiroak.start();
     }
+    
     public Gelaxka getGelaxka(int x, int y) {
     	return tableroMatrizea[x][y];
 	}
@@ -79,7 +105,7 @@ public class Tableroa extends Observable {
 	// === TIRO BAT SORTU ===
 	public void tiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
-		int y = hegazkina.getPosizioa().getY() - 1; //Hegazkinaren gainean sortzeko
+		int y = hegazkina.getPosizioa().getY() - 2; //Hegazkinaren gainean sortzeko
 	 		
 	 	if (posizioBaliozkoa(x, y)) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y)); // Tiroa sortzen du
@@ -122,17 +148,24 @@ public class Tableroa extends Observable {
 			 int xZaharra = e.getPosizioa().getX();
 		     int yZaharra = e.getPosizioa().getY();
 	
-		     e.mugituEtsaia();
-	
-		     int xBerria = e.getPosizioa().getX();
-		     int yBerria = e.getPosizioa().getY();
-	
-		     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota() instanceof Hutsunea) { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
-		         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-		         tableroMatrizea[xBerria][yBerria].setMota(e);
-		     } else {
-		    	 e.getPosizioa().setX(xZaharra);
-		    	 e.getPosizioa().setY(yZaharra);
+		     boolean mugituta = false;
+		     int saiakerak = 3;
+		     
+		     while (!mugituta && saiakerak>0) {
+		    	 e.mugituEtsaia();
+			     int xBerria = e.getPosizioa().getX();
+			     int yBerria = e.getPosizioa().getY();
+		    	 
+			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota() instanceof Hutsunea) { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
+			         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			         tableroMatrizea[xBerria][yBerria].setMota(e);
+			         mugituta = true;
+			     } else {
+			    	 e.getPosizioa().setX(xZaharra);
+			    	 e.getPosizioa().setY(yZaharra);
+			     }
+			     
+			     saiakerak--;
 		     }
 		 }
 		 setChanged();
@@ -140,7 +173,7 @@ public class Tableroa extends Observable {
 	 }
 	 
 	 // === TIROAREN MUGIMENDUA ===
-	 public void mugituTiroa() {
+	 public void mugituTiroak() {
 		 Iterator<Tiroa> it = tiroak.iterator();
 		 while (it.hasNext()) {
 			 Tiroa t = it.next();
