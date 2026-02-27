@@ -125,7 +125,7 @@ public class Tableroa extends Observable {
 		     int xBerria = e.getPosizioa().getX();
 		     int yBerria = e.getPosizioa().getY();
 	
-		     if (posizioBaliozkoa(xBerria, yBerria)) {
+		     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota() instanceof Hutsunea) { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
 		         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 		         tableroMatrizea[xBerria][yBerria].setMota(e);
 		     } else {
