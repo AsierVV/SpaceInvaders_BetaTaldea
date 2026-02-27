@@ -31,7 +31,6 @@ public class Tableroa extends Observable {
     private final int abiaduraTiroak = 50;
     
     public Tableroa() {
-		
         tableroMatrizea = new Gelaxka[zabalera][altuera];
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
