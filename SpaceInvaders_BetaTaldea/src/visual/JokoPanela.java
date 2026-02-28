@@ -16,12 +16,12 @@ import modeloa.Tiroa;
 
 public class JokoPanela extends JPanel implements Observer {
 
-    private Tableroa model;
+    private Tableroa tablero;
     private final int TAM_CELDA = 10;
 
-    public JokoPanela(Tableroa model) {
-        this.model = model;
-        this.model.addObserver(this);
+    public JokoPanela(Tableroa tableroa) {
+        this.tablero = tableroa;
+        this.tablero.addObserver(this);
 
         setPreferredSize(new Dimension(100 * TAM_CELDA, 60 * TAM_CELDA));
         setBackground(Color.BLACK);
@@ -39,7 +39,7 @@ public class JokoPanela extends JPanel implements Observer {
         for (int x = 0; x < 100; x++) {
             for (int y = 0; y < 60; y++) {
 
-                Pixel p = model.getGelaxka(x, y).getMota();
+                Pixel p = tablero.getGelaxka(x, y).getMota();
 
                 if (p instanceof Hutsunea) {
                     g.setColor(Color.BLACK);
@@ -54,10 +54,7 @@ public class JokoPanela extends JPanel implements Observer {
                     g.setColor(Color.YELLOW);
                 }
 
-                g.fillRect(x * TAM_CELDA,
-                           y * TAM_CELDA,
-                           TAM_CELDA,
-                           TAM_CELDA);
+                g.fillRect(x * TAM_CELDA, y * TAM_CELDA, TAM_CELDA, TAM_CELDA);
             }
         }
     }
