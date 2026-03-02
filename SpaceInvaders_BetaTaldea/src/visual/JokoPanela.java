@@ -23,7 +23,7 @@ public class JokoPanela extends JPanel implements Observer {
         this.tablero = tableroa;
         this.tablero.addObserver(this);
 
-        setPreferredSize(new Dimension(100 * TAM_CELDA, 60 * TAM_CELDA));
+        setPreferredSize(new Dimension(tablero.getZabalera() * TAM_CELDA, tablero.getAltuera() * TAM_CELDA));
         setBackground(Color.BLACK);
     }
 

@@ -77,6 +77,14 @@ public class Tableroa extends Observable {
     public List<Tiroa> getTiroak() {
     	return tiroak;
 	}
+    
+    public int getZabalera() {
+    	return this.zabalera;
+    }
+    
+    public int getAltuera() {
+    	return this.altuera;
+    }
 	 
 	// === HEGAZKINA SORTU ===
     private void sortuHegazkina() {
