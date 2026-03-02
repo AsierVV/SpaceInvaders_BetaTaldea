@@ -25,10 +25,6 @@ public class Etsaia extends Pixel{
         this.mugimenduAbiadura = mugimenduAbiadura;
     }
 	
-    /* El override este lo he quitado de pixel, creo que no tenia mucho sentido
-	@Override
-	public void koordenatuakEguneratu() {
-	*/
     public void mugituEtsaia() {
         int xOrain = this.posizioa.getX();
         int yOrain = this.posizioa.getY();
@@ -37,17 +33,16 @@ public class Etsaia extends Pixel{
         int mugimenduMota = (int) (Math.random() * 3);
         
         int xBerria = xOrain;
-        // Esto es asi? Yo entiendo en el enunciado que el etsaia puede no bajar y solo ir hacia un lado, se le pregunta el lunes
-        int yBerria = yOrain + 1;  // Beti jeisten du posizio 1
+        int yBerria = yOrain;
         
         switch (mugimenduMota) {
-            case 0: // Solo hacia abajo
-                xBerria = xOrain;
+            case 0: // Behera
+            	yBerria = yOrain + 1;
                 break;
-            case 1: // Abajo-izquierda
+            case 1: // Ezkerrera
                 xBerria = xOrain - 1;
                 break;
-            case 2: // Abajo-derecha
+            case 2: // Eskuinera
                 xBerria = xOrain + 1;
                 break;
         }
@@ -55,10 +50,5 @@ public class Etsaia extends Pixel{
         // Koordenatuak eguneratu
         posizioa.setX(xBerria);
         posizioa.setY(yBerria);
-        
-        /* Con el cambio que hecho esto solo deberia de ir en tableroa, nose si esta del todo bien
-        setChanged();
-        notifyObservers("mugitu");
-        */
 	}
 }
