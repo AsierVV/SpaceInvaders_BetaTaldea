@@ -223,7 +223,6 @@ public class Tableroa extends Observable {
 		    partidaAmaituta = true;
 		    timerEtsaiak.stop();
 		    timerTiroak.stop();
-		    
 		    setChanged();
 		    notifyObservers("GALDU");
 		}
