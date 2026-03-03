@@ -43,7 +43,7 @@ public class JokoPanela extends JPanel implements Observer{
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg)  {
 		// TODO Auto-generated method stub
 		
 	}

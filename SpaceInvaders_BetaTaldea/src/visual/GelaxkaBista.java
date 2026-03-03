@@ -9,7 +9,7 @@ public class GelaxkaBista extends JLabel implements Observer{
 	
 	public GelaxkaBista() {
 		JLabel j = new JLabel();
-		j.setText("aaaa");
+		j.setText("aaaa"); 
 	}
 
 	@Override
