@@ -17,6 +17,7 @@ public class Tableroa extends Observable {
 	notifyObservers();
 	*/
 	private static Tableroa nireEMA = null;
+	private boolean partidaAmaituta = false;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
 	private List<Etsaia> etsaiak;
@@ -34,6 +35,7 @@ public class Tableroa extends Observable {
         tableroMatrizea = new Gelaxka[zabalera][altuera];
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
+        partidaAmaituta = false;
         
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
@@ -171,7 +173,12 @@ public class Tableroa extends Observable {
 			     int yBerria = e.getPosizioa().getY();
 		    	 
 			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
-			         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			         // COMPROBAR SI HA LLEGADO ABAJO
+			         if (yBerria >= altuera - 1) {
+			        	 partidaGaldu();
+			             return;
+			         }
+			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			         tableroMatrizea[xBerria][yBerria].setMota('e');
 			         mugituta = true;
 			     } else {
@@ -211,4 +218,14 @@ public class Tableroa extends Observable {
 		 setChanged();
 		 notifyObservers();
 	 }	 
+	 // === PARTIDA AMAITU ===
+	 private void partidaGaldu() {
+		    partidaAmaituta = true;
+		    
+		    timerEtsaiak.stop();
+		    timerTiroak.stop();
+		    
+		    setChanged();
+		    notifyObservers("GALDU");
+		}
 }
