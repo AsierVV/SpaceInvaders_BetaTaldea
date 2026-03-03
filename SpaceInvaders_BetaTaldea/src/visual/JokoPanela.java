@@ -1,5 +1,6 @@
 package visual;
 
+import modeloa.Gelaxka;
 import modeloa.Tableroa;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,13 +20,22 @@ public class JokoPanela extends JPanel implements Observer{
 	private JPanel panel;
 	
 	public JokoPanela() {
-        JFrame frame = new JFrame("Space Invaders");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().setLayout(new GridLayout(60, 100, 0, 0));
-        frame.setVisible(true);
-		this.panel = new JPanel(); 
-		matrizeakSortu();
+
+
+	    JFrame frame = new JFrame("Space Invaders");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	    this.panel = new JPanel();
+	    panel.setLayout(new GridLayout(Tableroa.getTableroaEMA().getAltuera(),
+	                                   Tableroa.getTableroaEMA().getZabalera(), 0, 0));
+	    panel.setPreferredSize(new Dimension(1200, 720)); // tamaño total del panel
+
+	    matrizeakSortu(); // agrega todos los labels y conectarlos con observadores
+
+	    frame.getContentPane().add(panel);
+	    frame.pack();                     // calcula tamaño real de la ventana
+	    frame.setLocationRelativeTo(null); // ¡centrar después de pack!
+	    frame.setVisible(true);
 	}
 	
 	private JLabel getLblNewLabel(int x, int y) { //sarrera parametroak
@@ -35,13 +45,23 @@ public class JokoPanela extends JPanel implements Observer{
 	}
 	
 	private void matrizeakSortu() {
-		for(int x=0;x<100;x++) {
-			for(int y=0;y<60;y++) {
-					panel.add(getLblNewLabel(x,y));
+		for(int y=0;y<60;y++) {
+			for(int x=0;x<100;x++) {
+				panel.add(getLblNewLabel(x,y));
 			}
 		}
 	}
-
+/*
+	private void actualizarTableroCompleto() {
+	    Tableroa tab = Tableroa.getTableroaEMA();
+	    for (int x = 0; x < tab.getZabalera(); x++) {
+	        for (int y = 0; y < tab.getAltuera(); y++) {
+	            Gelaxka g = tab.getGelaxka(x, y);
+	            g.setMota(g.getMota()); // dispara notifyObservers()
+	        }
+	    }
+	}
+*/
 	@Override
 	public void update(Observable o, Object arg)  {
 		// TODO Auto-generated method stub

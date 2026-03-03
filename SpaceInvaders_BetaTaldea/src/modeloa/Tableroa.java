@@ -94,7 +94,7 @@ public class Tableroa extends Observable {
     }
 	 
 	// === HEGAZKINA SORTU ===
-    private void sortuHegazkina() {
+    public void sortuHegazkina() {
     	hegazkina = new Hegazkina(new Koordenatua(50,55));
     	tableroMatrizea[50][55].setMota('h');
 	}
@@ -147,9 +147,10 @@ public class Tableroa extends Observable {
 	    	 hegazkina.getPosizioa().setX(xBerria);
 	    	 hegazkina.getPosizioa().setY(yBerria);
 	    	 tableroMatrizea[xBerria][yBerria].setMota('h');
-	    	 
+	    	 /*
 	    	 setChanged();
 			 notifyObservers();
+			 */
 	     }
 	 }
 	 
@@ -182,8 +183,10 @@ public class Tableroa extends Observable {
 			     saiakerak--;
 		     }
 		 }
+		 /*
 		 setChanged();
 		 notifyObservers();
+		 */
 	 }
 	 
 	 // === TIROAREN MUGIMENDUA ===

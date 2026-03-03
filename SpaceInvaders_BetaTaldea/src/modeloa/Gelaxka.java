@@ -1,6 +1,7 @@
 package modeloa;
 
 import java.util.Observable;
+import java.util.Observer;
 
 public class Gelaxka extends Observable{
 	
@@ -36,4 +37,5 @@ public class Gelaxka extends Observable{
 	public Koordenatua getGelaxkaKord() {
 		return gelaxkaPosizioa;
 	}
+
 }
