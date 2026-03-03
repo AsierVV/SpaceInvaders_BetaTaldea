@@ -221,7 +221,6 @@ public class Tableroa extends Observable {
 	 // === PARTIDA AMAITU ===
 	 private void partidaGaldu() {
 		    partidaAmaituta = true;
-		    
 		    timerEtsaiak.stop();
 		    timerTiroak.stop();
 		    
