@@ -21,7 +21,6 @@ public class JokoPanela extends JPanel implements Observer{
 	
 	public JokoPanela() {
 
-
 	    JFrame frame = new JFrame("Space Invaders");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

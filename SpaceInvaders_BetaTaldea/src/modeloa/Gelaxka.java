@@ -29,9 +29,7 @@ public class Gelaxka extends Observable{
 	}
 	
 	public void hutsikUtzi() {
-	    this.mota = 'u';
-	    setChanged();
-		notifyObservers();
+	    setMota('u');
 	}
 	
 	public Koordenatua getGelaxkaKord() {

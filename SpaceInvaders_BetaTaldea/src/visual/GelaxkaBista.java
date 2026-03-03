@@ -17,7 +17,6 @@ public class GelaxkaBista extends JLabel implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
         Gelaxka g = (Gelaxka) o;
 
         switch (g.getMota()) {

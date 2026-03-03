@@ -11,11 +11,7 @@ import java.util.Observable;
 
 
 public class Tableroa extends Observable {
-	
-	/* CADA VEZ QUE ALGO CAMBIE:
-	setChanged();
-	notifyObservers();
-	*/
+
 	private static Tableroa nireEMA = null;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
@@ -24,11 +20,13 @@ public class Tableroa extends Observable {
 	
 	private Timer timerEtsaiak;
 	private Timer timerTiroak;
+	//private Timer froga;
 	
 	private final int zabalera = 100;
     private final int altuera = 60;
     private final int abiaduraEtsaiak = 200;
     private final int abiaduraTiroak = 50;
+    private boolean gameOver = false;
     
     private Tableroa() {
         tableroMatrizea = new Gelaxka[zabalera][altuera];
@@ -41,25 +39,27 @@ public class Tableroa extends Observable {
             }
         }
         
-        sortuHegazkina();
-        sortuEtsaiak();
-        
         timerEtsaiak = new Timer(abiaduraEtsaiak, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mugituEtsaiak();
             }
         });
-        
+        /*
+        froga = new Timer(1500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tiroaSortu();
+            }
+        });
+        froga.start();
+        */
         timerTiroak = new Timer(abiaduraTiroak, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
                 mugituTiroak();
             }
         });
-        
-        timerEtsaiak.start();
-        timerTiroak.start();
     }
     
     public static Tableroa getTableroaEMA() {
@@ -91,6 +91,21 @@ public class Tableroa extends Observable {
     
     public int getAltuera() {
     	return this.altuera;
+    }
+    
+    // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
+    public void hasiJokoa() {
+    	sortuHegazkina();
+    	sortuEtsaiak();
+        if (!timerEtsaiak.isRunning()) timerEtsaiak.start();
+        if (!timerTiroak.isRunning()) timerTiroak.start();
+    }
+
+    public void startStopJokoa() {
+        if (timerEtsaiak.isRunning()) timerEtsaiak.stop();
+        else timerEtsaiak.start();
+        if (timerTiroak.isRunning()) timerTiroak.stop();
+        else timerTiroak.start();
     }
 	 
 	// === HEGAZKINA SORTU ===
@@ -147,10 +162,6 @@ public class Tableroa extends Observable {
 	    	 hegazkina.getPosizioa().setX(xBerria);
 	    	 hegazkina.getPosizioa().setY(yBerria);
 	    	 tableroMatrizea[xBerria][yBerria].setMota('h');
-	    	 /*
-	    	 setChanged();
-			 notifyObservers();
-			 */
 	     }
 	 }
 	 
@@ -162,31 +173,36 @@ public class Tableroa extends Observable {
 			 
 			 int xZaharra = e.getPosizioa().getX();
 		     int yZaharra = e.getPosizioa().getY();
+		     
+		     int xBerria = xZaharra;
+		     int yBerria = yZaharra;
 	
 		     boolean mugituta = false;
 		     int saiakerak = 3;
 		     
 		     while (!mugituta && saiakerak>0) {
 		    	 e.mugituEtsaia();
-			     int xBerria = e.getPosizioa().getX();
-			     int yBerria = e.getPosizioa().getY();
+			     xBerria = e.getPosizioa().getX();
+			     yBerria = e.getPosizioa().getY();
 		    	 
+			     if (yBerria >= altuera) {
+			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			    	 it.remove();      	// Etsaia eliminatu
+			    	 partidaAmaitu();   // Partida galdu
+		             break;          	// Amaitu
+			     }
+			     
 			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
-			         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			         tableroMatrizea[xBerria][yBerria].setMota('e');
-			         mugituta = true;
+			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			    	 tableroMatrizea[xBerria][yBerria].setMota('e');
+			    	 mugituta = true; 
 			     } else {
 			    	 e.getPosizioa().setX(xZaharra);
 			    	 e.getPosizioa().setY(yZaharra);
 			     }
-			     
 			     saiakerak--;
 		     }
 		 }
-		 /*
-		 setChanged();
-		 notifyObservers();
-		 */
 	 }
 	 
 	 // === TIROAREN MUGIMENDUA ===
@@ -204,6 +220,13 @@ public class Tableroa extends Observable {
 			 int yBerria = t.getPosizioa().getY();
 			 
 			 if (posizioBaliozkoa(xBerria, yBerria)) {
+				 if (tableroMatrizea[xBerria][yBerria].getMota()=='e') {
+					 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+					 tableroMatrizea[xBerria][yBerria].hutsikUtzi();
+					 etsaiaEliminatu(xBerria, yBerria);
+					 it.remove();
+					 break;
+				 }
 				 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 				 tableroMatrizea[xBerria][yBerria].setMota('t');
 			 } else {
@@ -211,7 +234,27 @@ public class Tableroa extends Observable {
 				 it.remove();
 			 }
 		 }
-		 setChanged();
-		 notifyObservers();
-	 }	 
+	 }
+	 
+	 // === PARTIDA AMAITZEKO METODOAK ===
+	 public boolean isGameOver() {
+		 return gameOver;
+	 }
+	 private void partidaAmaitu() {
+		 gameOver = true;
+		 startStopJokoa();
+	 }
+	 
+	 // === ETSAIA ELIMINATU ===
+	 private void etsaiaEliminatu(int x, int y) {
+		 boolean eliminatuta = false;
+		 Iterator<Etsaia> it = etsaiak.iterator();
+		 while (it.hasNext() && !eliminatuta) {
+			 Etsaia e = it.next();
+			 if (e.getPosizioa().getX() == x && e.getPosizioa().getY() == y) {
+				 it.remove();
+				 eliminatuta = true;
+			 }
+		 }
+	 }
 }
