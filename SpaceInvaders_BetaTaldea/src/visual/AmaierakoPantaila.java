@@ -7,7 +7,7 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 
 public class AmaierakoPantaila extends JPanel{
-	private JPanel panel;
+	private JPanel panel; 
 	private JTextField txtGalduDuzu;
 	public AmaierakoPantaila() {
 		setLayout(new BorderLayout(0, 0));
