@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.TeklatuKontroladorea;
+
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
@@ -30,6 +32,10 @@ public class JokoPanela extends JPanel implements Observer{
 	    panel.setPreferredSize(new Dimension(1200, 720)); // tamaño total del panel
 
 	    matrizeakSortu(); // agrega todos los labels y conectarlos con observadores
+	    
+	    panel.addKeyListener(new TeklatuKontroladorea());	// Panelak teklatua detektatzeko
+	    panel.setFocusable(true);							// Panelak focus-a euki dezake
+	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
 
 	    frame.getContentPane().add(panel);
 	    frame.pack();                     // calcula tamaño real de la ventana
