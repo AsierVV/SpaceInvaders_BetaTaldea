@@ -16,7 +16,7 @@ public class Tableroa extends Observable {
 	setChanged();
 	notifyObservers();
 	*/
-	
+	private static Tableroa nireEMA = null;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
 	private List<Etsaia> etsaiak;
@@ -30,7 +30,7 @@ public class Tableroa extends Observable {
     private final int abiaduraEtsaiak = 200;
     private final int abiaduraTiroak = 50;
     
-    public Tableroa() {
+    private Tableroa() {
         tableroMatrizea = new Gelaxka[zabalera][altuera];
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
@@ -60,6 +60,13 @@ public class Tableroa extends Observable {
         
         timerEtsaiak.start();
         timerTiroak.start();
+    }
+    
+    public static Tableroa getTableroaEMA() {
+    	if(nireEMA == null) {
+    		nireEMA = new Tableroa();
+    	}
+    	return nireEMA;
     }
     
     public Gelaxka getGelaxka(int x, int y) {
