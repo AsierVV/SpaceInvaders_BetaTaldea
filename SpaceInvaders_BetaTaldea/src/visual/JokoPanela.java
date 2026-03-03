@@ -30,6 +30,7 @@ public class JokoPanela extends JPanel implements Observer {
 	private JLabel getLblNewLabel(int x, int y) { //sarrera parametroak
 		JLabel newLabel = new JLabel("a"); //botoiaren testua
 		getema.getgelaxka(x,y).addobserver;
+		
 		return newLabel;
 	}
 	
