@@ -37,7 +37,7 @@ public class Tableroa extends Observable {
         
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
-            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j));
+            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j),'u');
             }
         }
         
@@ -89,7 +89,7 @@ public class Tableroa extends Observable {
 	// === HEGAZKINA SORTU ===
     private void sortuHegazkina() {
     	hegazkina = new Hegazkina(new Koordenatua(50,55));
-    	tableroMatrizea[50][55].setMota(hegazkina);
+    	tableroMatrizea[50][55].setMota('h');
 	}
 	 
 	// === ETSAIAK SORTU ===
@@ -101,10 +101,10 @@ public class Tableroa extends Observable {
 	    	int zutabea = r.nextInt(zabalera);
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
-	        if (tableroMatrizea[zutabea][5].getMota() instanceof Hutsunea) {
+	        if (tableroMatrizea[zutabea][5].getMota()=='u') {
 	        	Etsaia e = new Etsaia(new Koordenatua(zutabea, 5));
 	            etsaiak.add(e);
-	            tableroMatrizea[zutabea][5].setMota(e);
+	            tableroMatrizea[zutabea][5].setMota('e');
 	        }
 	    }
 	}    
@@ -117,7 +117,7 @@ public class Tableroa extends Observable {
 	 	if (posizioBaliozkoa(x, y)) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y)); // Tiroa sortzen du
 	 		tiroak.add(t);	// Tiroa "tiroak" listan sartzen du
-	 		tableroMatrizea[x][y].setMota(t);	// Gelaxka eguneratzen du tableroan
+	 		tableroMatrizea[x][y].setMota('t');	// Gelaxka eguneratzen du tableroan
 	 	}
 	 }
 	 
@@ -139,7 +139,7 @@ public class Tableroa extends Observable {
 	    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	    	 hegazkina.getPosizioa().setX(xBerria);
 	    	 hegazkina.getPosizioa().setY(yBerria);
-	    	 tableroMatrizea[xBerria][yBerria].setMota(hegazkina);
+	    	 tableroMatrizea[xBerria][yBerria].setMota('h');
 	    	 
 	    	 setChanged();
 			 notifyObservers();
@@ -163,9 +163,9 @@ public class Tableroa extends Observable {
 			     int xBerria = e.getPosizioa().getX();
 			     int yBerria = e.getPosizioa().getY();
 		    	 
-			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota() instanceof Hutsunea) { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
+			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
 			         tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			         tableroMatrizea[xBerria][yBerria].setMota(e);
+			         tableroMatrizea[xBerria][yBerria].setMota('e');
 			         mugituta = true;
 			     } else {
 			    	 e.getPosizioa().setX(xZaharra);
@@ -195,7 +195,7 @@ public class Tableroa extends Observable {
 			 
 			 if (posizioBaliozkoa(xBerria, yBerria)) {
 				 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-				 tableroMatrizea[xBerria][yBerria].setMota(t);
+				 tableroMatrizea[xBerria][yBerria].setMota('t');
 			 } else {
 				 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 				 it.remove();

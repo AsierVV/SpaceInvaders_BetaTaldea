@@ -1,33 +1,36 @@
 package modeloa;
 
-public class Gelaxka {
+import java.util.Observable;
+
+public class Gelaxka extends Observable{
 	
 	private Koordenatua gelaxkaPosizioa;
-	private Pixel mota;
+	private char mota; 	//u --> hutsunea
+						//h --> hegazkina
+						//e --> etsaia
+						//t --> tiroa
 	
-	/*
-	private int indize; //0 --> hutsunea
-						//1 --> hegazkina
-						//2-10 --> etsaia
-						//-1 --> tiroa
-	*/
-	
-	public Gelaxka(Koordenatua pKoord) {
+	public Gelaxka(Koordenatua pKoord, char pMota) {
 		this.gelaxkaPosizioa = pKoord;
-		this.mota = new Hutsunea(pKoord);
-		//this.indize = pIndize;
-	}
-	
-	public void setMota(Pixel pMota) {
 		this.mota = pMota;
+		setChanged();
+		notifyObservers();
 	}
 	
-	public Pixel getMota() {
+	public void setMota(char pMota) {
+		this.mota = pMota;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public char getMota() {
 		return mota;
 	}
 	
 	public void hutsikUtzi() {
-	    this.mota = new Hutsunea(gelaxkaPosizioa);
+	    this.mota = 'u';
+	    setChanged();
+		notifyObservers();
 	}
 	
 	public Koordenatua getGelaxkaKord() {
