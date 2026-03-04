@@ -10,8 +10,9 @@ import javax.swing.JLabel;
 public class GelaxkaBista extends JLabel implements Observer{
 	
 	public GelaxkaBista() {
+		setForeground(new Color(0, 0, 0));
 		this.setOpaque(true);
-		this.setBackground(Color.black); 
+		this.setBackground(Color.BLACK); 
 		this.setSize(1,1);
 	}
 
