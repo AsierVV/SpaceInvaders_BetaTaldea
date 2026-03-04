@@ -1,6 +1,7 @@
 package modeloa;
 
 import java.util.Observable;
+import java.util.Observer;
 
 public class Gelaxka extends Observable{
 	
@@ -28,12 +29,11 @@ public class Gelaxka extends Observable{
 	}
 	
 	public void hutsikUtzi() {
-	    this.mota = 'u';
-	    setChanged();
-		notifyObservers();
+	    setMota('u');
 	}
 	
 	public Koordenatua getGelaxkaKord() {
 		return gelaxkaPosizioa;
 	}
+
 }

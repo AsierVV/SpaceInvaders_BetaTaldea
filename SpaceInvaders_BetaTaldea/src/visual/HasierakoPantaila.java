@@ -1,46 +1,42 @@
 package visual;
 
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class HasierakoPantaila extends JPanel{
 	
-	private JPanel panel;
-	private JLabel HASIERA;
-	private JButton HASTEKO_BOTOIA;
+	private JLabel lblTitulua;
+	private JButton btnHasi;
+	
 	public HasierakoPantaila() {
-		setLayout(new BorderLayout(0, 0));
-		add(getPanel(), BorderLayout.SOUTH);
-		add(getHASIERA(), BorderLayout.CENTER);
+		setLayout(new BorderLayout());
+		
+		add(getLblTitulua(), BorderLayout.CENTER);
+		
+		JPanel behekoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		behekoPanel.add(getBtnHasi());
+		add(behekoPanel, BorderLayout.SOUTH);
 	}
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			panel.setLayout(new GridLayout(0, 1, 0, 0));
-			panel.add(getHASTEKO_BOTOIA());
+
+	private JLabel getLblTitulua() {
+		if (lblTitulua == null) {
+			lblTitulua = new JLabel("SPACE INVADERS");
+			lblTitulua.setFont(new Font("Arial", Font.BOLD, 28));
 		}
-		return panel;
+		return lblTitulua;
 	}
-	private JLabel getHASIERA() {
-		if (HASIERA == null) {
-			HASIERA = new JLabel("JOKO HASIERA");
+	
+	private JButton getBtnHasi() {
+		if (btnHasi == null) {
+			btnHasi = new JButton("JOKOA HASI");
+	        btnHasi.setFont(new Font("Arial", Font.BOLD, 18));
 		}
-		return HASIERA;
+		return btnHasi;
 	}
-	private JButton getHASTEKO_BOTOIA() {
-		if (HASTEKO_BOTOIA == null) {
-			HASTEKO_BOTOIA = new JButton("HASI");
-			HASTEKO_BOTOIA.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-				}
-			});
-		}
-		return HASTEKO_BOTOIA;
+	
+	public void addHasiListener(ActionListener listener) {
+	    getBtnHasi().addActionListener(listener);
 	}
 }
