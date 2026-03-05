@@ -159,11 +159,21 @@ public class Tableroa extends Observable {
 	     int yBerria = yZaharra + dy;
 	     
 	     if (posizioBaliozkoa(xBerria, yBerria)) {
+	    	 char mota = tableroMatrizea[xBerria][yBerria].getMota();
 	    	 
+	         //si hay enemigo pierdes
+	         if (mota == 'e') {
+	             partidaGaldu();
+	             return;
+	         }
+	         // mover solo si está vacío
+	         if (mota == 'u') {
 	    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	    	 hegazkina.getPosizioa().setX(xBerria);
 	    	 hegazkina.getPosizioa().setY(yBerria);
 	    	 tableroMatrizea[xBerria][yBerria].setMota('h');
+	     
+	         }
 	     }
 	 }
 	 
