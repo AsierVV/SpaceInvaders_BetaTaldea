@@ -23,9 +23,12 @@ public class JokoPanela extends JPanel implements Observer{
 	
 	public JokoPanela() {
 
+		
 	    JFrame frame = new JFrame("Space Invaders");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+	    Tableroa.getTableroaEMA().addObserver(this);
+	    
 	    this.panel = new JPanel();
 	    panel.setLayout(new GridLayout(Tableroa.getTableroaEMA().getAltuera(),
 	                                   Tableroa.getTableroaEMA().getZabalera(), 0, 0));
@@ -70,6 +73,15 @@ public class JokoPanela extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg)  {
 		// TODO Auto-generated method stub
-		
+	    if (arg != null && arg.equals("GALDU")) {
+
+	        JFrame frame = new JFrame("Game Over");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	        frame.setContentPane(new AmaierakoPantaila());
+	        frame.pack();
+	        frame.setLocationRelativeTo(null);
+	        frame.setVisible(true);
+	    }
 	}
  }

@@ -195,7 +195,7 @@ public class Tableroa extends Observable {
 			     }
 			     
 			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
-<<<<<<< HEAD
+
 			         // COMPROBAR SI HA LLEGADO ABAJO
 			         if (yBerria >= altuera - 1) {
 			        	 partidaGaldu();
@@ -204,11 +204,10 @@ public class Tableroa extends Observable {
 			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			         tableroMatrizea[xBerria][yBerria].setMota('e');
 			         mugituta = true;
-=======
+
 			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			    	 tableroMatrizea[xBerria][yBerria].setMota('e');
 			    	 mugituta = true; 
->>>>>>> branch 'main' of https://github.com/AsierVV/SpaceInvaders_BetaTaldea.git
 			     } else {
 			    	 e.getPosizioa().setX(xZaharra);
 			    	 e.getPosizioa().setY(yZaharra);
@@ -247,7 +246,6 @@ public class Tableroa extends Observable {
 				 it.remove();
 			 }
 		 }
-<<<<<<< HEAD
 		 setChanged();
 		 notifyObservers();
 	 }	 
@@ -259,8 +257,7 @@ public class Tableroa extends Observable {
 		    setChanged();
 		    notifyObservers("GALDU");
 		}
-=======
-	 }
+	 
 	 
 	 // === PARTIDA AMAITZEKO METODOAK ===
 	 public boolean isGameOver() {
@@ -283,5 +280,4 @@ public class Tableroa extends Observable {
 			 }
 		 }
 	 }
->>>>>>> branch 'main' of https://github.com/AsierVV/SpaceInvaders_BetaTaldea.git
 }
