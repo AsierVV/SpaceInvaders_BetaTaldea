@@ -279,5 +279,18 @@ public class Tableroa extends Observable {
 				 eliminatuta = true;
 			 }
 		 }
+		    // comprobar si ya no quedan enemigos
+		    if (etsaiak.isEmpty()) {
+		        partidaIrabazi();
+		    }
+
 	 }
+	// === PARTIDA IRABAZI ===
+	 private void partidaIrabazi() {
+		    timerEtsaiak.stop();
+		    timerTiroak.stop();
+		    setChanged();
+		    notifyObservers("IRABAZI");
+		}
+	 
 }

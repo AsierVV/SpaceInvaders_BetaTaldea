@@ -83,5 +83,13 @@ public class JokoPanela extends JPanel implements Observer{
 	        frame.setLocationRelativeTo(null);
 	        frame.setVisible(true);
 	    }
+	    if (arg != null && arg.equals("IRABAZI")) {
+
+	        JFrame frame = new JFrame("Irabazi duzu!");
+	        frame.setContentPane(new IrabaziPantaila());
+	        frame.pack();
+	        frame.setLocationRelativeTo(null);
+	        frame.setVisible(true);
+	    }
 	}
  }
