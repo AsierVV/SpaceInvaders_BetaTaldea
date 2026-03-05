@@ -6,7 +6,22 @@ import java.awt.event.KeyListener;
 import modeloa.Tableroa;
 
 public class TeklatuKontroladorea implements KeyListener{
-
+	
+	private static TeklatuKontroladorea nireEMA = null;
+	
+	private boolean gora;
+	private boolean behera;
+	private boolean ezkerrera;
+	private boolean eskuinera;
+	private boolean tiroEgin;
+	
+	public static TeklatuKontroladorea getTeklatuEMA() {
+    	if(nireEMA == null) {
+    		nireEMA = new TeklatuKontroladorea();
+    	}
+    	return nireEMA;
+    }
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -15,37 +30,72 @@ public class TeklatuKontroladorea implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		int dx = 0;
-		int dy = 0;
 		
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_A:
-			case KeyEvent.VK_LEFT:
-				dx--;
-				break;
-			case KeyEvent.VK_D:
-			case KeyEvent.VK_RIGHT:
-				dx++;
-				break;
-			case KeyEvent.VK_W:
-			case KeyEvent.VK_UP:
-				dy--;
-				break;
-			case KeyEvent.VK_S:
-			case KeyEvent.VK_DOWN:
-				dy++;
-				break;
-			case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_LEFT:
+			ezkerrera = true;
+			break;
+		case KeyEvent.VK_D:
+		case KeyEvent.VK_RIGHT:
+			eskuinera = true;
+			break;
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_UP:
+			gora = true;
+			break;
+		case KeyEvent.VK_S:
+		case KeyEvent.VK_DOWN:
+			behera = true;
+			break;
+		case KeyEvent.VK_SPACE:
+			if (!tiroEgin) {
 				Tableroa.getTableroaEMA().tiroaSortu();
-				break;
+				tiroEgin = true;	
+			}
+			break;
 		}
-		if (dx!=0 || dy!=0) Tableroa.getTableroaEMA().mugituHegazkina(dx, dy);
 	}
-
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_LEFT:
+			ezkerrera = false;
+			break;
+		case KeyEvent.VK_D:
+		case KeyEvent.VK_RIGHT:
+			eskuinera = false;
+			break;
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_UP:
+			gora = false;
+			break;
+		case KeyEvent.VK_S:
+		case KeyEvent.VK_DOWN:
+			behera = false;
+			break;
+		case KeyEvent.VK_SPACE:
+			tiroEgin = false;
+			break;
+		}	
 	}
-
+	
+	public boolean getEzk() {
+		return ezkerrera;
+	}
+	public boolean getEsk() {
+		return eskuinera;
+	}
+	public boolean getGo() {
+		return gora;
+	}
+	public boolean getBe() {
+		return behera;
+	}
+	public boolean getTi() {
+		return tiroEgin;
+	}
 }

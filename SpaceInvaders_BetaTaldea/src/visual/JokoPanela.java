@@ -33,7 +33,7 @@ public class JokoPanela extends JPanel implements Observer{
 
 	    matrizeakSortu(); // agrega todos los labels y conectarlos con observadores
 	    
-	    panel.addKeyListener(new TeklatuKontroladorea());	// Panelak teklatua detektatzeko
+	    panel.addKeyListener(TeklatuKontroladorea.getTeklatuEMA());	// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
 	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
 
