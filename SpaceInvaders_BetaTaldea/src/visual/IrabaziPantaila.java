@@ -6,10 +6,10 @@ import javax.swing.JTextField;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 
-public class AmaierakoPantaila extends JPanel{
+public class IrabaziPantaila extends JPanel{
 	private JPanel panel; 
 	private JTextField txtGalduDuzu;
-	public AmaierakoPantaila() {
+	public IrabaziPantaila() {
 		setLayout(new BorderLayout(0, 0));
 		add(getPanel());
 	}
@@ -25,7 +25,7 @@ public class AmaierakoPantaila extends JPanel{
 	private JTextField getTxtGalduDuzu() {
 		if (txtGalduDuzu == null) {
 			txtGalduDuzu = new JTextField();
-			txtGalduDuzu.setText("GALDU DUZU!");
+			txtGalduDuzu.setText("IRABAZI DUZU!");
 			txtGalduDuzu.setColumns(10);
 		}
 		return txtGalduDuzu;

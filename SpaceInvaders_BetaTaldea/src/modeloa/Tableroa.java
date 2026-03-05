@@ -14,6 +14,7 @@ import controller.TeklatuKontroladorea;
 public class Tableroa extends Observable {
 
 	private static Tableroa nireEMA = null;
+	private boolean partidaAmaituta = false;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
 	private List<Etsaia> etsaiak;
@@ -42,6 +43,7 @@ public class Tableroa extends Observable {
         tableroMatrizea = new Gelaxka[zabalera][altuera];
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
+        partidaAmaituta = false;
         
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
@@ -186,11 +188,21 @@ public class Tableroa extends Observable {
 	     int yBerria = yZaharra + dy;
 	     
 	     if (posizioBaliozkoa(xBerria, yBerria)) {
+	    	 char mota = tableroMatrizea[xBerria][yBerria].getMota();
 	    	 
+	         //si hay enemigo pierdes
+	         if (mota == 'e') {
+	             partidaGaldu();
+	             return;
+	         }
+	         // mover solo si está vacío
+	         if (mota == 'u') {
 	    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	    	 hegazkina.getPosizioa().setX(xBerria);
 	    	 hegazkina.getPosizioa().setY(yBerria);
 	    	 tableroMatrizea[xBerria][yBerria].setMota('h');
+	     
+	         }
 	     }
 	 }
 	 
@@ -222,6 +234,16 @@ public class Tableroa extends Observable {
 			     }
 			     
 			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
+
+			         // COMPROBAR SI HA LLEGADO ABAJO
+			         if (yBerria >= altuera - 1) {
+			        	 partidaGaldu();
+			             return;
+			         }
+			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			         tableroMatrizea[xBerria][yBerria].setMota('e');
+			         mugituta = true;
+
 			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			    	 tableroMatrizea[xBerria][yBerria].setMota('e');
 			    	 mugituta = true; 
@@ -263,7 +285,18 @@ public class Tableroa extends Observable {
 				 it.remove();
 			 }
 		 }
-	 }
+		 setChanged();
+		 notifyObservers();
+	 }	 
+	 // === PARTIDA AMAITU ===
+	 private void partidaGaldu() {
+		    partidaAmaituta = true;
+		    timerEtsaiak.stop();
+		    timerTiroak.stop();
+		    setChanged();
+		    notifyObservers("GALDU");
+		}
+	 
 	 
 	 // === PARTIDA AMAITZEKO METODOAK ===
 	 public boolean isGameOver() {
@@ -285,6 +318,11 @@ public class Tableroa extends Observable {
 				 eliminatuta = true;
 			 }
 		 }
+		    // comprobar si ya no quedan enemigos
+		    if (etsaiak.isEmpty()) {
+		        partidaIrabazi();
+		    }
+
 	 }
 	 
 	 // === TEKLATUAREN EKINTZAK EGIN ===
@@ -302,6 +340,12 @@ public class Tableroa extends Observable {
 	 private void tiroakSortu() {
 		 if (TeklatuKontroladorea.getTeklatuEMA().getTi()) tiroaSortu();
 	 }
-	 
-	 
+
+	// === PARTIDA IRABAZI ===
+	 private void partidaIrabazi() {
+		    timerEtsaiak.stop();
+		    timerTiroak.stop();
+		    setChanged();
+		    notifyObservers("IRABAZI");
+		}
 }
