@@ -20,11 +20,12 @@ import java.util.Observer;
 
 public class JokoPanela extends JPanel implements Observer{
 	private JPanel panel;
+	private JFrame frame;
 	
 	public JokoPanela() {
 
 		
-	    JFrame frame = new JFrame("Space Invaders");
+	    this.frame = new JFrame("Space Invaders");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	    Tableroa.getTableroaEMA().addObserver(this);
@@ -74,6 +75,7 @@ public class JokoPanela extends JPanel implements Observer{
 	public void update(Observable o, Object arg)  {
 		// TODO Auto-generated method stub
 	    if (arg != null && arg.equals("GALDU")) {
+	    	frame.dispose();
 
 	        JFrame frame = new JFrame("Game Over");
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +86,7 @@ public class JokoPanela extends JPanel implements Observer{
 	        frame.setVisible(true);
 	    }
 	    if (arg != null && arg.equals("IRABAZI")) {
+	    	frame.dispose();
 
 	        JFrame frame = new JFrame("Irabazi duzu!");
 	        frame.setContentPane(new IrabaziPantaila());
