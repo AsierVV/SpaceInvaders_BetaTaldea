@@ -290,12 +290,15 @@ public class Tableroa extends Observable {
 	 }	 
 	 // === PARTIDA AMAITU ===
 	 private void partidaGaldu() {
-		    partidaAmaituta = true;
-		    timerEtsaiak.stop();
-		    timerTiroak.stop();
-		    setChanged();
-		    notifyObservers("GALDU");
-		}
+		 if (partidaAmaituta) return;
+		 
+		 partidaAmaituta = true;
+		 timerTiroak.stop();
+		 timerMugitu.stop();
+		 timerTiroEgin.stop();
+		 setChanged();
+		 notifyObservers("GALDU");
+	}
 	 
 	 
 	 // === PARTIDA AMAITZEKO METODOAK ===
@@ -343,9 +346,13 @@ public class Tableroa extends Observable {
 
 	// === PARTIDA IRABAZI ===
 	 private void partidaIrabazi() {
-		    timerEtsaiak.stop();
-		    timerTiroak.stop();
-		    setChanged();
-		    notifyObservers("IRABAZI");
-		}
+		 if (partidaAmaituta) return;
+		 
+		 partidaAmaituta = true;
+		 timerTiroak.stop();
+		 timerMugitu.stop();
+		 timerTiroEgin.stop();
+		 setChanged();
+		 notifyObservers("IRABAZI");
+	}
 }

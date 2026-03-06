@@ -5,10 +5,12 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class IrabaziPantaila extends JPanel{
 	private JPanel panel; 
-	private JTextField txtGalduDuzu;
+	private JLabel lblNewLabel;
 	public IrabaziPantaila() {
 		setLayout(new BorderLayout(0, 0));
 		add(getPanel());
@@ -18,16 +20,15 @@ public class IrabaziPantaila extends JPanel{
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-			panel.add(getTxtGalduDuzu());
+			panel.add(getLblNewLabel());
 		}
 		return panel;
 	}
-	private JTextField getTxtGalduDuzu() {
-		if (txtGalduDuzu == null) {
-			txtGalduDuzu = new JTextField();
-			txtGalduDuzu.setText("IRABAZI DUZU!");
-			txtGalduDuzu.setColumns(10);
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("IRABAZI DUZU!");
+			lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 28));
 		}
-		return txtGalduDuzu;
+		return lblNewLabel;
 	}
 }
