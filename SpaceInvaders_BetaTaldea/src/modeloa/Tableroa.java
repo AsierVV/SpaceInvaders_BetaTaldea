@@ -14,79 +14,64 @@ import controller.TeklatuKontroladorea;
 public class Tableroa extends Observable {
 
 	private static Tableroa nireEMA = null;
-	private boolean partidaAmaituta = false;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
 	private List<Etsaia> etsaiak;
 	private List<Tiroa> tiroak;
-	//-----------------------
-	private Timer timerMugitu;
-	private Timer timerTiroEgin;
 	
-	private final int abiaduraTiroEgin = 300;
-	private final int abiaduraMugitu = 100;
+	private Timer timer;
+	private final int abiaduraTimer = 50;	//50ms
 	
-	private int etsai = 0;  
-	//-----------------------
-	private Timer timerEtsaiak;
-	private Timer timerTiroak;
-    //private final int abiaduraEtsaiak = 200;	//200ms
-    private final int abiaduraTiroak = 50;		//50ms
-    
+	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
+	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2
+	private int tiroEginKont = 1;			//400ms, beraz 200ms * 2
+	
 	private final int zabalera = 100;
     private final int altuera = 60;
 
-    private boolean gameOver = false;
+    private boolean gameOver;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
         tableroMatrizea = new Gelaxka[zabalera][altuera];
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
-        partidaAmaituta = false;
+        gameOver = false;
         
+        // --- MATRIZEA SORTU ---
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
             	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j),'u');
             }
         }
-        // -----------------        
-        timerMugitu = new Timer(abiaduraMugitu, new ActionListener() {
+        
+        // --- TIMERRRA ERAIKI ---
+        timer = new Timer(abiaduraTimer, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
-        		mugituHegazkinaControl();
-            }
-        });
-    	
-    	timerTiroEgin = new Timer(abiaduraTiroEgin, new ActionListener() {
-        	@Override
-            public void actionPerformed(ActionEvent e) {
-                tiroakSortu();
-            }
-        });
-    	
-    	timerMugitu.start();
-    	timerTiroEgin.start();
-        // -------------
-        /*
-    	timerEtsaiak = new Timer(abiaduraEtsaiak, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mugituEtsaiak();
-            }
-        });
-*/
-        timerTiroak = new Timer(abiaduraTiroak, new ActionListener() {
-        	@Override
-            public void actionPerformed(ActionEvent e) {
+        		
+        		// 50ms-ro mugitu tiroak 
         		mugituTiroak();
-        		if (etsai >= 3) {
-        			mugituEtsaiak();
-        			etsai = 0;
-        		}
-        		else {
-        			etsai++;
-        		}
+        		
+        		// Konprobatu 100ms pasatu diren
+        		if (mugituHegazkinaKont <= 0) {
+        			mugituHegazkinaControl();
+        			mugituHegazkinaKont = 1;
+        			
+        			// Konprobaty 200ms pasatu diren
+        			if (mugituEtsaiakKont <= 0) {
+        				mugituEtsaiak();
+        				mugituEtsaiakKont = 1;
+        				
+        				// Konprobatu 400ms pasatu diren
+        				if (tiroEginKont <= 0) {
+        					tiroakSortu();
+        					tiroEginKont = 1;
+        				} else tiroEginKont--;
+        				
+        			} else mugituEtsaiakKont--;
+        			
+        		} else mugituHegazkinaKont--;
             }
         });
     }
@@ -129,14 +114,18 @@ public class Tableroa extends Observable {
     	sortuHegazkina();
     	sortuEtsaiak();
         //if (!timerEtsaiak.isRunning()) timerEtsaiak.start();
-        if (!timerTiroak.isRunning()) timerTiroak.start();
+        if (!timer.isRunning()) timer.start();
     }
 
     public void startStopJokoa() {
-        if (timerEtsaiak.isRunning()) timerEtsaiak.stop();
+    	if (timer.isRunning()) timer.stop();
+    	else timer.start();
+        /*
+    	if (timerEtsaiak.isRunning()) timerEtsaiak.stop();
         else timerEtsaiak.start();
         if (timerTiroak.isRunning()) timerTiroak.stop();
         else timerTiroak.start();
+        */
     }
 	 
 	// === HEGAZKINA SORTU ===
@@ -288,19 +277,7 @@ public class Tableroa extends Observable {
 		 setChanged();
 		 notifyObservers();
 	 }	 
-	 // === PARTIDA AMAITU ===
-	 private void partidaGaldu() {
-		 if (partidaAmaituta) return;
-		 
-		 partidaAmaituta = true;
-		 timerTiroak.stop();
-		 timerMugitu.stop();
-		 timerTiroEgin.stop();
-		 setChanged();
-		 notifyObservers("GALDU");
-	}
-	 
-	 
+	 	 
 	 // === PARTIDA AMAITZEKO METODOAK ===
 	 public boolean isGameOver() {
 		 return gameOver;
@@ -345,14 +322,16 @@ public class Tableroa extends Observable {
 	 }
 
 	// === PARTIDA IRABAZI ===
-	 private void partidaIrabazi() {
-		 if (partidaAmaituta) return;
-		 
-		 partidaAmaituta = true;
-		 timerTiroak.stop();
-		 timerMugitu.stop();
-		 timerTiroEgin.stop();
-		 setChanged();
-		 notifyObservers("IRABAZI");
+	private void partidaIrabazi() {
+		partidaAmaitu();
+		setChanged();
+		notifyObservers("IRABAZI");
+	}
+	 
+	// === PARTIDA AMAITU ===
+	private void partidaGaldu() {
+		partidaAmaitu();
+		setChanged();
+		notifyObservers("GALDU");
 	}
 }
