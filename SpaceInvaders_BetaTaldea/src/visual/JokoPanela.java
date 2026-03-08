@@ -60,17 +60,7 @@ public class JokoPanela extends JPanel implements Observer{
 			}
 		}
 	}
-/*
-	private void actualizarTableroCompleto() {
-	    Tableroa tab = Tableroa.getTableroaEMA();
-	    for (int x = 0; x < tab.getZabalera(); x++) {
-	        for (int y = 0; y < tab.getAltuera(); y++) {
-	            Gelaxka g = tab.getGelaxka(x, y);
-	            g.setMota(g.getMota()); // dispara notifyObservers()
-	        }
-	    }
-	}
-*/
+	
 	@Override
 	public void update(Observable o, Object arg)  {
 		// TODO Auto-generated method stub

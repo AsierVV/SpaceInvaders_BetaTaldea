@@ -12,7 +12,7 @@ import controller.TeklatuKontroladorea;
 
 
 public class Tableroa extends Observable {
-
+	
 	private static Tableroa nireEMA = null;
 	private Gelaxka[][] tableroMatrizea;
 	private Hegazkina hegazkina;
@@ -25,6 +25,9 @@ public class Tableroa extends Observable {
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
 	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2
 	private int tiroEginKont = 1;			//400ms, beraz 200ms * 2
+	
+	private long azkenTiroa = 0;
+    private final long tiroKadentzia= 400;	//400ms
 	
 	private final int zabalera = 100;
     private final int altuera = 60;
@@ -113,19 +116,12 @@ public class Tableroa extends Observable {
     public void hasiJokoa() {
     	sortuHegazkina();
     	sortuEtsaiak();
-        //if (!timerEtsaiak.isRunning()) timerEtsaiak.start();
         if (!timer.isRunning()) timer.start();
     }
 
     public void startStopJokoa() {
     	if (timer.isRunning()) timer.stop();
     	else timer.start();
-        /*
-    	if (timerEtsaiak.isRunning()) timerEtsaiak.stop();
-        else timerEtsaiak.start();
-        if (timerTiroak.isRunning()) timerTiroak.stop();
-        else timerTiroak.start();
-        */
     }
 	 
 	// === HEGAZKINA SORTU ===
@@ -156,10 +152,12 @@ public class Tableroa extends Observable {
 		int x = hegazkina.getPosizioa().getX();
 		int y = hegazkina.getPosizioa().getY() - 2; //Hegazkinaren gainean sortzeko
 	 		
-	 	if (posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
-	 		Tiroa t = new Tiroa(new Koordenatua(x, y)); // Tiroa sortzen du
-	 		tiroak.add(t);	// Tiroa "tiroak" listan sartzen du
-	 		tableroMatrizea[x][y].setMota('t');	// Gelaxka eguneratzen du tableroan
+		long tiroOrain = System.currentTimeMillis(); //Oraingo momentuko denbora hartzen dugu, 400ms pasatu ez badira ez da tiro bat sortuko		
+	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
+	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
+	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
+	 		tableroMatrizea[x][y].setMota('t');			// Gelaxka eguneratzen du tableroan
+	 		azkenTiroa = tiroOrain;
 	 	}
 	 }
 	 
@@ -217,25 +215,22 @@ public class Tableroa extends Observable {
 		    	 
 			     if (yBerria >= altuera) {
 			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    	 it.remove();      	// Etsaia eliminatu
-			    	 partidaAmaitu();   // Partida galdu
+			    	 it.remove();		// 
+			    	 partidaGaldu();	// Partida galdu
 		             break;          	// Amaitu
 			     }
-			     
-			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()=='u') { //Comprueba que no haya nada en la Gelaxka a la que se va a mover
-
-			         // COMPROBAR SI HA LLEGADO ABAJO
-			         if (yBerria >= altuera - 1) {
-			        	 partidaGaldu();
-			             return;
-			         }
-			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			         tableroMatrizea[xBerria][yBerria].setMota('e');
-			         mugituta = true;
-
-			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    	 tableroMatrizea[xBerria][yBerria].setMota('e');
-			    	 mugituta = true; 
+			     // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
+			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()!='e') {
+			    	 // Konprobatzen du ea hegazkina dagoen mugituko den posizioan, horrela bada, partida galtzen dugu.
+			    	 if (tableroMatrizea[xBerria][yBerria].getMota()=='h') {
+			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+				    	 partidaGaldu();	// Partida galdu
+			             break;          	// Amaitu
+			    	 } else {
+			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+				         tableroMatrizea[xBerria][yBerria].setMota('e');
+				         mugituta = true; 
+			    	 }
 			     } else {
 			    	 e.getPosizioa().setX(xZaharra);
 			    	 e.getPosizioa().setY(yZaharra);
