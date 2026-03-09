@@ -70,7 +70,7 @@ public class JokoPanela extends JPanel implements Observer{
 	        JFrame frame = new JFrame("Game Over");
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	        frame.setContentPane(new AmaierakoPantaila());
+	        frame.setContentPane(new GalduPantaila());
 	        frame.pack();
 	        frame.setLocationRelativeTo(null);
 	        frame.setVisible(true);

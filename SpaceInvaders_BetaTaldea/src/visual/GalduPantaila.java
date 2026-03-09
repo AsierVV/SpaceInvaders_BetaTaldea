@@ -8,10 +8,10 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 
-public class AmaierakoPantaila extends JPanel{
+public class GalduPantaila extends JPanel{
 	private JPanel panel; 
 	private JLabel lblNewLabel;
-	public AmaierakoPantaila() {
+	public GalduPantaila() {
 		setLayout(new BorderLayout(0, 0));
 		add(getPanel());
 	}
