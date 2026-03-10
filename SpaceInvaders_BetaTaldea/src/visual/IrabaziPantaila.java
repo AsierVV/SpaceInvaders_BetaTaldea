@@ -17,6 +17,7 @@ public class IrabaziPantaila extends JPanel{
 	private JPanel panel_1;
 	private JLabel lblNewLabel;
 	private JButton btnNewButton;
+	
 	public IrabaziPantaila() {
 		setLayout(new BorderLayout(0, 0));
 		add(getPanel(), BorderLayout.CENTER);
@@ -25,6 +26,7 @@ public class IrabaziPantaila extends JPanel{
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
+			panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel.add(getLblNewLabel());
 		}
 		return panel;
@@ -45,7 +47,7 @@ public class IrabaziPantaila extends JPanel{
 	}
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
-			btnNewButton = new JButton("EXIT");
+			btnNewButton = new JButton("AMAITU");
 	        btnNewButton.addActionListener(new ActionListener() {
 	            
 	            @Override

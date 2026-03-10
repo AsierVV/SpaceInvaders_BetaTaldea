@@ -5,15 +5,23 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GalduPantaila extends JPanel{
-	private JPanel panel; 
+	private JPanel panel;
+	private JPanel panel_1;
 	private JLabel lblNewLabel;
+	private JButton btnNewButton;
+
 	public GalduPantaila() {
 		setLayout(new BorderLayout(0, 0));
-		add(getPanel());
+		add(getPanel(), BorderLayout.CENTER);
+		add(getPanel_1(), BorderLayout.SOUTH);
 	}
 
 	private JPanel getPanel() {
@@ -24,11 +32,31 @@ public class GalduPantaila extends JPanel{
 		}
 		return panel;
 	}
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+			panel_1.add(getBtnNewButton());
+		}
+		return panel_1;
+	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("GALDU DUZU!");
 			lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 28));
 		}
 		return lblNewLabel;
+	}
+	private JButton getBtnNewButton() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("AMAITU");
+	        btnNewButton.addActionListener(new ActionListener() {
+	            
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                System.exit(0);
+	            }
+	        });
+		}
+		return btnNewButton;
 	}
 }
