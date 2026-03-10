@@ -2,12 +2,6 @@ package modeloa;
 
 import java.util.Observable;
 
-import javax.swing.JFrame;
-
-import controller.TeklatuKontroladorea;
-import visual.HasierakoPantaila;
-import visual.JokoPanela;
-
 /**
  * Jokoaren abiaraztea kudeatzeko klase sinplea.
  * - Hasierako pantaila irekitzen du

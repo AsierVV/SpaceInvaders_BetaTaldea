@@ -8,7 +8,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
-import controller.TeklatuKontroladorea;
+import visual.JokoPanela;
 
 
 public class Tableroa extends Observable {
@@ -22,15 +22,20 @@ public class Tableroa extends Observable {
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
 	
-	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
-	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2
-	private int tiroEginKont = 1;			//400ms, beraz 200ms * 2
+	private int mugituEtsaiakKont = 3;		//200ms, beraz 50ms * 4 --> Hiruan hasi parametroa, horrela 50ms-ko timerra deitzen den laugarren aldian 200ms pasatu dira.
+	private int tiroEginKont = 5;			//300ms, beraz 50ms * 6 --> Bostean hasi parametroa, horrela 50ms-ko timerra deitzen den seigarren aldian 300ms pasatu dira.
 	
 	private long azkenTiroa = 0;
-    private final long tiroKadentzia= 400;	//400ms
+    private final long tiroKadentzia= 300;	//300ms
 	
 	private final int zabalera = 100;
     private final int altuera = 60;
+    
+	private boolean gora;
+	private boolean behera;
+	private boolean ezkerrera;
+	private boolean eskuinera;
+	private boolean tiroEgin;
 
     private boolean gameOver;
     private boolean jokoHasita = false;
@@ -54,32 +59,25 @@ public class Tableroa extends Observable {
         	@Override
             public void actionPerformed(ActionEvent e) {
         		
-        		// 50ms-ro mugitu tiroak 
+        		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
+        		mugituHegazkinaControl();
         		
-        		// Konprobatu 100ms pasatu diren
-        		if (mugituHegazkinaKont <= 0) {
-        			mugituHegazkinaControl();
-        			mugituHegazkinaKont = 1;
-        			
-        			// Konprobaty 200ms pasatu diren
-        			if (mugituEtsaiakKont <= 0) {
-        				mugituEtsaiak();
-        				mugituEtsaiakKont = 1;
-        				
-        				// Konprobatu 400ms pasatu diren
-        				if (tiroEginKont <= 0) {
-        					tiroakSortu();
-        					tiroEginKont = 1;
-        				} else tiroEginKont--;
-        				
-        			} else mugituEtsaiakKont--;
-        			
-        		} else mugituHegazkinaKont--;
+        		// Konprobatu 200ms pasatu diren
+        		if (mugituEtsaiakKont <= 0) {
+    				mugituEtsaiak();
+    				mugituEtsaiakKont = 3;
+    				
+        		} else mugituEtsaiakKont--;
+        		
+        		// Konprobatu 300ms pasatu diren
+        		if (tiroEginKont <= 0) {
+					tiroakSortu();
+					tiroEginKont = 5;
+    				
+        		} else tiroEginKont--;
             }
         });
-        setChanged();
-        notifyObservers();
     }
     
     // === GET EMA ===
@@ -121,8 +119,12 @@ public class Tableroa extends Observable {
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa() {
+        setChanged();
+        notifyObservers("TABLEROA_SORTUTA");
+        
     	sortuHegazkina();
     	sortuEtsaiak();
+    	
         if (!timer.isRunning()) timer.start();
     }
 
@@ -312,29 +314,48 @@ public class Tableroa extends Observable {
 		 int dx = 0;
 		 int dy = 0;
 		 
-		 /*
-		 if (TeklatuKontroladorea.getTeklatuEMA().getEzk()) dx--;
-		 if (TeklatuKontroladorea.getTeklatuEMA().getEsk()) dx++;
-		 if (TeklatuKontroladorea.getTeklatuEMA().getGo()) dy--;
-		 if (TeklatuKontroladorea.getTeklatuEMA().getBe()) dy++;		
-		 */
+		 if (ezkerrera) dx--;
+		 if (eskuinera) dx++;
+		 if (gora) dy--;
+		 if (behera) dy++;		
+		 
 		 if (dx!=0 || dy!=0) mugituHegazkina(dx, dy);
 	 }
 	 private void tiroakSortu() {
-		// if (TeklatuKontroladorea.getTeklatuEMA().getTi()) tiroaSortu();
+		if (tiroEgin) tiroaSortu();
+	 }
+	 
+	 // === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
+	 public void setEzk(boolean b) {
+		 ezkerrera = b;
+	 }
+	 public void setEsk(boolean b) {
+		 eskuinera = b;
+	 }
+	 public void setGo(boolean b) {
+		 gora = b;
+	 }
+	 public void setBe(boolean b) {
+		 behera = b;
+	 }
+	 public void setTi(boolean b) {
+		 tiroEgin = b;
+	 }
+	 public boolean getTiroEgin() {
+		 return tiroEgin;
 	 }
 
-	// === PARTIDA IRABAZI ===
-	private void partidaIrabazi() {
-		partidaAmaitu();
-		setChanged();
-		notifyObservers("IRABAZI");
-	}
+	 // === PARTIDA IRABAZI ===
+	 private void partidaIrabazi() {
+		 partidaAmaitu();
+		 setChanged();
+		 notifyObservers("IRABAZI");
+	 }
 	 
-	// ===  PARTIDA AMAITU ===
-	private void partidaGaldu() {
-		partidaAmaitu();
-		setChanged();
-		notifyObservers("GALDU");
-	}
+	 // ===  PARTIDA AMAITU ===
+	 private void partidaGaldu() {
+		 partidaAmaitu();
+		 setChanged();
+		 notifyObservers("GALDU");
+	 }
 }

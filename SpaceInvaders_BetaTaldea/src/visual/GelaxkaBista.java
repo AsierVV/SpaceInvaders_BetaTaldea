@@ -22,7 +22,7 @@ public class GelaxkaBista extends JLabel implements Observer{
 
         switch (g.getMota()) {
             case 'u':
-                setBackground(Color.BLACK);
+            	setBackground(Color.BLACK);
                 break;
             case 'h':
                 setBackground(Color.GREEN);
