@@ -7,36 +7,26 @@ import java.awt.event.ActionEvent;
 
 public class HasierakoPantaila extends JPanel{
 	
-	private JLabel lblTitulua;
+	private JPanel pnlTitulua;
 	private JButton btnHasi;
+	private JPanel panel;
 	
 	public HasierakoPantaila() {
-		setLayout(new BorderLayout());
-		
-		add(getLblTitulua(), BorderLayout.CENTER);
-		
-		JPanel behekoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		behekoPanel.add(getBtnHasi());
-		add(behekoPanel, BorderLayout.SOUTH);
+		setBackground(new Color(0, 0, 0));
+		add(getHasiera());
 	}
+	
+	private JPanel getHasiera() {
+	    JPanel has = new JPanel();
+	    has.setBackground(new Color(0, 0, 0));
 
-	private JLabel getLblTitulua() {
-		if (lblTitulua == null) {
-			lblTitulua = new JLabel("SPACE INVADERS");
-			lblTitulua.setFont(new Font("Arial", Font.BOLD, 28));
-		}
-		return lblTitulua;
+	    ImageIcon hasiera = new ImageIcon(getClass().getResource("hasiera.png"));
+	    JLabel lblAlien = new JLabel(hasiera);
+
+	    has.add(lblAlien);
+	    return has;
 	}
 	
-	private JButton getBtnHasi() {
-		if (btnHasi == null) {
-			btnHasi = new JButton("JOKOA HASI");
-	        btnHasi.setFont(new Font("Arial", Font.BOLD, 18));
-		}
-		return btnHasi;
-	}
 	
-	public void addHasiListener(ActionListener listener) {
-	    getBtnHasi().addActionListener(listener);
-	}
+
 }

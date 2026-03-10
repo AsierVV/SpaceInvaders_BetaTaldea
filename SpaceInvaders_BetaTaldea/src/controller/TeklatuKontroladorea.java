@@ -4,10 +4,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import modeloa.Tableroa;
+import game.JokoKudeatzailea;
 
 public class TeklatuKontroladorea implements KeyListener{
 	
 	private static TeklatuKontroladorea nireEMA = null;
+	private JokoKudeatzailea JK;
 	
 	private boolean gora;
 	private boolean behera;
@@ -49,9 +51,13 @@ public class TeklatuKontroladorea implements KeyListener{
 			behera = true;
 			break;
 		case KeyEvent.VK_SPACE:
-			if (!tiroEgin) {
-				Tableroa.getTableroaEMA().tiroaSortu();
-				tiroEgin = true;	
+			if (JK.hasiDaJokoa()) {	
+				if (!tiroEgin) {
+					Tableroa.getTableroaEMA().tiroaSortu();
+					tiroEgin = true;	
+				}
+			}else {
+				JK.irekiJokoa();
 			}
 			break;
 		}
@@ -97,5 +103,10 @@ public class TeklatuKontroladorea implements KeyListener{
 	}
 	public boolean getTi() {
 		return tiroEgin;
+	}
+	
+	// Añade este método dentro de TeklatuKontroladorea
+	public void setJK(JokoKudeatzailea pJK) {
+	    this.JK = pJK;
 	}
 }
