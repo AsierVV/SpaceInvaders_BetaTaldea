@@ -1,9 +1,8 @@
-package game;
+package modeloa;
 
 import javax.swing.JFrame;
 
 import controller.TeklatuKontroladorea;
-import modeloa.Tableroa;
 import visual.HasierakoPantaila;
 import visual.JokoPanela;
 
@@ -21,7 +20,19 @@ El modelo tiene que hacer que se inicie la vista, y no el main.
 
 public class JokoKudeatzailea {
 	private boolean jokoaHasita = false;
+	private static JokoKudeatzailea nireEma  = null;
 	private JFrame hasiFrame = new JFrame("Space Invaders - Hasiera");
+	
+	private JokoKudeatzailea() {
+		
+	}
+	
+	public static JokoKudeatzailea getEMA() {
+		if(nireEma == null) {
+			nireEma = new JokoKudeatzailea();
+		}
+		return nireEma;
+	}
 	
     public void abiarazi() {
     	TeklatuKontroladorea.getTeklatuEMA().setJK(this);

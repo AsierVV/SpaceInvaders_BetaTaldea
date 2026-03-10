@@ -3,6 +3,7 @@ package game;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import modeloa.JokoKudeatzailea;
 import modeloa.Tableroa;
 import visual.JokoPanela;
 import visual.HasierakoPantaila;
