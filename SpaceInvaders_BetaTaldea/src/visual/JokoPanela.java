@@ -23,8 +23,6 @@ public class JokoPanela extends JPanel implements Observer{
 	private JFrame frame;
 	
 	public JokoPanela() {
-
-		
 	    this.frame = new JFrame("Space Invaders");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -34,8 +32,6 @@ public class JokoPanela extends JPanel implements Observer{
 	    panel.setLayout(new GridLayout(Tableroa.getTableroaEMA().getAltuera(),
 	                                   Tableroa.getTableroaEMA().getZabalera(), 0, 0));
 	    panel.setPreferredSize(new Dimension(1200, 720)); // tamaño total del panel
-
-	    matrizeakSortu(); // agrega todos los labels y conectarlos con observadores
 	    
 	    panel.addKeyListener(TeklatuKontroladorea.getTeklatuEMA());	// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
@@ -44,7 +40,6 @@ public class JokoPanela extends JPanel implements Observer{
 	    frame.getContentPane().add(panel);
 	    frame.pack();                     // calcula tamaño real de la ventana
 	    frame.setLocationRelativeTo(null); // ¡centrar después de pack!
-	    frame.setVisible(true);
 	}
 	
 	private JLabel getLblNewLabel(int x, int y) { //sarrera parametroak
@@ -59,30 +54,33 @@ public class JokoPanela extends JPanel implements Observer{
 				panel.add(getLblNewLabel(x,y));
 			}
 		}
+	    frame.setVisible(true);
 	}
 	
 	@Override
-	public void update(Observable o, Object arg)  {
-		// TODO Auto-generated method stub
-	    if (arg != null && arg.equals("GALDU")) {
-	    	frame.dispose();
-
-	        JFrame frame = new JFrame("Game Over");
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	        frame.setContentPane(new GalduPantaila());
-	        frame.pack();
-	        frame.setLocationRelativeTo(null);
-	        frame.setVisible(true);
-	    }
-	    if (arg != null && arg.equals("IRABAZI")) {
-	    	frame.dispose();
-
-	        JFrame frame = new JFrame("Irabazi duzu!");
-	        frame.setContentPane(new IrabaziPantaila());
-	        frame.pack();
-	        frame.setLocationRelativeTo(null);
-	        frame.setVisible(true);
-	    }
+	public void update(Observable o, Object arg)  {		
+		if (!Tableroa.getTableroaEMA().getHasiDaJokoa()) {
+			matrizeakSortu();
+		}else {
+		    if (arg != null && arg.equals("GALDU")) {
+		    	frame.dispose();
+	
+		        JFrame frame = new JFrame("Game Over");
+		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		        frame.setContentPane(new GalduPantaila());
+		        frame.pack();
+		        frame.setLocationRelativeTo(null);
+		        frame.setVisible(true);
+		    }else if (arg != null && arg.equals("IRABAZI")) {
+		    	frame.dispose();
+	
+		        JFrame frame = new JFrame("Irabazi duzu!");
+		        frame.setContentPane(new IrabaziPantaila());
+		        frame.pack();
+		        frame.setLocationRelativeTo(null);
+		        frame.setVisible(true);
+		    }
+		}
 	}
  }

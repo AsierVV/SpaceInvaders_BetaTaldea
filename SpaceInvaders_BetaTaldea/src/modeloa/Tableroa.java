@@ -33,6 +33,7 @@ public class Tableroa extends Observable {
     private final int altuera = 60;
 
     private boolean gameOver;
+    private boolean jokoHasita = false;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -77,6 +78,8 @@ public class Tableroa extends Observable {
         		} else mugituHegazkinaKont--;
             }
         });
+        setChanged();
+        notifyObservers();
     }
     
     // === GET EMA ===
@@ -110,6 +113,10 @@ public class Tableroa extends Observable {
     
     public int getAltuera() {
     	return this.altuera;
+    }
+    
+    public boolean getHasiDaJokoa() {
+    	return this.jokoHasita;
     }
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
@@ -305,15 +312,16 @@ public class Tableroa extends Observable {
 		 int dx = 0;
 		 int dy = 0;
 		 
+		 /*
 		 if (TeklatuKontroladorea.getTeklatuEMA().getEzk()) dx--;
 		 if (TeklatuKontroladorea.getTeklatuEMA().getEsk()) dx++;
 		 if (TeklatuKontroladorea.getTeklatuEMA().getGo()) dy--;
 		 if (TeklatuKontroladorea.getTeklatuEMA().getBe()) dy++;		
-	
+		 */
 		 if (dx!=0 || dy!=0) mugituHegazkina(dx, dy);
 	 }
 	 private void tiroakSortu() {
-		 if (TeklatuKontroladorea.getTeklatuEMA().getTi()) tiroaSortu();
+		// if (TeklatuKontroladorea.getTeklatuEMA().getTi()) tiroaSortu();
 	 }
 
 	// === PARTIDA IRABAZI ===

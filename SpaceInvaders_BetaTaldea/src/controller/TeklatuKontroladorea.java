@@ -1,4 +1,5 @@
 package controller;
+//bista izan behar da, kontroladore desberdinak izan behar ditugu
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,7 +24,7 @@ public class TeklatuKontroladorea implements KeyListener{
     	}
     	return nireEMA;
     }
-	
+/*	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -51,7 +52,7 @@ public class TeklatuKontroladorea implements KeyListener{
 			behera = true;
 			break;
 		case KeyEvent.VK_SPACE:
-			if (JK.hasiDaJokoa()) {	
+			if (Tableroa.getTableroaEMA().getHasiDaJokoa()) {	
 				if (!tiroEgin) {
 					Tableroa.getTableroaEMA().tiroaSortu();
 					tiroEgin = true;	
@@ -108,5 +109,24 @@ public class TeklatuKontroladorea implements KeyListener{
 	// Añade este método dentro de TeklatuKontroladorea
 	public void setJK(JokoKudeatzailea pJK) {
 	    this.JK = pJK;
+	}
+	*/
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
