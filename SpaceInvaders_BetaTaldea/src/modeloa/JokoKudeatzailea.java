@@ -32,6 +32,7 @@ public class JokoKudeatzailea {
 			nireEma = new JokoKudeatzailea();
 		}
 		return nireEma;
+		
 	}
 	
     public void abiarazi() {
