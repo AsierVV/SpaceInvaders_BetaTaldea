@@ -1,5 +1,6 @@
 package visual;
 
+import modeloa.JokoKudeatzailea;
 import modeloa.Tableroa;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,6 +38,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    frame.setVisible(false);
 
 	    Tableroa.getTableroaEMA().addObserver(this);
+	    JokoKudeatzailea.getEMA().addObserver(this);
 	}
 	
 	public static JokoPanela getEMA() {
@@ -68,7 +70,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			if (arg != null && arg.equals("TABLEROA_SORTUTA") && !matrizeaSortuta) {
 				matrizeakSortu();
 				matrizeaSortuta = true;
-			}else if (arg != null && arg.equals("GALDU")) {
+			} else if (arg != null && arg.equals("galdu")) {
 		    	frame.dispose();
 	
 		        JFrame frame = new JFrame("Game Over");
@@ -78,10 +80,12 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		        frame.pack();
 		        frame.setLocationRelativeTo(null);
 		        frame.setVisible(true);
-		    }else if (arg != null && arg.equals("IRABAZI")) {
+		    } else if (arg != null && arg.equals("irabazi")) {
 		    	frame.dispose();
-	
+		    	
 		        JFrame frame = new JFrame("Irabazi duzu!");
+		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		        frame.setContentPane(new IrabaziPantaila());
 		        frame.pack();
 		        frame.setLocationRelativeTo(null);
