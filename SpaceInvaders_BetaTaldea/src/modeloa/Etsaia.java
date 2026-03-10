@@ -5,8 +5,8 @@ public class Etsaia extends Pixel{
 	private boolean bizirik;
 	private int mugimenduAbiadura;
 	
-	public Etsaia(Koordenatua k) {
-		super(k);
+	public Etsaia(Koordenatua pPosizioa) {
+		super(pPosizioa);
 		this.bizirik = true;
 		this.mugimenduAbiadura = 200;
 	}
