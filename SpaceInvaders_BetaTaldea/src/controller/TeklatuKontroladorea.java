@@ -3,8 +3,8 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import modeloa.JokoKudeatzailea;
 import modeloa.Tableroa;
-import game.JokoKudeatzailea;
 
 public class TeklatuKontroladorea implements KeyListener{
 	

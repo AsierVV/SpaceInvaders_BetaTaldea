@@ -44,7 +44,7 @@ public class JokoPanela extends JPanel implements Observer{
 	    frame.getContentPane().add(panel);
 	    frame.pack();                     // calcula tamaño real de la ventana
 	    frame.setLocationRelativeTo(null); // ¡centrar después de pack!
-	    frame.setVisible(true);
+	    frame.setVisible(true); // HAU EGINGO DA TABLEROA NOTIFIKATZEN DUENEAN
 	}
 	
 	private JLabel getLblNewLabel(int x, int y) { //sarrera parametroak
@@ -61,9 +61,27 @@ public class JokoPanela extends JPanel implements Observer{
 		}
 	}
 	
+	public void partidaAmaitu(boolean pIrabazi) {
+		frame.dispose();
+		JFrame frame;
+			
+		if (pIrabazi) {
+			frame = new JFrame("Irabazi duzu!");
+			frame.setContentPane(new IrabaziPantaila());
+		} else {
+			frame = new JFrame("Game Over");
+			frame.setContentPane(new GalduPantaila());
+		}
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+	}
+	
 	@Override
 	public void update(Observable o, Object arg)  {
-		// TODO Auto-generated method stub
+	    //if (jokoaHasigabe) matrizeaSortu();
+	    
 	    if (arg != null && arg.equals("GALDU")) {
 	    	frame.dispose();
 
@@ -74,15 +92,17 @@ public class JokoPanela extends JPanel implements Observer{
 	        frame.pack();
 	        frame.setLocationRelativeTo(null);
 	        frame.setVisible(true);
-	    }
-	    if (arg != null && arg.equals("IRABAZI")) {
+	    } else if (arg != null && arg.equals("IRABAZI")) {
 	    	frame.dispose();
 
 	        JFrame frame = new JFrame("Irabazi duzu!");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        
 	        frame.setContentPane(new IrabaziPantaila());
 	        frame.pack();
 	        frame.setLocationRelativeTo(null);
 	        frame.setVisible(true);
 	    }
 	}
+	
  }

@@ -77,6 +77,9 @@ public class Tableroa extends Observable {
         		} else mugituHegazkinaKont--;
             }
         });
+        //setChanged
+        //notifyObservers
+        // HEMEN ABISATU JOKO PANELARI AMAITU DUELA ETA HORRELA HASIERATZEN DA JOKO PANELA, MATRIZE VISUALA SORTZEKO
     }
     
     // === GET EMA ===
@@ -323,7 +326,7 @@ public class Tableroa extends Observable {
 		notifyObservers("IRABAZI");
 	}
 	 
-	// === PARTIDA AMAITU ===
+	// ===  PARTIDA AMAITU ===
 	private void partidaGaldu() {
 		partidaAmaitu();
 		setChanged();
