@@ -8,7 +8,6 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
-import visual.JokoPanela;
 
 
 public class Tableroa extends Observable {
@@ -126,6 +125,8 @@ public class Tableroa extends Observable {
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa() {
+    	jokoHasita = true;
+    	
         setChanged();
         notifyObservers("TABLEROA_SORTUTA");
         
