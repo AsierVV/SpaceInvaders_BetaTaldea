@@ -2,8 +2,6 @@ package visual;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JTextField;
-import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -49,7 +47,6 @@ public class IrabaziPantaila extends JPanel{
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("AMAITU");
 	        btnNewButton.addActionListener(new ActionListener() {
-	            
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                System.exit(0);
