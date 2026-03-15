@@ -1,11 +1,9 @@
 package visual;
 
-import modeloa.JokoKudeatzailea;
-import modeloa.Tableroa;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import controller.JokoKudeatzailea;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,9 +24,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    panel = new JPanel();
-	    panel.setLayout(new GridLayout(Tableroa.getTableroaEMA().getAltuera(), Tableroa.getTableroaEMA().getZabalera(), 0, 0));
-	    panel.setPreferredSize(new Dimension(1200, 720)); // tamaño total del panel
-	    panel.addKeyListener(this);	// Panelak teklatua detektatzeko
+	    panel.setLayout(new GridLayout(JokoKudeatzailea.getEMA().getAltuera(), JokoKudeatzailea.getEMA().getZabalera(), 0, 0));
+	    panel.setPreferredSize(new Dimension(1200, 720));	// tamaño total del panel
+	    panel.addKeyListener(this);							// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
 	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
 	    
@@ -37,7 +35,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    frame.setLocationRelativeTo(null); // ¡centrar después de pack!
 	    frame.setVisible(false);
 
-	    Tableroa.getTableroaEMA().addObserver(this);
 	    JokoKudeatzailea.getEMA().addObserver(this);
 	}
 	
@@ -50,13 +47,13 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	
 	private JLabel getLblNewLabel(int x, int y) {
 		GelaxkaBista newLabel = new GelaxkaBista();
-		Tableroa.getTableroaEMA().getGelaxka(x,y).addObserver(newLabel);
+		JokoKudeatzailea.getEMA().getGelaxka(x,y).addObserver(newLabel);
 		return newLabel;
 	}
 	
 	private void matrizeakSortu() {
-		for(int y=0;y<60;y++) {
-			for(int x=0;x<100;x++) {
+		for(int y=0;y<JokoKudeatzailea.getEMA().getAltuera(); y++) {
+			for(int x=0;x<JokoKudeatzailea.getEMA().getZabalera();x++) {
 				panel.add(getLblNewLabel(x,y));
 			}
 		}
@@ -67,10 +64,11 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	
 		@Override
 		public void update(Observable o, Object arg)  {		
-			if (arg != null && arg.equals("TABLEROA_SORTUTA") && !matrizeaSortuta) {
+			if (arg == null) return;
+			if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
 				matrizeakSortu();
 				matrizeaSortuta = true;
-			} else if (arg != null && arg.equals("galdu")) {
+			} else if ("GALDU".equals(arg)) {
 		    	frame.dispose();
 	
 		        JFrame frame = new JFrame("Game Over");
@@ -80,7 +78,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		        frame.pack();
 		        frame.setLocationRelativeTo(null);
 		        frame.setVisible(true);
-		    } else if (arg != null && arg.equals("irabazi")) {
+		    } else if ("IRABAZI".equals(arg)) {
 		    	frame.dispose();
 		    	
 		        JFrame frame = new JFrame("Irabazi duzu!");
@@ -101,25 +99,22 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_A:
 			case KeyEvent.VK_LEFT:
-				Tableroa.getTableroaEMA().setEzk(true);
+				JokoKudeatzailea.getEMA().ezkerraSakatu();
 				break;
 			case KeyEvent.VK_D:
 			case KeyEvent.VK_RIGHT:
-				Tableroa.getTableroaEMA().setEsk(true);
+				JokoKudeatzailea.getEMA().eskuinaSakatu();
 				break;
 			case KeyEvent.VK_W:
 			case KeyEvent.VK_UP:
-				Tableroa.getTableroaEMA().setGo(true);
+				JokoKudeatzailea.getEMA().goraSakatu();
 				break;
 			case KeyEvent.VK_S:
 			case KeyEvent.VK_DOWN:
-				Tableroa.getTableroaEMA().setBe(true);
+				JokoKudeatzailea.getEMA().beheraSakatu();
 				break;
 			case KeyEvent.VK_SPACE:
-				if (!Tableroa.getTableroaEMA().getTiroEgin()) {
-					Tableroa.getTableroaEMA().tiroaSortu();
-					Tableroa.getTableroaEMA().setTi(true);
-				}
+				JokoKudeatzailea.getEMA().tiroaSakatu();
 				break;
 			}
 		}
@@ -129,22 +124,22 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_A:
 			case KeyEvent.VK_LEFT:
-				Tableroa.getTableroaEMA().setEzk(false);
+				JokoKudeatzailea.getEMA().ezkerraAskatu();
 				break;
 			case KeyEvent.VK_D:
 			case KeyEvent.VK_RIGHT:
-				Tableroa.getTableroaEMA().setEsk(false);
+				JokoKudeatzailea.getEMA().eskuinaAskatu();
 				break;
 			case KeyEvent.VK_W:
 			case KeyEvent.VK_UP:
-				Tableroa.getTableroaEMA().setGo(false);
+				JokoKudeatzailea.getEMA().goraAskatu();
 				break;
 			case KeyEvent.VK_S:
 			case KeyEvent.VK_DOWN:
-				Tableroa.getTableroaEMA().setBe(false);
+				JokoKudeatzailea.getEMA().beheraAskatu();
 				break;
 			case KeyEvent.VK_SPACE:
-				Tableroa.getTableroaEMA().setTi(false);
+				JokoKudeatzailea.getEMA().tiroaAskatu();
 				break;
 			}	
 		}

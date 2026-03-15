@@ -21,8 +21,9 @@ public class Tableroa extends Observable {
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
 	
-	private int mugituEtsaiakKont = 3;		//200ms, beraz 50ms * 4 --> Hiruan hasi parametroa, horrela 50ms-ko timerra deitzen den laugarren aldian 200ms pasatu dira.
-	private int tiroEginKont = 5;			//300ms, beraz 50ms * 6 --> Bostean hasi parametroa, horrela 50ms-ko timerra deitzen den seigarren aldian 300ms pasatu dira.
+	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
+	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2 --> Batean hasi parametroa, horrela 100ms pasatzen diren bigarren aldian 200ms pasatu dira.
+	private int tiroEginKont = 2;			//300ms, beraz 100ms * 3 --> Bian hasi parametroa, horrela 100ms pasatzen diren hirugarren aldian 300ms pasatu dira.
 	
 	private long azkenTiroa = 0;
     private final long tiroKadentzia= 300;	//300ms
@@ -60,21 +61,26 @@ public class Tableroa extends Observable {
         		
         		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
-        		mugituHegazkinaControl();
         		
-        		// Konprobatu 200ms pasatu diren
-        		if (mugituEtsaiakKont <= 0) {
-    				mugituEtsaiak();
-    				mugituEtsaiakKont = 3;
-    				
-        		} else mugituEtsaiakKont--;
-        		
-        		// Konprobatu 300ms pasatu diren
-        		if (tiroEginKont <= 0) {
-					tiroakSortu();
-					tiroEginKont = 5;
-    				
-        		} else tiroEginKont--;
+        		// Konprobatu 100ms pasatu diren
+        		if (mugituHegazkinaKont <= 0) {
+        			mugituHegazkinaControl();
+        			mugituHegazkinaKont = 1;
+        			
+        			// Konprobatu 200ms pasatu diren
+            		if (mugituEtsaiakKont <= 0) {
+        				mugituEtsaiak();
+        				mugituEtsaiakKont = 1;
+            		} else mugituEtsaiakKont--;
+            		
+            		// Konprobatu 300ms pasatu diren
+            		if (tiroEginKont <= 0) {
+    					tiroakSortu();
+    					tiroEginKont = 2;
+        				
+            		} else tiroEginKont--;
+            		
+        		} else mugituHegazkinaKont--;
             }
         });
     }
@@ -111,15 +117,14 @@ public class Tableroa extends Observable {
     public int getAltuera() {
     	return this.altuera;
     }
-    
+
     public boolean getHasiDaJokoa() {
     	return this.jokoHasita;
     }
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
-			 partidaAmaitu();
-			 JokoKudeatzailea.getEMA().partidaAmaitu(true);
+    		partidaIrabazi();
 		 }
     }
     
@@ -195,8 +200,7 @@ public class Tableroa extends Observable {
 	    	 
 	        //si hay enemigo pierdes
 	        if (mota == 'e') {
-	        	partidaAmaitu();									// Partida amaitu
-	            JokoKudeatzailea.getEMA().partidaAmaitu(false);	// Partida galdu da
+	        	partidaGaldu();									// Partida amaitu
 	            return;
 	        }
 	        // mover solo si está vacío
@@ -232,8 +236,7 @@ public class Tableroa extends Observable {
 			     if (yBerria >= altuera) {
 			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			    	 it.remove();
-			    	 partidaAmaitu();									// Partida gelditu
-			    	 JokoKudeatzailea.getEMA().partidaAmaitu(false);	// Partida galdu da
+			    	 partidaGaldu();
 		             break;
 			     }
 			     // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
@@ -241,9 +244,8 @@ public class Tableroa extends Observable {
 			    	 // Konprobatzen du ea hegazkina dagoen mugituko den posizioan, horrela bada, partida galtzen dugu.
 			    	 if (tableroMatrizea[xBerria][yBerria].getMota()=='h') {
 			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    		 partidaAmaitu();									// Partida gelditu
-				    	 JokoKudeatzailea.getEMA().partidaAmaitu(false);	// Partida galdu da
-			             break;
+			    		 partidaGaldu();
+			    		 break;
 			         // Konprobatzen du ea tiro bat dagoen mugituko den posizioan, horrela bada, etsaia eta tiroa ezabatzen dira.
 			    	 } else if (tableroMatrizea[xBerria][yBerria].getMota()=='t') {
 			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
@@ -296,8 +298,6 @@ public class Tableroa extends Observable {
 				 it.remove();
 			 }
 		 }
-		 setChanged();
-		 notifyObservers();
 	 }	 
 	 	 
 	 // === PARTIDA AMAITZEKO METODOAK ===
@@ -307,6 +307,16 @@ public class Tableroa extends Observable {
 	 private void partidaAmaitu() {
 		 gameOver = true;
 		 stopJokoa();
+	 }
+	 private void partidaIrabazi() {
+		 partidaAmaitu();
+		 setChanged();
+		 notifyObservers("IRABAZI");
+	 }
+	 private void partidaGaldu() {
+		 partidaAmaitu();
+		 setChanged();
+		 notifyObservers("GALDU");
 	 }
 	 
 	 // === ETSAIA ELIMINATU ===
@@ -353,22 +363,37 @@ public class Tableroa extends Observable {
 	 }
 	 
 	 // === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
-	 public void setEzk(boolean b) {
-		 ezkerrera = b;
+	 public void ezkerraSakatu() {
+		 ezkerrera = true;
 	 }
-	 public void setEsk(boolean b) {
-		 eskuinera = b;
+	 public void ezkerraAskatu() {
+		 ezkerrera = false;
 	 }
-	 public void setGo(boolean b) {
-		 gora = b;
+	 public void eskuinaSakatu() {
+		 eskuinera = true;
 	 }
-	 public void setBe(boolean b) {
-		 behera = b;
+	 public void eskuinaAskatu() {
+		 eskuinera = false;
 	 }
-	 public void setTi(boolean b) {
-		 tiroEgin = b;
+	 public void goraSakatu() {
+		 gora = true;
 	 }
-	 public boolean getTiroEgin() {
-		 return tiroEgin;
+	 public void goraAskatu() {
+		 gora = false;
+	 }
+	 public void beheraSakatu() {
+		 behera = true;
+	 }
+	 public void beheraAskatu() {
+		 behera = false;
+	 }
+	 public void tiroaSakatu() {
+		 if (!tiroEgin) {
+			 tiroaSortu();
+			 tiroEgin = true;
+		 }
+	 }
+	 public void tiroaAskatu() {
+		 tiroEgin = false;
 	 }
 }

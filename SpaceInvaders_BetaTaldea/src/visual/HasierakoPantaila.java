@@ -1,7 +1,9 @@
 package visual;
 
 import javax.swing.*;
-import modeloa.JokoKudeatzailea;
+
+import controller.JokoKudeatzailea;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,14 +18,17 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	private HasierakoPantaila() {
 		setBackground(new Color(0, 0, 0));
 		add(getHasiera());
+		
         hasiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         hasiFrame.setContentPane(this);
         hasiFrame.pack();
         hasiFrame.setLocationRelativeTo(null);
         hasiFrame.setVisible(true);
-        hasiFrame.setFocusable(true);
+        
+        this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(this);
+        
         JokoKudeatzailea.getEMA().addObserver(this);
 	}
 	
@@ -47,19 +52,16 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		hasiFrame.dispose();
+		if ("JOKOA_HASI".equals(arg)) {
+			hasiFrame.dispose();
+		}
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_SPACE:
 			JokoKudeatzailea.getEMA().irekiJokoa();
@@ -68,11 +70,5 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
+	public void keyReleased(KeyEvent e) {}
 }

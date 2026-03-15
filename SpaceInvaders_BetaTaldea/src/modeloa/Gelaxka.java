@@ -1,7 +1,6 @@
 package modeloa;
 
 import java.util.Observable;
-import java.util.Observer;
 
 public class Gelaxka extends Observable{
 	
@@ -14,8 +13,6 @@ public class Gelaxka extends Observable{
 	public Gelaxka(Koordenatua pKoord, char pMota) {
 		this.gelaxkaPosizioa = pKoord;
 		this.mota = pMota;
-		setChanged();
-		notifyObservers();
 	}
 	
 	public void setMota(char pMota) {
