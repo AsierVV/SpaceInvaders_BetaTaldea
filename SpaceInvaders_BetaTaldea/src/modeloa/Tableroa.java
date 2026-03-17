@@ -221,7 +221,7 @@ public class Tableroa extends Observable {
 			 
 			int xZaharra = e.getPosizioa().getX();
 		    int yZaharra = e.getPosizioa().getY();
-		     
+		    
 		    int xBerria = xZaharra;
 		    int yBerria = yZaharra;
 	
@@ -232,13 +232,6 @@ public class Tableroa extends Observable {
 		    	e.mugituEtsaia();
 			    xBerria = e.getPosizioa().getX();
 			    yBerria = e.getPosizioa().getY();
-		    	 
-			    if (yBerria >= altuera) {
-			    	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    	it.remove();
-			    	partidaGaldu();
-		            break;
-			    }
 			    
 			    // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
 			    if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()!='e') {
@@ -265,6 +258,13 @@ public class Tableroa extends Observable {
 			    	e.getPosizioa().setY(yZaharra);
 			    }
 			    saiakerak--;
+		    }
+		    
+		    if (yZaharra >= altuera - 1) {
+		    	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+		    	it.remove();
+		    	partidaGaldu();
+	            break;
 		    }
 		}
 	}
