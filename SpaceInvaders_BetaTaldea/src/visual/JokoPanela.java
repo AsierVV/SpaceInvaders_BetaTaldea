@@ -25,14 +25,14 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    
 	    panel = new JPanel();
 	    panel.setLayout(new GridLayout(JokoKudeatzailea.getEMA().getAltuera(), JokoKudeatzailea.getEMA().getZabalera(), 0, 0));
-	    panel.setPreferredSize(new Dimension(1200, 720));	// tamaño total del panel
+	    panel.setPreferredSize(new Dimension(1200, 720));	// Panelaren tamaiña totala
 	    panel.addKeyListener(this);							// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
 	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
 	    
 	    frame.getContentPane().add(panel);
-	    frame.pack();                     // calcula tamaño real de la ventana
-	    frame.setLocationRelativeTo(null); // ¡centrar después de pack!
+	    frame.pack();
+	    frame.setLocationRelativeTo(null);
 	    frame.setVisible(false);
 
 	    JokoKudeatzailea.getEMA().addObserver(this);
@@ -62,85 +62,85 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 
 	}
 	
-		@Override
-		public void update(Observable o, Object arg)  {		
-			if (arg == null) return;
-			if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
-				matrizeakSortu();
-				matrizeaSortuta = true;
-			} else if ("GALDU".equals(arg)) {
-		    	frame.dispose();
+	@Override
+	public void update(Observable o, Object arg)  {		
+		if (arg == null) return;
+		if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
+			matrizeakSortu();
+			matrizeaSortuta = true;
+		} else if ("GALDU".equals(arg)) {
+		    frame.dispose();
 	
-		        JFrame frame = new JFrame("Game Over");
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    JFrame frame = new JFrame("Game Over");
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
-		        frame.setContentPane(new GalduPantaila());
-		        frame.pack();
-		        frame.setLocationRelativeTo(null);
-		        frame.setVisible(true);
-		    } else if ("IRABAZI".equals(arg)) {
-		    	frame.dispose();
+		    frame.setContentPane(new GalduPantaila());
+		    frame.pack();
+		    frame.setLocationRelativeTo(null);
+		    frame.setVisible(true);
+		} else if ("IRABAZI".equals(arg)) {
+			frame.dispose();
 		    	
-		        JFrame frame = new JFrame("Irabazi duzu!");
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    JFrame frame = new JFrame("Irabazi duzu!");
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		        frame.setContentPane(new IrabaziPantaila());
-		        frame.pack();
-		        frame.setLocationRelativeTo(null);
-		        frame.setVisible(true);
-			}
+		    frame.setContentPane(new IrabaziPantaila());
+		    frame.pack();
+		    frame.setLocationRelativeTo(null);
+		    frame.setVisible(true);
 		}
+	}
 
-		@Override
-		public void keyTyped(KeyEvent e) {}
+	@Override
+	public void keyTyped(KeyEvent e) {}
 
-		@Override
-		public void keyPressed(KeyEvent e) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_A:
-			case KeyEvent.VK_LEFT:
-				JokoKudeatzailea.getEMA().ezkerraSakatu();
-				break;
-			case KeyEvent.VK_D:
-			case KeyEvent.VK_RIGHT:
-				JokoKudeatzailea.getEMA().eskuinaSakatu();
-				break;
-			case KeyEvent.VK_W:
-			case KeyEvent.VK_UP:
-				JokoKudeatzailea.getEMA().goraSakatu();
-				break;
-			case KeyEvent.VK_S:
-			case KeyEvent.VK_DOWN:
-				JokoKudeatzailea.getEMA().beheraSakatu();
-				break;
-			case KeyEvent.VK_SPACE:
-				JokoKudeatzailea.getEMA().tiroaSakatu();
-				break;
-			}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_LEFT:
+			JokoKudeatzailea.getEMA().ezkerraSakatu();
+			break;
+		case KeyEvent.VK_D:
+		case KeyEvent.VK_RIGHT:
+			JokoKudeatzailea.getEMA().eskuinaSakatu();
+			break;
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_UP:
+			JokoKudeatzailea.getEMA().goraSakatu();
+			break;
+		case KeyEvent.VK_S:
+		case KeyEvent.VK_DOWN:
+			JokoKudeatzailea.getEMA().beheraSakatu();
+			break;
+		case KeyEvent.VK_SPACE:
+			JokoKudeatzailea.getEMA().tiroaSakatu();
+			break;
 		}
+	}
 
-		@Override
-		public void keyReleased(KeyEvent e) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_A:
-			case KeyEvent.VK_LEFT:
-				JokoKudeatzailea.getEMA().ezkerraAskatu();
-				break;
-			case KeyEvent.VK_D:
-			case KeyEvent.VK_RIGHT:
-				JokoKudeatzailea.getEMA().eskuinaAskatu();
-				break;
-			case KeyEvent.VK_W:
-			case KeyEvent.VK_UP:
-				JokoKudeatzailea.getEMA().goraAskatu();
-				break;
-			case KeyEvent.VK_S:
-			case KeyEvent.VK_DOWN:
-				JokoKudeatzailea.getEMA().beheraAskatu();
-				break;
-			case KeyEvent.VK_SPACE:
-				JokoKudeatzailea.getEMA().tiroaAskatu();
-				break;
-			}	
-		}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_LEFT:
+			JokoKudeatzailea.getEMA().ezkerraAskatu();
+			break;
+		case KeyEvent.VK_D:
+		case KeyEvent.VK_RIGHT:
+			JokoKudeatzailea.getEMA().eskuinaAskatu();
+			break;
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_UP:
+			JokoKudeatzailea.getEMA().goraAskatu();
+			break;
+		case KeyEvent.VK_S:
+		case KeyEvent.VK_DOWN:
+			JokoKudeatzailea.getEMA().beheraAskatu();
+			break;
+		case KeyEvent.VK_SPACE:
+			JokoKudeatzailea.getEMA().tiroaAskatu();
+			break;
+		}	
+	}
  }

@@ -171,9 +171,9 @@ public class Tableroa extends Observable {
 	// === TIRO BAT SORTU ===
 	public void tiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
-		int y = hegazkina.getPosizioa().getY() - 2; //Hegazkinaren gainean sortzeko
+		int y = hegazkina.getPosizioa().getY() - 2;		//Hegazkinaren gainean sortzeko
 	 		
-		long tiroOrain = System.currentTimeMillis(); //Oraingo momentuko denbora hartzen dugu, 400ms pasatu ez badira ez da tiro bat sortuko		
+		long tiroOrain = System.currentTimeMillis(); 	//Oraingo momentuko denbora hartzen dugu, 400ms pasatu ez badira ez da tiro bat sortuko		
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
 	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
@@ -198,12 +198,12 @@ public class Tableroa extends Observable {
 	    if (posizioBaliozkoa(xBerria, yBerria)) {
 	    	char mota = tableroMatrizea[xBerria][yBerria].getMota();
 	    	 
-	        //si hay enemigo pierdes
-	        if (mota == 'e') {
-	        	partidaGaldu();									// Partida amaitu
+	        // Etsai bat badago, galdu
+	    	if (mota == 'e') {
+	        	partidaGaldu();
 	            return;
 	        }
-	        // mover solo si está vacío
+	        // Mugitu bakarrik gelaxka hutsik badago
 	        if (mota == 'u') {
 	        	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	        	hegazkina.getPosizioa().setX(xBerria);
@@ -213,155 +213,157 @@ public class Tableroa extends Observable {
 	    }
 	}
 	 
-	 // === ETSAIEN MUGIMENDUA ===
-	 public void mugituEtsaiak() {
-		 Iterator<Etsaia> it = etsaiak.iterator();
-		 while (it.hasNext()) {
-			 Etsaia e = it.next();
+	// === ETSAIEN MUGIMENDUA ===
+	public void mugituEtsaiak() {
+		Iterator<Etsaia> it = etsaiak.iterator();
+		while (it.hasNext()) {
+			Etsaia e = it.next();
 			 
-			 int xZaharra = e.getPosizioa().getX();
-		     int yZaharra = e.getPosizioa().getY();
-		     
-		     int xBerria = xZaharra;
-		     int yBerria = yZaharra;
+			int xZaharra = e.getPosizioa().getX();
+		    int yZaharra = e.getPosizioa().getY();
+		    
+		    int xBerria = xZaharra;
+		    int yBerria = yZaharra;
 	
-		     boolean mugituta = false;
-		     int saiakerak = 3;
+		    boolean mugituta = false;
+		    int saiakerak = 3;
 		     
-		     while (!mugituta && saiakerak>0) {
-		    	 e.mugituEtsaia();
-			     xBerria = e.getPosizioa().getX();
-			     yBerria = e.getPosizioa().getY();
-		    	 
-			     if (yBerria >= altuera) {
-			    	 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    	 it.remove();
-			    	 partidaGaldu();
-		             break;
-			     }
-			     // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
-			     if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()!='e') {
-			    	 // Konprobatzen du ea hegazkina dagoen mugituko den posizioan, horrela bada, partida galtzen dugu.
-			    	 if (tableroMatrizea[xBerria][yBerria].getMota()=='h') {
-			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    		 partidaGaldu();
-			    		 break;
-			         // Konprobatzen du ea tiro bat dagoen mugituko den posizioan, horrela bada, etsaia eta tiroa ezabatzen dira.
-			    	 } else if (tableroMatrizea[xBerria][yBerria].getMota()=='t') {
-			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-			    		 tableroMatrizea[xBerria][yBerria].hutsikUtzi();
-			    		 tiroaEzabatu(xBerria, yBerria);
-			    		 it.remove();
-			    		 etsaiakBizirik();
-			             break;
-			    	 } else {
-			    		 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-				         tableroMatrizea[xBerria][yBerria].setMota('e');
-				         mugituta = true; 
-			    	 }
-			     } else {
-			    	 e.getPosizioa().setX(xZaharra);
-			    	 e.getPosizioa().setY(yZaharra);
-			     }
-			     saiakerak--;
-		     }
-		 }
-	 }
+		    while (!mugituta && saiakerak>0) {
+		    	e.mugituEtsaia();
+			    xBerria = e.getPosizioa().getX();
+			    yBerria = e.getPosizioa().getY();
+			    
+			    // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
+			    if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()!='e') {
+			    	// Konprobatzen du ea hegazkina dagoen mugituko den posizioan, horrela bada, partida galtzen dugu.
+			    	if (tableroMatrizea[xBerria][yBerria].getMota()=='h') {
+			    		tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			    		partidaGaldu();
+			    		break;
+			        // Konprobatzen du ea tiro bat dagoen mugituko den posizioan, horrela bada, etsaia eta tiroa ezabatzen dira.
+			    	} else if (tableroMatrizea[xBerria][yBerria].getMota()=='t') {
+			    		tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+			    		tableroMatrizea[xBerria][yBerria].hutsikUtzi();
+			    		tiroaEzabatu(xBerria, yBerria);
+			    		it.remove();
+			    		etsaiakBizirik();
+			            break;
+			    	} else {
+			    		tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+				        tableroMatrizea[xBerria][yBerria].setMota('e');
+				        mugituta = true; 
+			    	}
+			    } else {
+			    	e.getPosizioa().setX(xZaharra);
+			    	e.getPosizioa().setY(yZaharra);
+			    }
+			    saiakerak--;
+		    }
+		    
+		    if (yZaharra >= altuera - 1) {
+		    	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+		    	it.remove();
+		    	partidaGaldu();
+	            break;
+		    }
+		}
+	}
 	 
-	 // === TIROAREN MUGIMENDUA ===
-	 public void mugituTiroak() {
-		 Iterator<Tiroa> it = tiroak.iterator();
-		 while (it.hasNext()) {
-			 Tiroa t = it.next();
+	// === TIROAREN MUGIMENDUA ===
+	public void mugituTiroak() {
+		Iterator<Tiroa> it = tiroak.iterator();
+		while (it.hasNext()) {
+			Tiroa t = it.next();
 			 
-			 int xZaharra = t.getPosizioa().getX();
-			 int yZaharra = t.getPosizioa().getY();
+			int xZaharra = t.getPosizioa().getX();
+			int yZaharra = t.getPosizioa().getY();
+			
+			t.mugitu();
 			 
-			 t.mugitu();
-			 
-			 int xBerria = t.getPosizioa().getX();
-			 int yBerria = t.getPosizioa().getY();
-			 
-			 if (posizioBaliozkoa(xBerria, yBerria)) {
-				 if (tableroMatrizea[xBerria][yBerria].getMota()=='e') {
-					 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();		// Tiroa zegoen lekua hutsunea bihurtzen da
-					 tableroMatrizea[xBerria][yBerria].hutsikUtzi();		// Etsaia zegoen lekua hutsunea bihurtzen da
-					 etsaiaEliminatu(xBerria, yBerria);
-					 it.remove();
-					 continue;
-				 } else {
-					 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-					 tableroMatrizea[xBerria][yBerria].setMota('t'); 
-				 }
-			 } else {
-				 tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-				 it.remove();
-			 }
-		 }
-	 }	 
+			int xBerria = t.getPosizioa().getX();
+			int yBerria = t.getPosizioa().getY();
+			
+			if (posizioBaliozkoa(xBerria, yBerria)) {
+				if (tableroMatrizea[xBerria][yBerria].getMota()=='e') {
+					tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();	// Tiroa zegoen lekua hutsunea bihurtzen da
+					tableroMatrizea[xBerria][yBerria].hutsikUtzi();		// Etsaia zegoen lekua hutsunea bihurtzen da
+					etsaiaEliminatu(xBerria, yBerria);
+					it.remove();
+					continue;
+				} else {
+					tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+					tableroMatrizea[xBerria][yBerria].setMota('t'); 
+				}
+			} else {
+				tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
+				it.remove();
+			}
+		}
+	}	
 	 	 
-	 // === PARTIDA AMAITZEKO METODOAK ===
-	 public boolean isGameOver() {
-		 return gameOver;
-	 }
-	 private void partidaAmaitu() {
-		 gameOver = true;
-		 stopJokoa();
-	 }
-	 private void partidaIrabazi() {
-		 partidaAmaitu();
-		 setChanged();
-		 notifyObservers("IRABAZI");
-	 }
-	 private void partidaGaldu() {
-		 partidaAmaitu();
-		 setChanged();
-		 notifyObservers("GALDU");
-	 }
+	// === PARTIDA AMAITZEKO METODOAK ===
+	public boolean isGameOver() {
+		return gameOver;
+	}
+	private void partidaAmaitu() {
+		gameOver = true;
+		stopJokoa();
+	}
+	private void partidaIrabazi() {
+		partidaAmaitu();
+		setChanged();
+		notifyObservers("IRABAZI");
+	}
+	private void partidaGaldu() {
+		partidaAmaitu();
+		setChanged();
+		notifyObservers("GALDU");
+	}
 	 
-	 // === ETSAIA ELIMINATU ===
-	 private void etsaiaEliminatu(int x, int y) {
-		 boolean eliminatuta = false;
-		 Iterator<Etsaia> it = etsaiak.iterator();
-		 while (it.hasNext() && !eliminatuta) {
-			 Etsaia e = it.next();
-			 if (e.getPosizioa().getX() == x && e.getPosizioa().getY() == y) {
-				 it.remove();
-				 eliminatuta = true;
-			 }
-		 }
-		 etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.
-	 }
+	// === ETSAIA ELIMINATU ===
+	private void etsaiaEliminatu(int x, int y) {
+		boolean eliminatuta = false;
+		Iterator<Etsaia> it = etsaiak.iterator();
+		while (it.hasNext() && !eliminatuta) {
+			Etsaia e = it.next();
+			if (e.getPosizioa().getX() == x && e.getPosizioa().getY() == y) {
+				it.remove();
+				eliminatuta = true;
+			}
+		}
+		etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.
+	}
 	 
-	 // === TIROA EZABATU ===
-	 private void tiroaEzabatu(int x, int y) {
-		 boolean eliminatuta = false;
-		 Iterator<Tiroa> it = tiroak.iterator();
-		 while (it.hasNext() && !eliminatuta) {
-			 Tiroa t = it.next();
-			 if (t.getPosizioa().getX() == x && t.getPosizioa().getY() == y) {
-				 it.remove();
-				 eliminatuta = true;
-			 }
-		 }
-	 }
-	 
-	 // === TEKLATUAREN EKINTZAK EGIN ===
-	 private void mugituHegazkinaControl() {
-		 int dx = 0;
-		 int dy = 0;
+	// === TIROA EZABATU ===
+	private void tiroaEzabatu(int x, int y) {
+		boolean eliminatuta = false;
+		Iterator<Tiroa> it = tiroak.iterator();
+		while (it.hasNext() && !eliminatuta) {
+			Tiroa t = it.next();
+			if (t.getPosizioa().getX() == x && t.getPosizioa().getY() == y) {
+				it.remove();
+				eliminatuta = true;
+			}
+		}
+	}
+
+	// === TEKLATUAREN EKINTZAK EGIN ===
+	private void mugituHegazkinaControl() {
+		int dx = 0;
+		int dy = 0;
+		
+		if (ezkerrera) dx--;
+		if (eskuinera) dx++;
+		if (gora) dy--;
+		if (behera) dy++;		
 		 
-		 if (ezkerrera) dx--;
-		 if (eskuinera) dx++;
-		 if (gora) dy--;
-		 if (behera) dy++;		
-		 
-		 if (dx!=0 || dy!=0) mugituHegazkina(dx, dy);
-	 }
-	 private void tiroakSortu() {
+		if (dx!=0 || dy!=0) mugituHegazkina(dx, dy);
+	}
+	private void tiroakSortu() {
 		if (tiroEgin) tiroaSortu();
-	 }
+	}
 	 
+<<<<<<< HEAD
 
 	 public void ezkerraSakatu() {
 		 ezkerrera = true;
@@ -396,4 +398,26 @@ public class Tableroa extends Observable {
 	 public void tiroaAskatu() {
 		 tiroEgin = false;
 	 }
+=======
+	// === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
+	public void ezkerraSakatu() {ezkerrera = true;}
+	public void ezkerraAskatu() {ezkerrera = false;}
+	
+	public void eskuinaSakatu() {eskuinera = true;}
+	public void eskuinaAskatu() {eskuinera = false;}
+	
+	public void goraSakatu() {gora = true;}
+	public void goraAskatu() {gora = false;}
+	
+	public void beheraSakatu() {behera = true;}
+	public void beheraAskatu() {behera = false;}
+	
+	public void tiroaSakatu() {
+		if (!tiroEgin) {
+			tiroaSortu();
+			tiroEgin = true;
+		}
+	}
+	public void tiroaAskatu() {tiroEgin = false;}
+>>>>>>> branch 'main' of https://github.com/AsierVV/SpaceInvaders_BetaTaldea.git
 }
