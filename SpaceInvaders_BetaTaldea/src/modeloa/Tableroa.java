@@ -40,6 +40,7 @@ public class Tableroa extends Observable {
 
     private boolean gameOver;
     private boolean jokoHasita = false;
+    private String HegazkinMota;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -148,7 +149,7 @@ public class Tableroa extends Observable {
 	 
 	// === HEGAZKINA SORTU ===
     public void sortuHegazkina() {
-    	hegazkina = new Hegazkina(new Koordenatua(50,55));
+        hegazkina = HegazkinaFactory.sortuHegazkina(HegazkinMota, new Koordenatua(50,55));
     	tableroMatrizea[50][55].setMota('h');
 	}
 	 
