@@ -364,41 +364,6 @@ public class Tableroa extends Observable {
 	}
 	 
 
-
-	 public void ezkerraSakatu() {
-		 ezkerrera = true;
-	 }
-	 public void ezkerraAskatu() {
-		 ezkerrera = false;
-	 }
-	 public void eskuinaSakatu() {
-		 eskuinera = true;
-	 }
-	 public void eskuinaAskatu() {
-		 eskuinera = false;
-	 }
-	 public void goraSakatu() {
-		 gora = true;
-	 }
-	 public void goraAskatu() {
-		 gora = false;
-	 }
-	 public void beheraSakatu() {
-		 behera = true;
-	 }
-	 public void beheraAskatu() {
-		 behera = false;
-	 }
-	 public void tiroaSakatu() {
-		 if (!tiroEgin) {
-			 tiroaSortu();
-			 tiroEgin = true;
-		 }
-	 }
-	 public void tiroaAskatu() {
-		 tiroEgin = false;
-	 }
-
 	// === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
 	public void ezkerraSakatu() {ezkerrera = true;}
 	public void ezkerraAskatu() {ezkerrera = false;}
