@@ -363,7 +363,7 @@ public class Tableroa extends Observable {
 		if (tiroEgin) tiroaSortu();
 	}
 	 
-<<<<<<< HEAD
+
 
 	 public void ezkerraSakatu() {
 		 ezkerrera = true;
@@ -398,7 +398,7 @@ public class Tableroa extends Observable {
 	 public void tiroaAskatu() {
 		 tiroEgin = false;
 	 }
-=======
+
 	// === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
 	public void ezkerraSakatu() {ezkerrera = true;}
 	public void ezkerraAskatu() {ezkerrera = false;}
@@ -419,5 +419,5 @@ public class Tableroa extends Observable {
 		}
 	}
 	public void tiroaAskatu() {tiroEgin = false;}
->>>>>>> branch 'main' of https://github.com/AsierVV/SpaceInvaders_BetaTaldea.git
+
 }
