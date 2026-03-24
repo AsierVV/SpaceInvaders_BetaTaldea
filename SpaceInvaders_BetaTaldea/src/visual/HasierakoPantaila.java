@@ -2,7 +2,7 @@ package visual;
 
 import javax.swing.*;
 
-import controller.JokoKudeatzailea;
+import modeloa.JokoKudeatzailea;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

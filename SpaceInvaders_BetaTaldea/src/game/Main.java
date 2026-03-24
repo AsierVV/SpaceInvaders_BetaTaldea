@@ -1,7 +1,7 @@
 package game;
 
-import controller.JokoKudeatzailea;
 import visual.JokoPanela;
+import modeloa.JokoKudeatzailea;
 import visual.HasierakoPantaila;
 	
 public class Main {

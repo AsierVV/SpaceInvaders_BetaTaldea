@@ -3,7 +3,9 @@ package visual;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import controller.JokoKudeatzailea;
+
+import modeloa.JokoKudeatzailea;
+
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

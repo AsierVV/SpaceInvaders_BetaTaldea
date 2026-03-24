@@ -35,8 +35,7 @@ public class GelaxkaBista extends JLabel implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-        Gelaxka g = (Gelaxka) o;
-        eguneratuKolorea(g.getMota());
+        eguneratuKolorea(((Gelaxka) o).getMota());
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.Timer;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -173,7 +174,7 @@ public class Tableroa extends Observable {
 		int x = hegazkina.getPosizioa().getX();
 		int y = hegazkina.getPosizioa().getY() - 2;		//Hegazkinaren gainean sortzeko
 	 		
-		long tiroOrain = System.currentTimeMillis(); 	//Oraingo momentuko denbora hartzen dugu, 400ms pasatu ez badira ez da tiro bat sortuko		
+		long tiroOrain = System.currentTimeMillis(); 	//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
 	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
@@ -311,15 +312,17 @@ public class Tableroa extends Observable {
 	}
 	private void partidaIrabazi() {
 		partidaAmaitu();
+		JokoKudeatzailea.getEMA().setIrabazi(true);
 		setChanged();
-		notifyObservers("IRABAZI");
+		notifyObservers();
 	}
 	private void partidaGaldu() {
 		partidaAmaitu();
+		JokoKudeatzailea.getEMA().setIrabazi(false);
 		setChanged();
-		notifyObservers("GALDU");
+		notifyObservers();
 	}
-	 
+	
 	// === ETSAIA ELIMINATU ===
 	private void etsaiaEliminatu(int x, int y) {
 		boolean eliminatuta = false;

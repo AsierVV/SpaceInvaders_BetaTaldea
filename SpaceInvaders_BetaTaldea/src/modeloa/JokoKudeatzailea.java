@@ -1,13 +1,11 @@
-package controller;
+package modeloa;
 
 import java.util.Observable;
 import java.util.Observer;
 
-import modeloa.Gelaxka;
-import modeloa.Tableroa;
-
 public class JokoKudeatzailea extends Observable implements Observer{
 	private static JokoKudeatzailea nireEma  = null;
+	private boolean partidaIrabazita;
 	
 	private JokoKudeatzailea() {
 		Tableroa.getTableroaEMA().addObserver(this);
@@ -38,6 +36,10 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		return Tableroa.getTableroaEMA().getGelaxka(x, y);
 	}
 	
+	public void setIrabazi(boolean pEgoera) {
+		partidaIrabazita = pEgoera;
+	}
+	
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
 	public void ezkerraAskatu() {Tableroa.getTableroaEMA().ezkerraAskatu();}
@@ -57,14 +59,13 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	// === TABLEROATIK JASOTAKO EVENTUAK BISTETARA BIRBIDALI ===
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg == null) return;
 		if ("TABLEROA_SORTUTA".equals(arg)) {
 			setChanged();
 			notifyObservers("JOKOA_HASI");
-		} else if ("IRABAZI".equals(arg)) {
+		} else if (partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");
-		} else if ("GALDU".equals(arg)) {
+		} else if (!partidaIrabazita) {
 			setChanged();
 			notifyObservers("GALDU");
 		}
