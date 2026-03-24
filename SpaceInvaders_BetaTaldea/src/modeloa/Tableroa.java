@@ -362,7 +362,7 @@ public class Tableroa extends Observable {
 		if (tiroEgin) tiroaSortu();
 	 }
 	 
-	 // === TEKLATUKO EKINTZEN METODO LAGUNGARRIAK ===
+
 	 public void ezkerraSakatu() {
 		 ezkerrera = true;
 	 }
