@@ -40,7 +40,7 @@ public class Tableroa extends Observable {
 
     private boolean gameOver;
     private boolean jokoHasita = false;
-    private String HegazkinMota;
+    private char motaHegazkina;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -131,13 +131,13 @@ public class Tableroa extends Observable {
     }
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
-    public void hasiJokoa() {
+    public void hasiJokoa(String mota) {
     	jokoHasita = true;
     	
         setChanged();
         notifyObservers("TABLEROA_SORTUTA");
         
-    	sortuHegazkina();
+    	sortuHegazkina(mota);
     	sortuEtsaiak();
     	
         if (!timer.isRunning()) timer.start();
@@ -148,9 +148,14 @@ public class Tableroa extends Observable {
     }
 	 
 	// === HEGAZKINA SORTU ===
-    public void sortuHegazkina() {
-        hegazkina = HegazkinaFactory.sortuHegazkina(HegazkinMota, new Koordenatua(50,55));
-    	tableroMatrizea[50][55].setMota('h');
+    public void sortuHegazkina(String mota) {
+        hegazkina = HegazkinaFactory.sortuHegazkina(mota, new Koordenatua(50,55));
+
+        if (mota.equals("GREEN")) motaHegazkina = 'g';
+        else if (mota.equals("BLUE")) motaHegazkina = 'b';
+        else if (mota.equals("RED")) motaHegazkina = 'r';
+
+        tableroMatrizea[50][55].setMota(motaHegazkina);
 	}
 	 
 	// === ETSAIAK SORTU ===
@@ -210,7 +215,7 @@ public class Tableroa extends Observable {
 	        	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	        	hegazkina.getPosizioa().setX(xBerria);
 	        	hegazkina.getPosizioa().setY(yBerria);
-	        	tableroMatrizea[xBerria][yBerria].setMota('h');
+	        	tableroMatrizea[xBerria][yBerria].setMota(motaHegazkina);
 	     	}
 	    }
 	}

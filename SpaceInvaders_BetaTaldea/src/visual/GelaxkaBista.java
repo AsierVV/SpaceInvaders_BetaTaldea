@@ -18,18 +18,24 @@ public class GelaxkaBista extends JLabel implements Observer{
 
 	private void eguneratuKolorea(char mota) {
 		switch (mota) {
-        case 'u':
-        	setBackground(Color.BLACK);
-            break;
-        case 'h':
-            setBackground(Color.GREEN);
-            break;
-        case 'e':
-            setBackground(Color.RED);
-            break;
-        case 't':
-            setBackground(Color.WHITE);
-            break;
+	    case 'u':
+	        setBackground(Color.BLACK);
+	        break;
+	    case 'g':
+	        setBackground(Color.GREEN);
+	        break;
+	    case 'b':
+	        setBackground(Color.BLUE);
+	        break;
+	    case 'r':
+	        setBackground(Color.RED);
+	        break;
+	    case 'e':
+	        setBackground(Color.RED);
+	        break;
+	    case 't':
+	        setBackground(Color.WHITE);
+	        break;
         }
 	}
 	
