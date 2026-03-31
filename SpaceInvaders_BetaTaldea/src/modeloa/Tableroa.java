@@ -52,7 +52,7 @@ public class Tableroa extends Observable {
         // --- MATRIZEA SORTU ---
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
-            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j),'u');
+            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j), new HutsuneEgoera());
             }
         }
         
@@ -155,7 +155,7 @@ public class Tableroa extends Observable {
         else if (mota.equals("BLUE")) motaHegazkina = 'b';
         else if (mota.equals("RED")) motaHegazkina = 'r';
 
-        tableroMatrizea[50][55].setMota(motaHegazkina);
+        tableroMatrizea[50][55].jarriHegazkina();
 	}
 	 
 	// === ETSAIAK SORTU ===
@@ -170,7 +170,7 @@ public class Tableroa extends Observable {
 	        if (tableroMatrizea[zutabea][5].getMota()=='u') {
 	        	Etsaia e = new Etsaia(new Koordenatua(zutabea, 5));
 	            etsaiak.add(e);
-	            tableroMatrizea[zutabea][5].setMota('e');
+	            tableroMatrizea[zutabea][5].jarriEtsaia();
 	        }
 	    }
 	}
@@ -184,7 +184,7 @@ public class Tableroa extends Observable {
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
 	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
-	 		tableroMatrizea[x][y].setMota('t');			// Gelaxka eguneratzen du tableroan
+	 		tableroMatrizea[x][y].jarriTiroa();			// Gelaxka eguneratzen du tableroan
 	 		azkenTiroa = tiroOrain;
 	 	}
 	 }
@@ -215,7 +215,7 @@ public class Tableroa extends Observable {
 	        	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	        	hegazkina.getPosizioa().setX(xBerria);
 	        	hegazkina.getPosizioa().setY(yBerria);
-	        	tableroMatrizea[xBerria][yBerria].setMota(motaHegazkina);
+	        	tableroMatrizea[xBerria][yBerria].jarriHegazkina();
 	     	}
 	    }
 	}
@@ -257,7 +257,7 @@ public class Tableroa extends Observable {
 			            break;
 			    	} else {
 			    		tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-				        tableroMatrizea[xBerria][yBerria].setMota('e');
+				        tableroMatrizea[xBerria][yBerria].jarriEtsaia();
 				        mugituta = true; 
 			    	}
 			    } else {
@@ -299,7 +299,7 @@ public class Tableroa extends Observable {
 					continue;
 				} else {
 					tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-					tableroMatrizea[xBerria][yBerria].setMota('t'); 
+					tableroMatrizea[xBerria][yBerria].jarriTiroa(); 
 				}
 			} else {
 				tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();

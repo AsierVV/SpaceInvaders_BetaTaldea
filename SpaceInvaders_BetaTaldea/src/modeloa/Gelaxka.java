@@ -5,28 +5,37 @@ import java.util.Observable;
 public class Gelaxka extends Observable{
 	
 	private Koordenatua gelaxkaPosizioa;
-	private char mota; 	//u --> hutsunea
-						//h --> hegazkina
-						//e --> etsaia
-						//t --> tiroa
+	private Egoera egoera;
 	
-	public Gelaxka(Koordenatua pKoord, char pMota) {
+	public Gelaxka(Koordenatua pKoord, Egoera pEgoera) {
 		this.gelaxkaPosizioa = pKoord;
-		this.mota = pMota;
+		this.egoera = pEgoera;
 	}
 	
-	public void setMota(char pMota) {
-		this.mota = pMota;
+	public void setEgoera(Egoera pEgoera) {
+		this.egoera = pEgoera;
 		setChanged();
 		notifyObservers();
 	}
 	
 	public char getMota() {
-		return mota;
+		return egoera.getMota();
 	}
 	
 	public void hutsikUtzi() {
-	    setMota('u');
+	    setEgoera(new HutsuneEgoera());
+	}
+	
+	public void jarriHegazkina() {
+		setEgoera(new HegazkinEgoera());
+	}
+	
+	public void jarriEtsaia() {
+		setEgoera(new EtsaiEgoera());
+	}
+	
+	public void jarriTiroa() {
+		setEgoera(new TiroEgoera());
 	}
 	
 	public Koordenatua getGelaxkaKord() {
