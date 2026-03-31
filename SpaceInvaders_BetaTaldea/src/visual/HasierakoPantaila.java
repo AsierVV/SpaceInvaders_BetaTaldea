@@ -15,7 +15,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	private JFrame hasiFrame = new JFrame("Space Invaders - Hasiera");
 	private static HasierakoPantaila nireEMA = null;
 	private String motaAukeratua = "GREEN";
-	private JLabel lblAukera;
+	//private JLabel lblAukera;
 	
 	private HasierakoPantaila() {
 		setBackground(new Color(0, 0, 0));
@@ -52,12 +52,15 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 
 	    has.add(lblAlien, BorderLayout.CENTER);
 
+	    /*
 	    // TEXTO ABAJO
 	    lblAukera = new JLabel("Aukeratuta: GREEN", JLabel.CENTER);
 	    lblAukera.setForeground(Color.WHITE);
 
 	    has.add(lblAukera, BorderLayout.SOUTH);
-
+		*/
+		
+	    
 	    return has;
 	}
 
@@ -79,17 +82,17 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 			break;
 	    case KeyEvent.VK_G:
 	        motaAukeratua = "GREEN";
-	        lblAukera.setText("Aukeratuta: GREEN");
+	        //lblAukera.setText("Aukeratuta: GREEN");
 	        break;
 
 	    case KeyEvent.VK_B:
 	        motaAukeratua = "BLUE";
-	        lblAukera.setText("Aukeratuta: BLUE");
+	        //lblAukera.setText("Aukeratuta: BLUE");
 	        break;
 
 	    case KeyEvent.VK_R:
 	        motaAukeratua = "RED";
-	        lblAukera.setText("Aukeratuta: RED");
+	        //lblAukera.setText("Aukeratuta: RED");
 	        break;
 		}
 	}
