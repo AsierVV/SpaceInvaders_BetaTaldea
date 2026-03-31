@@ -155,7 +155,7 @@ public class Tableroa extends Observable {
         else if (mota.equals("BLUE")) motaHegazkina = 'b';
         else if (mota.equals("RED")) motaHegazkina = 'r';
 
-        tableroMatrizea[50][55].jarriHegazkina();
+        tableroMatrizea[50][55].jarriHegazkina(motaHegazkina);
 	}
 	 
 	// === ETSAIAK SORTU ===
@@ -215,7 +215,7 @@ public class Tableroa extends Observable {
 	        	tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 	        	hegazkina.getPosizioa().setX(xBerria);
 	        	hegazkina.getPosizioa().setY(yBerria);
-	        	tableroMatrizea[xBerria][yBerria].jarriHegazkina();
+	        	tableroMatrizea[xBerria][yBerria].jarriHegazkina(motaHegazkina);
 	     	}
 	    }
 	}

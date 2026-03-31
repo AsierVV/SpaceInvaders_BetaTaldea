@@ -26,8 +26,8 @@ public class Gelaxka extends Observable{
 	    setEgoera(new HutsuneEgoera());
 	}
 	
-	public void jarriHegazkina() {
-		setEgoera(new HegazkinEgoera());
+	public void jarriHegazkina(char pHegazkinMota) {
+		setEgoera(new HegazkinEgoera(pHegazkinMota));
 	}
 	
 	public void jarriEtsaia() {
