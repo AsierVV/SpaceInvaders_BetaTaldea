@@ -243,7 +243,7 @@ public class Tableroa extends Observable {
 			    // Posizioa baliozkoa den eta etsai bat ez dagoen konprobatzen du
 			    if (posizioBaliozkoa(xBerria, yBerria) && tableroMatrizea[xBerria][yBerria].getMota()!='e') {
 			    	// Konprobatzen du ea hegazkina dagoen mugituko den posizioan, horrela bada, partida galtzen dugu.
-			    	if (tableroMatrizea[xBerria][yBerria].getMota()=='h') {
+			    	if (tableroMatrizea[xBerria][yBerria].getMota()==motaHegazkina) {
 			    		tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
 			    		partidaGaldu();
 			    		break;
