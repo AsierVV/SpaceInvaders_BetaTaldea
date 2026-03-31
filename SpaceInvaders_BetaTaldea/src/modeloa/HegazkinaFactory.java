@@ -9,11 +9,13 @@ public class HegazkinaFactory {
 		if(nEMA == null) {nEMA = new HegazkinaFactory();}
 		return nEMA;
 	}
-	public Hegazkina sortuHegazkina(String mota, Koordenatua pPosizioa) {
+	public static Hegazkina sortuHegazkina(String mota, Koordenatua pPosizioa) {
+		Hegazkina h = null;
         switch (mota) {
-        case "GREEN": return new HegazkinaBerdea(pPosizioa);
-        case "BLUE": return new HegazkinUrdina(pPosizioa);
-        case "RED": return new HegazkinGorria(pPosizioa);
+        case "GREEN": h= new HegazkinaBerdea(pPosizioa); break;
+        case "BLUE": h= new HegazkinUrdina(pPosizioa); break;
+        case "RED": h= new HegazkinGorria(pPosizioa); break;
         }
+        return h;
 	}
 }
