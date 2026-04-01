@@ -1,6 +1,8 @@
 package modeloa;
 
-public abstract class Pixel{
+import java.util.List;
+
+public abstract class Pixel {
 	
 	protected Koordenatua posizioa;
 	
@@ -8,7 +10,7 @@ public abstract class Pixel{
         this.posizioa = pPosizioa;
     }
     
-    public Koordenatua getPosizioa() {
+    public Koordenatua getPosizioa() { // Metodoa hartzeko pixel konkretu baten posizioa (agian kenduko dugu gero ez delako beharrezkoa multipixelarekin)
         return posizioa;
     }
     
@@ -16,4 +18,7 @@ public abstract class Pixel{
     	this.posizioa = pPosizioa;
     }
     
+    public abstract List<Koordenatua> getKoordenatuLista();	// Multipixel guztien koordenatuak
+    
+    public abstract void mugitu(int dx, int dy);
 }
