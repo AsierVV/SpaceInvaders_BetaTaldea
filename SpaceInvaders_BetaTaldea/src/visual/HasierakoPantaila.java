@@ -52,12 +52,15 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 
 	    has.add(lblAlien, BorderLayout.CENTER);
 
+	    
 	    // TEXTO ABAJO
 	    lblAukera = new JLabel("Aukeratuta: GREEN", JLabel.CENTER);
 	    lblAukera.setForeground(Color.WHITE);
 
 	    has.add(lblAukera, BorderLayout.SOUTH);
-
+		
+		
+	    
 	    return has;
 	}
 

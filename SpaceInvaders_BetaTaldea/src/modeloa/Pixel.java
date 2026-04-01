@@ -5,6 +5,7 @@ import java.util.List;
 public abstract class Pixel {
 	
 	protected Koordenatua posizioa;
+	protected Egoera egoera;
 	
     public Pixel(Koordenatua pPosizioa) {
         this.posizioa = pPosizioa;
@@ -21,4 +22,8 @@ public abstract class Pixel {
     public abstract List<Koordenatua> getKoordenatuLista();	// Multipixel guztien koordenatuak
     
     public abstract void mugitu(int dx, int dy);
+
+    public void setEstado(Egoera pEgoera) {
+    	this.egoera = pEgoera;
+    }
 }

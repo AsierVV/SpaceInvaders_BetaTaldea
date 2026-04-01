@@ -1,13 +1,13 @@
 package modeloa;
 
-public class TiroEgoera implements Egoera{
+public class EtsaiEgoera implements Egoera{
 	
-	public TiroEgoera() {}
+	public EtsaiEgoera() {}
 	
 	@Override
 	public char getMota() {
 		// TODO Auto-generated method stub
-		return 't';
+		return 'e';
 	}
 
 }

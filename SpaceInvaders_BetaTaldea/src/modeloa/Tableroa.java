@@ -52,7 +52,7 @@ public class Tableroa extends Observable {
         // --- MATRIZEA SORTU ---
         for (int i = 0; i < zabalera; i++) {
             for (int j = 0; j < altuera; j++) {
-            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j),'u');
+            	tableroMatrizea[i][j] = new Gelaxka(new Koordenatua(i,j), new HutsuneEgoera());
             }
         }
         
@@ -154,6 +154,7 @@ public class Tableroa extends Observable {
         else if (mota.equals("BLUE")) motaHegazkina = 'b';
         else if (mota.equals("RED")) motaHegazkina = 'r';
         margotuHegazkina();
+        //tableroMatrizea[50][55].jarriHegazkina(motaHegazkina);
 	}
     
 	// === ETSAIAK SORTU ===
@@ -171,6 +172,7 @@ public class Tableroa extends Observable {
 	        	ind ++;
 	            etsaiak.add(e);
 	            margotuEtsaia(e);
+	            //tableroMatrizea[zutabea][5].jarriEtsaia();
 	        }
 	    }
 	}
@@ -184,7 +186,7 @@ public class Tableroa extends Observable {
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
 	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
 	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
-	 		tableroMatrizea[x][y].setMota('t');			// Gelaxka eguneratzen du tableroan
+	 		tableroMatrizea[x][y].jarriTiroa();			// Gelaxka eguneratzen du tableroan
 	 		azkenTiroa = tiroOrain;
 	 	}
 	 }
@@ -246,7 +248,7 @@ public class Tableroa extends Observable {
 	                continue;
 	            } else {
 					tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-					tableroMatrizea[xBerria][yBerria].setMota('t'); 
+					tableroMatrizea[xBerria][yBerria].jarriTiroa(); 
 				}
 			} else {
 				tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
@@ -388,13 +390,13 @@ public class Tableroa extends Observable {
 
 	private void margotuHegazkina() {
 		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
-            tableroMatrizea[k.getX()][k.getY()].setMota(motaHegazkina);
+            tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(motaHegazkina);
 		}
 	}
 	
 	private void margotuEtsaia(EtsaiaTaldea e) {
 		for (Koordenatua k : e.getKoordenatuLista()) {
-	        tableroMatrizea[k.getX()][k.getY()].setMota('e');
+	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia();
 	    }
 	}
 	
