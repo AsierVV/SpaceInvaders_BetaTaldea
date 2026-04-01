@@ -18,6 +18,7 @@ public class Tableroa extends Observable {
 	private HegazkinaTaldea hegazkina;
 	private List<EtsaiaTaldea> etsaiak;
 	private List<Tiroa> tiroak;
+    private char motaHegazkina;
 	
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
@@ -40,7 +41,7 @@ public class Tableroa extends Observable {
 
     private boolean gameOver;
     private boolean jokoHasita = false;
-    private char motaHegazkina;
+    private boolean etsaiaAzkenLerroraIritsi = false;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -207,6 +208,8 @@ public class Tableroa extends Observable {
 	 
 	// === ETSAIEN MUGIMENDUA ===
 	public void mugituEtsaiak() {
+		if (etsaiaAzkenLerroraIritsi) partidaGaldu();
+		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {
 			EtsaiaTaldea e = it.next();
@@ -220,7 +223,7 @@ public class Tableroa extends Observable {
 		    	e.mugitu(dx, dy);
 		    	margotuEtsaia(e);
 			}
-			if (etsaiaBeheraHelduDa(e)) partidaGaldu();
+			if (etsaiaBeheraHelduDa(e)) etsaiaAzkenLerroraIritsi = true;
 		}
 	}
 	 
