@@ -16,9 +16,9 @@ public class TiroaTaldea extends Pixel{
         int y = this.posizioa.getY();
 
         // Tiroen forma
-        addElementua(new Etsaia(new Koordenatua(x, y)));
-        addElementua(new Etsaia(new Koordenatua(x-1, y+1)));
-        addElementua(new Etsaia(new Koordenatua(x+1, y+1)));
+        addElementua(new Tiroa(new Koordenatua(x, y)));
+        addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
+        addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
     }
 	
 	public void addElementua(Pixel p) {
