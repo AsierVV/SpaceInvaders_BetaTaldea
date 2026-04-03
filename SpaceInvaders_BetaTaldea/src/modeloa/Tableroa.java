@@ -17,7 +17,7 @@ public class Tableroa extends Observable {
 	private Gelaxka[][] tableroMatrizea;
 	private HegazkinaTaldea hegazkina;
 	private List<EtsaiaTaldea> etsaiak;
-	private List<Tiroa> tiroak;
+	private List<TiroaTaldea> tiroak;
     private char motaHegazkina;
 	
 	private Timer timer;
@@ -109,7 +109,7 @@ public class Tableroa extends Observable {
     	return etsaiak;
 	}
 	 
-    public List<Tiroa> getTiroak() {
+    public List<TiroaTaldea> getTiroak() {
     	return tiroak;
 	}
     
@@ -181,13 +181,13 @@ public class Tableroa extends Observable {
 	// === TIRO BAT SORTU ===
 	public void tiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
-		int y = hegazkina.getPosizioa().getY() - 2;		//Hegazkinaren gainean sortzeko
+		int y = hegazkina.getPosizioa().getY() - 3;							//Hegazkinaren gainean sortzeko
 	 		
-		long tiroOrain = System.currentTimeMillis(); 	//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
+		long tiroOrain = System.currentTimeMillis(); 						//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
-	 		Tiroa t = new Tiroa(new Koordenatua(x, y));	// Tiroa sortzen du
-	 		tiroak.add(t);								// Tiroa "tiroak" listan sartzen du
-	 		tableroMatrizea[x][y].jarriTiroa();			// Gelaxka eguneratzen du tableroan
+	 		TiroaTaldea t = new TiroaTaldea(new Koordenatua(x, y));			// Tiroa sortzen du
+	 		tiroak.add(t);													// Tiroa "tiroak" listan sartzen du
+	 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
 	 		azkenTiroa = tiroOrain;
 	 	}
 	 }
@@ -229,36 +229,29 @@ public class Tableroa extends Observable {
 	 
 	// === TIROAREN MUGIMENDUA ===
 	public void mugituTiroak() {
-		Iterator<Tiroa> it = tiroak.iterator();
+		Iterator<TiroaTaldea> it = tiroak.iterator();
 		while (it.hasNext()) {
-			Tiroa t = it.next();
-			 
-			int xZaharra = t.getPosizioa().getX();
-			int yZaharra = t.getPosizioa().getY();
+			TiroaTaldea t = it.next();
 			
-			t.mugitu();
-			 
-			int xBerria = t.getPosizioa().getX();
-			int yBerria = t.getPosizioa().getY();
+			garbituTiroa(t);
 			
-			if (posizioBaliozkoa(xBerria, yBerria)) {
-				
-	            EtsaiaTaldea e = kolpatutakoEtsaia(xBerria, yBerria);
-	            if (e != null) {
-	                tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-	                it.remove();                 	// Tiroa ezabatu
-	                etsaiaEzabatu(e.getIndizea());	// EtsaiaTaldea ezabatu
-	                continue;
-	            } else {
-					tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-					tableroMatrizea[xBerria][yBerria].jarriTiroa(); 
+			if (posizioBaliozkoa(t.getPosizioa().getX(), t.getPosizioa().getY()-1)) {
+
+				t.mugitu(0,-1);
+			
+				EtsaiaTaldea kolpatuta = null;
+				for (Koordenatua k : t.getKoordenatuLista()) {
+					kolpatuta = kolpatutakoEtsaia(k.getX(), k.getY());
+					if (kolpatuta!=null) break;	// Tiroak etsai bat kolpatu du, beraz for-etik ateratzen gara
 				}
-			} else {
-				tableroMatrizea[xZaharra][yZaharra].hutsikUtzi();
-				it.remove();
-			}
+				
+				if (kolpatuta != null) {
+					it.remove();                 			// Tiroa ezabatu
+					etsaiaEzabatu(kolpatuta.getIndizea());	// EtsaiaTaldea ezabatu
+				} else margotuTiroa(t);
+			} else it.remove();
 		}
-	}	
+	}
 	 	 
 	// === PARTIDA AMAITZEKO METODOAK ===
 	public boolean isGameOver() {
@@ -296,18 +289,20 @@ public class Tableroa extends Observable {
 		etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.
 	}
 	
+	/*
 	// === TIROA EZABATU ===
 	private void tiroaEzabatu(int x, int y) {
 		boolean eliminatuta = false;
-		Iterator<Tiroa> it = tiroak.iterator();
+		Iterator<TiroaTaldea> it = tiroak.iterator();
 		while (it.hasNext() && !eliminatuta) {
-			Tiroa t = it.next();
+			TiroaTaldea t = it.next();
 			if (t.getPosizioa().getX() == x && t.getPosizioa().getY() == y) {
 				it.remove();
 				eliminatuta = true;
 			}
 		}
 	}
+	*/
 
 	// === TEKLATUAREN EKINTZAK EGIN ===
 	private void mugituHegazkinaControl() {
@@ -403,6 +398,12 @@ public class Tableroa extends Observable {
 	    }
 	}
 	
+	private void margotuTiroa(TiroaTaldea t) {
+		for (Koordenatua k : t.getKoordenatuLista()) {
+	        tableroMatrizea[k.getX()][k.getY()].jarriTiroa();
+	    }
+	}
+	
     private void garbituHegazkina() {
     	for (Koordenatua k : hegazkina.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
@@ -413,6 +414,12 @@ public class Tableroa extends Observable {
     	for (Koordenatua k : e.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
         }
+    }
+    
+    private void garbituTiroa(TiroaTaldea t) {
+    	for (Koordenatua k : t.getKoordenatuLista()) {
+	        tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
+	    }
     }
     
     private boolean koordenatuakLibreDaude(List<Koordenatua> koordBerriak, int nireEtsaia) {
