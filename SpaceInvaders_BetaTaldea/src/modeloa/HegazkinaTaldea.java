@@ -5,11 +5,13 @@ import java.util.List;
 
 public class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
+	private TiroMota mota;
 	
 	// HEMEN JAR DEZAKEGU ERAIKITZAILEAK char BAT HARTZEA FACTORY-an AUKERATUTAKO HEGAZKINA KONTUAN
 	// HARTZEKO; ETA HORRELA HEGAZKIN DESBERDINAK EGIN DITZAKEGU (EZ DAKIT HORI ERABILPEN EGOKIA DEN ALA EZ)
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
+        this.mota = new TiroBakarra();
         sortuHegazkinaTaldea();
     }
 	
@@ -30,6 +32,14 @@ public class HegazkinaTaldea extends Pixel{
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);
+	}
+	
+	public TiroMota getMota() {
+		return this.mota;
+	}
+	
+	public void setTiroMota(TiroMota pMota) {
+		this.mota = pMota;
 	}
 
 	@Override

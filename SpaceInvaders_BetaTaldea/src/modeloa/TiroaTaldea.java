@@ -5,20 +5,43 @@ import java.util.List;
 
 public class TiroaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
+	private TiroMota mota;
 	
-	public TiroaTaldea(Koordenatua pPosizioa) {
+	public TiroaTaldea(Koordenatua pPosizioa, TiroMota pMota) {
         super(pPosizioa);
+        this.mota = pMota;
         sortuTiroaTaldea();
     }
 	
 	private void sortuTiroaTaldea() {
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
+        char m = this.mota.tiroEgin();
 
         // Tiroen forma
-        addElementua(new Tiroa(new Koordenatua(x, y)));
-        addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
-        addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
+        if (m == 'b') {addElementua(new Tiroa(new Koordenatua(x, y)));}
+        if (m == 't') {
+        	addElementua(new Tiroa(new Koordenatua(x, y)));
+        	addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
+        	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
+        }
+        if (m == 'r') {
+        	addElementua(new Tiroa(new Koordenatua(x, y)));
+        	addElementua(new Tiroa(new Koordenatua(x, y+1)));
+        	addElementua(new Tiroa(new Koordenatua(x, y+2)));
+        	//addElementua(new Tiroa(new Koordenatua(x, y-1)));
+        	//addElementua(new Tiroa(new Koordenatua(x, y-2)));
+        	addElementua(new Tiroa(new Koordenatua(x+1, y)));
+        	addElementua(new Tiroa(new Koordenatua(x+2, y)));
+        	addElementua(new Tiroa(new Koordenatua(x-1, y)));
+        	addElementua(new Tiroa(new Koordenatua(x-2, y)));
+        	//addElementua(new Tiroa(new Koordenatua(x+1, y-1)));
+        	//addElementua(new Tiroa(new Koordenatua(x-1, y-1)));
+        	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
+        	addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
+
+        }
+        
     }
 	
 	public void addElementua(Pixel p) {

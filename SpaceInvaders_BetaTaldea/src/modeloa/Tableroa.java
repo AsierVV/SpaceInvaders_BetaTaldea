@@ -182,15 +182,34 @@ public class Tableroa extends Observable {
 	public void tiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
 		int y = hegazkina.getPosizioa().getY() - 3;							//Hegazkinaren gainean sortzeko
+		TiroMota m = hegazkina.getMota();
 	 		
 		long tiroOrain = System.currentTimeMillis(); 						//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	if (tiroOrain - azkenTiroa >= tiroKadentzia && posizioBaliozkoa(x, y) && !(tableroMatrizea[x][y].getMota()=='t')) {
-	 		TiroaTaldea t = new TiroaTaldea(new Koordenatua(x, y));			// Tiroa sortzen du
+	 		TiroaTaldea t = new TiroaTaldea(new Koordenatua(x, y), m);			// Tiroa sortzen du
 	 		tiroak.add(t);													// Tiroa "tiroak" listan sartzen du
 	 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
 	 		azkenTiroa = tiroOrain;
 	 	}
 	 }
+	
+	// === Tiroa Aldatu ===
+	public void tiroaAldatu(int i) {
+		switch (i) {
+		case 1:
+			hegazkina.setTiroMota(new TiroBakarra());
+			break;
+		case 2:
+			if (motaHegazkina == 'b') hegazkina.setTiroMota(new TiroRonbo());
+			else hegazkina.setTiroMota(new TiroTriple());
+			break;
+		case 3:
+			if (motaHegazkina == 'r') {
+			hegazkina.setTiroMota(new TiroRonbo());
+			}
+			break;
+		}
+	}
 	 
 	// === MUGIMENDU EGOKIA DEN ALA EZ EGIAZTATZEKO ===
 	private boolean posizioBaliozkoa(int x, int y) {

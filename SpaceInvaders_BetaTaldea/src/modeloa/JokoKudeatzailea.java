@@ -55,6 +55,10 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	
 	public void tiroaSakatu() {Tableroa.getTableroaEMA().tiroaSakatu();}
 	public void tiroaAskatu() {Tableroa.getTableroaEMA().tiroaAskatu();}
+	
+	public void tiroaBakarra() {Tableroa.getTableroaEMA().tiroaAldatu(1);}
+	public void tiroaTriple() {Tableroa.getTableroaEMA().tiroaAldatu(2);}
+	public void tiroaRonbo() {Tableroa.getTableroaEMA().tiroaAldatu(3);}
     
 	// === TABLEROATIK JASOTAKO EVENTUAK BISTETARA BIRBIDALI ===
 	@Override
