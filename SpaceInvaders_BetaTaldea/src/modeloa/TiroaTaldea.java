@@ -4,49 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TiroaTaldea extends Pixel{
-	private List<Pixel> pixelak = new ArrayList<Pixel>();
-	private TiroMota mota;
+	private List<Pixel> pixelak = new ArrayList<>();
 	
-	public TiroaTaldea(Koordenatua pPosizioa, TiroMota pMota) {
-        super(pPosizioa);
-        this.mota = pMota;
-        sortuTiroaTaldea();
+	public TiroaTaldea(List<Koordenatua> pKoordenatuak) {
+		// Super hau egiterakoan koordenatuaren kopia berria sortu behar dugu, bestela arazoak ematen ditu koordenatuak pasatzerakoan
+        super(new Koordenatua(pKoordenatuak.get(0).getX(),pKoordenatuak.get(0).getY()));	// Listaren lehenengo koordenatua hartzen du, eta pixel ama klaseak posizioa bezala gordetzen du
+        sortuTiroaTaldea(pKoordenatuak);
     }
 	
-	private void sortuTiroaTaldea() {
-        int x = this.posizioa.getX();
-        int y = this.posizioa.getY();
-        char m = this.mota.tiroEgin();
-
-        // Tiroen forma
-        if (m == 'b') {addElementua(new Tiroa(new Koordenatua(x, y)));}
-        if (m == 't') {
-        	addElementua(new Tiroa(new Koordenatua(x, y)));
-        	addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
-        	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
+	private void sortuTiroaTaldea(List<Koordenatua> pKoordenatuak) {
+        for (Koordenatua k : pKoordenatuak) {
+        	addElementua(new Tiroa(new Koordenatua(k.getX(),k.getY())));	// Elementu berria gehitzerakoan koordenatuaren kopia berria sortu behar dugu, bestela arazoak ematen ditu
         }
-        if (m == 'r') {
-        	setY(this.posizioa.getY()-2);
-        	addElementua(new Tiroa(new Koordenatua(x, y)));
-        	addElementua(new Tiroa(new Koordenatua(x, y+1)));
-        	addElementua(new Tiroa(new Koordenatua(x, y+2)));
-        	addElementua(new Tiroa(new Koordenatua(x, y-1)));
-        	addElementua(new Tiroa(new Koordenatua(x, y-2)));
-        	addElementua(new Tiroa(new Koordenatua(x+1, y)));
-        	addElementua(new Tiroa(new Koordenatua(x+2, y)));
-        	addElementua(new Tiroa(new Koordenatua(x-1, y)));
-        	addElementua(new Tiroa(new Koordenatua(x-2, y)));
-        	addElementua(new Tiroa(new Koordenatua(x+1, y-1)));
-        	addElementua(new Tiroa(new Koordenatua(x-1, y-1)));
-        	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
-        	addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
-        }
-        
     }
-	
-	public void setY(int dy) {
-		this.posizioa.setY(dy);
-	}
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);
