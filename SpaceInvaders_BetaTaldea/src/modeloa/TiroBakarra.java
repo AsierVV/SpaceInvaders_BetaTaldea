@@ -19,7 +19,7 @@ public class TiroBakarra implements TiroMota {
 	}
 
 	@Override
-	public char mota() {
+	public char motaChar() {
 		return 'b';
 	}
 

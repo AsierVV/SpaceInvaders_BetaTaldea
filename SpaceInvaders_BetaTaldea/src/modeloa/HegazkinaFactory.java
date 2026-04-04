@@ -12,9 +12,9 @@ public class HegazkinaFactory {
 	public static HegazkinaTaldea sortuHegazkina(String mota, Koordenatua pPosizioa) {
 		HegazkinaTaldea h = null;
         switch (mota) {
-        case "GREEN": h= new HegazkinaBerdea(pPosizioa); break;
-        case "BLUE": h= new HegazkinUrdina(pPosizioa); break;
-        case "RED": h= new HegazkinGorria(pPosizioa); break;
+        case "GREEN": h = new HegazkinaBerdea(pPosizioa); break;
+        case "BLUE": h = new HegazkinUrdina(pPosizioa); break;
+        case "RED": h = new HegazkinGorria(pPosizioa); break;
         }
         return h;
 	}

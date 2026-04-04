@@ -10,8 +10,6 @@ public class HegazkinaTaldea extends Pixel{
 	private int geziTiroKop;
 	private int erronboTiroKop;
 	
-	// HEMEN JAR DEZAKEGU ERAIKITZAILEAK char BAT HARTZEA FACTORY-an AUKERATUTAKO HEGAZKINA KONTUAN
-	// HARTZEKO; ETA HORRELA HEGAZKIN DESBERDINAK EGIN DITZAKEGU (EZ DAKIT HORI ERABILPEN EGOKIA DEN ALA EZ)
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
         sortuHegazkinaTaldea();
@@ -50,14 +48,14 @@ public class HegazkinaTaldea extends Pixel{
 	}
 
 	public void tiroaKontsumitu() {
-		if (tiroMota.mota()=='b') return;
-		else if (tiroMota.mota()=='t' && geziTiroKop>0) geziTiroKop--;
-		else if (tiroMota.mota()=='r' && erronboTiroKop>0) erronboTiroKop--;
+		if (tiroMota.motaChar()=='b') return;
+		else if (tiroMota.motaChar()=='t' && geziTiroKop>0) geziTiroKop--;
+		else if (tiroMota.motaChar()=='r' && erronboTiroKop>0) erronboTiroKop--;
 	}
 	
 	public boolean tiroaEginDaiteke() {
-		if (tiroMota.mota()=='t' && geziTiroKop<=0) return false;
-		if (tiroMota.mota()=='r' && erronboTiroKop<=0) return false;
+		if (tiroMota.motaChar()=='t' && geziTiroKop<=0) return false;
+		if (tiroMota.motaChar()=='r' && erronboTiroKop<=0) return false;
 		return true;
 	}
 

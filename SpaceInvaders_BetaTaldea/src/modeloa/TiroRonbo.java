@@ -31,7 +31,7 @@ public class TiroRonbo implements TiroMota {
 	}
 
 	@Override
-	public char mota() {
+	public char motaChar() {
 		return 'r';
 	}
 }

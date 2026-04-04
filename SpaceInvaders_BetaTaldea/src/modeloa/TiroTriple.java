@@ -21,7 +21,7 @@ public class TiroTriple implements TiroMota {
 	}
 
 	@Override
-	public char mota() {
+	public char motaChar() {
 		return 't';
 	}
 }
