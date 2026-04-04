@@ -7,8 +7,8 @@ public class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private TiroMota tiroMota;
 	
-	private int geziTiroKop = 30;
-	private int erronboTiroKop = 20;
+	private int geziTiroKop;
+	private int erronboTiroKop;
 	
 	// HEMEN JAR DEZAKEGU ERAIKITZAILEAK char BAT HARTZEA FACTORY-an AUKERATUTAKO HEGAZKINA KONTUAN
 	// HARTZEKO; ETA HORRELA HEGAZKIN DESBERDINAK EGIN DITZAKEGU (EZ DAKIT HORI ERABILPEN EGOKIA DEN ALA EZ)
@@ -18,6 +18,9 @@ public class HegazkinaTaldea extends Pixel{
     }
 	
 	private void sortuHegazkinaTaldea() {
+		geziTiroKop = 30;
+		erronboTiroKop = 20;
+		
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
 
@@ -44,6 +47,18 @@ public class HegazkinaTaldea extends Pixel{
 	
 	public void setTiroMota(TiroMota pTiroMota) {
 		tiroMota = pTiroMota;
+	}
+
+	public void tiroaKontsumitu() {
+		if (tiroMota.mota()=='b') return;
+		else if (tiroMota.mota()=='t' && geziTiroKop>0) geziTiroKop--;
+		else if (tiroMota.mota()=='r' && erronboTiroKop>0) erronboTiroKop--;
+	}
+	
+	public boolean tiroaEginDaiteke() {
+		if (tiroMota.mota()=='t' && geziTiroKop<=0) return false;
+		if (tiroMota.mota()=='r' && erronboTiroKop<=0) return false;
+		return true;
 	}
 
 	@Override

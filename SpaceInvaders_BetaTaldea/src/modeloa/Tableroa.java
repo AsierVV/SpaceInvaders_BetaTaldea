@@ -188,13 +188,16 @@ public class Tableroa extends Observable {
 		if (tiroOrain - azkenTiroa >= tiroKadentzia) {
 	 		List<Koordenatua> koordenatuak = hegazkina.getTiroMota().sortuKoordenatuak(new Koordenatua(x,y));	// Tiroa sortuko du. "Strategy"-ren bidez, momenturo dagkion tiro mota egokia sortuko du.
 			
-	 		if (tiroaSortuDaiteke(koordenatuak)) {	// Tiro osoa sortu daitekeen konprobatu
-		 		TiroaTaldea t = new TiroaTaldea(koordenatuak);					// TiroaTaldea sortzen du (bere forma egokiarekin)
-				tiroak.add(t);													// Tiroa "tiroak" listan sartzen du
-		 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
-		 		azkenTiroa = tiroOrain;
-	 		}
-	 	}
+	 		if (hegazkina.tiroaEginDaiteke()) {	// Konprobatzen du ea mota horretako tirorik geratzen diren
+		 		if (tiroaSortuDaiteke(koordenatuak)) {	// Tiro osoa sortu daitekeen konprobatu
+			 		TiroaTaldea t = new TiroaTaldea(koordenatuak);					// TiroaTaldea sortzen du (bere forma egokiarekin)
+					tiroak.add(t);													// Tiroa "tiroak" listan sartzen du
+			 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
+			 		hegazkina.tiroaKontsumitu();
+			 		azkenTiroa = tiroOrain;
+		 		}
+			}
+		}
 	 }
 	
 	// === TIROA ALDATU ===
