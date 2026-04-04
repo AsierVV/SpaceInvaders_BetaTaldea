@@ -28,6 +28,8 @@ public class HegazkinaTaldea extends Pixel{
         addElementua(new Hegazkina(new Koordenatua(x+1, y+1)));
         addElementua(new Hegazkina(new Koordenatua(x-1, y-1)));
         addElementua(new Hegazkina(new Koordenatua(x+1, y-1)));
+        addElementua(new Hegazkina(new Koordenatua(x-2, y+1)));
+        addElementua(new Hegazkina(new Koordenatua(x+2, y+1)));
     }
 	
 	public void addElementua(Pixel p) {

@@ -26,23 +26,27 @@ public class TiroaTaldea extends Pixel{
         	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
         }
         if (m == 'r') {
+        	setY(this.posizioa.getY()-2);
         	addElementua(new Tiroa(new Koordenatua(x, y)));
         	addElementua(new Tiroa(new Koordenatua(x, y+1)));
         	addElementua(new Tiroa(new Koordenatua(x, y+2)));
-        	//addElementua(new Tiroa(new Koordenatua(x, y-1)));
-        	//addElementua(new Tiroa(new Koordenatua(x, y-2)));
+        	addElementua(new Tiroa(new Koordenatua(x, y-1)));
+        	addElementua(new Tiroa(new Koordenatua(x, y-2)));
         	addElementua(new Tiroa(new Koordenatua(x+1, y)));
         	addElementua(new Tiroa(new Koordenatua(x+2, y)));
         	addElementua(new Tiroa(new Koordenatua(x-1, y)));
         	addElementua(new Tiroa(new Koordenatua(x-2, y)));
-        	//addElementua(new Tiroa(new Koordenatua(x+1, y-1)));
-        	//addElementua(new Tiroa(new Koordenatua(x-1, y-1)));
+        	addElementua(new Tiroa(new Koordenatua(x+1, y-1)));
+        	addElementua(new Tiroa(new Koordenatua(x-1, y-1)));
         	addElementua(new Tiroa(new Koordenatua(x+1, y+1)));
         	addElementua(new Tiroa(new Koordenatua(x-1, y+1)));
-
         }
         
     }
+	
+	public void setY(int dy) {
+		this.posizioa.setY(dy);
+	}
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);
