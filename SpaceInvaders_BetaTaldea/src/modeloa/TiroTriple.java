@@ -19,4 +19,9 @@ public class TiroTriple implements TiroMota {
 		
 		return tiroForma;
 	}
+
+	@Override
+	public char mota() {
+		return 't';
+	}
 }

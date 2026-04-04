@@ -7,6 +7,9 @@ public class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private TiroMota tiroMota;
 	
+	private int geziTiroKop = 30;
+	private int erronboTiroKop = 20;
+	
 	// HEMEN JAR DEZAKEGU ERAIKITZAILEAK char BAT HARTZEA FACTORY-an AUKERATUTAKO HEGAZKINA KONTUAN
 	// HARTZEKO; ETA HORRELA HEGAZKIN DESBERDINAK EGIN DITZAKEGU (EZ DAKIT HORI ERABILPEN EGOKIA DEN ALA EZ)
 	public HegazkinaTaldea(Koordenatua pPosizioa) {

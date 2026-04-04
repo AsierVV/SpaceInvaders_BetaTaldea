@@ -18,4 +18,9 @@ public class TiroBakarra implements TiroMota {
 		return tiroForma;
 	}
 
+	@Override
+	public char mota() {
+		return 'b';
+	}
+
 }
