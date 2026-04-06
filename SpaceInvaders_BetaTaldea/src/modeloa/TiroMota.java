@@ -1,5 +1,8 @@
 package modeloa;
 
+import java.util.List;
+
 public interface TiroMota {
-	void tiroEgin(int x, int y);
+	List<Koordenatua> sortuKoordenatuak(Koordenatua jatorria);
+	char motaChar();
 }

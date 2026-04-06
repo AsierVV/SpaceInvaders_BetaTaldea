@@ -1,9 +1,26 @@
 package modeloa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TiroBakarra implements TiroMota {
+
 	@Override
-	public void tiroEgin(int x, int y) {
-		Tableroa.getTableroaEMA().getGelaxka(x, y).jarriTiroa();
+	public List<Koordenatua> sortuKoordenatuak(Koordenatua jatorria) {
+		
+		int x = jatorria.getX();
+		int y = jatorria.getY();
+		
+		List<Koordenatua> tiroForma = new ArrayList<>();
+		
+		tiroForma.add(new Koordenatua(x,y));
+		
+		return tiroForma;
+	}
+
+	@Override
+	public char motaChar() {
+		return 'b';
 	}
 
 }

@@ -1,13 +1,21 @@
 package modeloa;
 
+import java.util.List;
+
 public class Tiroa extends Pixel{
 
 	public Tiroa(Koordenatua pPosizioa) {
 		super(pPosizioa);
 	}
 
-	// Tiroa bakarrik mugituko da gora lerro zuzenean
-	public void mugitu() {
-		posizioa.setY(posizioa.getY() - 1);
+	@Override
+	public List<Koordenatua> getKoordenatuLista() {
+        return List.of(posizioa); // Lista bat sortzen du posizio honekin: hau behar dugu, beti List bat bueltatu behar dugulako
+	}
+
+	@Override
+	public void mugitu(int dx, int dy) {
+		posizioa.setX(posizioa.getX()+dx);
+    	posizioa.setY(posizioa.getY()+dy);
 	}
 }

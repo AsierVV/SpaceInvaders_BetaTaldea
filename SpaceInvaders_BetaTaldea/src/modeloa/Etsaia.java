@@ -1,35 +1,21 @@
 package modeloa;
 
+import java.util.List;
+
 public class Etsaia extends Pixel{
 	
 	public Etsaia(Koordenatua pPosizioa) {
 		super(pPosizioa);
 	}
-	
-    public void mugituEtsaia() {
-        int xOrain = this.posizioa.getX();
-        int yOrain = this.posizioa.getY();
-        
-        // Ausazko mugimendua sortu (0, 1, edo 2)
-        int mugimenduMota = (int) (Math.random() * 3);
-        
-        int xBerria = xOrain;
-        int yBerria = yOrain;
-        
-        switch (mugimenduMota) {
-            case 0: // Behera
-            	yBerria = yOrain + 1;
-                break;
-            case 1: // Ezkerrera
-                xBerria = xOrain - 1;
-                break;
-            case 2: // Eskuinera
-                xBerria = xOrain + 1;
-                break;
-        }
-        
-        // Koordenatuak eguneratu
-        posizioa.setX(xBerria);
-        posizioa.setY(yBerria);
+
+	@Override
+	public List<Koordenatua> getKoordenatuLista() {
+        return List.of(posizioa); // Lista bat sortzen du posizio honekin: hau behar dugu, beti List bat bueltatu behar dugulako
+	}
+
+	@Override
+	public void mugitu(int dx, int dy) {
+		posizioa.setX(posizioa.getX()+dx);
+    	posizioa.setY(posizioa.getY()+dy);
 	}
 }
