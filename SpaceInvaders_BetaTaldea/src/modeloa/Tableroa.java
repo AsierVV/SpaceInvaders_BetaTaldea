@@ -150,12 +150,11 @@ public class Tableroa extends Observable {
 	 
 	// === HEGAZKINA SORTU ===
     public void sortuHegazkina(String mota) {
-        hegazkina = HegazkinaFactory.sortuHegazkina(mota, new Koordenatua(50,55));
+        hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
         if (mota.equals("GREEN")) motaHegazkina = 'g';
         else if (mota.equals("BLUE")) motaHegazkina = 'b';
         else if (mota.equals("RED")) motaHegazkina = 'r';
         margotuHegazkina();
-        //tableroMatrizea[50][55].jarriHegazkina(motaHegazkina);
 	}
     
 	// === ETSAIAK SORTU ===
