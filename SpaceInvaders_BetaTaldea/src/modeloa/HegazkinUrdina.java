@@ -18,4 +18,9 @@ public class HegazkinUrdina extends HegazkinaTaldea{
 			break;
 		}
 	}
+
+	@Override
+	public char getMotaChar() {
+		return 'b';
+	}
 }

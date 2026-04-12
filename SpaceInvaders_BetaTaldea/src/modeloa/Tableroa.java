@@ -18,7 +18,6 @@ public class Tableroa extends Observable {
 	private HegazkinaTaldea hegazkina;
 	private List<EtsaiaTaldea> etsaiak;
 	private List<TiroaTaldea> tiroak;
-    private char motaHegazkina;
 	
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
@@ -151,9 +150,6 @@ public class Tableroa extends Observable {
 	// === HEGAZKINA SORTU ===
     public void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
-        if (mota.equals("GREEN")) motaHegazkina = 'g';
-        else if (mota.equals("BLUE")) motaHegazkina = 'b';
-        else if (mota.equals("RED")) motaHegazkina = 'r';
         margotuHegazkina();
 	}
     
@@ -180,8 +176,8 @@ public class Tableroa extends Observable {
 	// === TIROA SORTU ===
 	public void tiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
-		int y = hegazkina.getPosizioa().getY() - 3;							//Hegazkinaren gainean sortzeko
-	 	
+		int y = hegazkina.getPosizioa().getY() - 3;							//Hegazkinaren gainean sortzeko. Oharra: tiroa (x, y-3) koordenatuan sortzen da (x, y-2)-an sortu beharrean,
+	 																		//izan ere, bestela tiro handiekin kolisioa sortzen da hegazkinarekin
 		long tiroOrain = System.currentTimeMillis(); 						//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	
 		if (tiroOrain - azkenTiroa >= tiroKadentzia) {
@@ -393,7 +389,7 @@ public class Tableroa extends Observable {
 
 	private void margotuHegazkina() {
 		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
-            tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(motaHegazkina);
+            tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar());
 		}
 	}
 	

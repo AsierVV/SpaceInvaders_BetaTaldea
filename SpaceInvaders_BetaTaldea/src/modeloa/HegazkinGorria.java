@@ -21,4 +21,9 @@ public class HegazkinGorria extends HegazkinaTaldea {
 			break;
 		}
 	}
+
+	@Override
+	public char getMotaChar() {
+		return 'r';
+	}
 }

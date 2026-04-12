@@ -60,6 +60,8 @@ public abstract class HegazkinaTaldea extends Pixel{
 	}
 	
 	public abstract void tiroMotaAldatu();
+	
+	public abstract char getMotaChar();
 
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
