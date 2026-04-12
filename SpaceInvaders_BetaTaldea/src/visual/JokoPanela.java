@@ -118,20 +118,8 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		case KeyEvent.VK_SPACE:
 			JokoKudeatzailea.getEMA().tiroaSakatu();
 			break;
-		// Tiroz aldatzeko 2. aukera
 		case KeyEvent.VK_R:
 			JokoKudeatzailea.getEMA().tiroaAldatu();
-		// Tiroz aldatzeko 1. aukera
-		/*
-		case KeyEvent.VK_1:
-			JokoKudeatzailea.getEMA().tiroaBakarra();
-			break;
-		case KeyEvent.VK_2:
-			JokoKudeatzailea.getEMA().tiroaTriple();
-			break;
-		case KeyEvent.VK_3:
-			JokoKudeatzailea.getEMA().tiroaRonbo();
-		*/
 		}
 	}
 

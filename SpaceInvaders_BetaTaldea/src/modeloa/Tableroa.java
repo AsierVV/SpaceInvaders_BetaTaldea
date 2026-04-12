@@ -200,26 +200,9 @@ public class Tableroa extends Observable {
 		}
 	 }
 	
-	// === TIROA ALDATU === (hauetako bat hartu behar dugu)
-	// Metodo honekin zenbakiak erabiltzen dira tiroz aldatzeko 1. aukera
-	public void tiroaAldatu(int i) {
-		switch (i) {
-		case 1:
-			hegazkina.setTiroMota(new TiroBakarra());
-			break;
-		case 2:
-			if (motaHegazkina == 'b') hegazkina.setTiroMota(new TiroRonbo());
-			else hegazkina.setTiroMota(new TiroTriple());
-			break;
-		case 3:
-			if (motaHegazkina == 'r') {
-			hegazkina.setTiroMota(new TiroRonbo());
-			}
-			break;
-		}
-	}
-	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz 2. aukera
-	public void tiroaAldatu2() {
+	// === TIROA ALDATU ===
+	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
+	public void tiroaAldatu() {
 		// GREEN hegazkina
 		if (motaHegazkina=='g') {
 			char m = hegazkina.getTiroMota().motaChar();
