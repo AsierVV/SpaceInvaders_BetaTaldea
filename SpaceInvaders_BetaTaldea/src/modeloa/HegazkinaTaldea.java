@@ -3,7 +3,7 @@ package modeloa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HegazkinaTaldea extends Pixel{
+public abstract class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private TiroMota tiroMota;
 	
@@ -58,6 +58,8 @@ public class HegazkinaTaldea extends Pixel{
 		if (tiroMota.motaChar()=='r' && erronboTiroKop<=0) return false;
 		return true;
 	}
+	
+	public abstract void tiroMotaAldatu();
 
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {

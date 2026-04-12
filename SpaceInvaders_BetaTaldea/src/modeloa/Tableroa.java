@@ -203,25 +203,7 @@ public class Tableroa extends Observable {
 	// === TIROA ALDATU ===
 	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
 	public void tiroaAldatu() {
-		// GREEN hegazkina
-		if (motaHegazkina=='g') {
-			char m = hegazkina.getTiroMota().motaChar();
-			if (m=='b') hegazkina.setTiroMota(new TiroTriple());
-			if (m=='t') hegazkina.setTiroMota(new TiroBakarra());
-		}
-		// RED hegazkina
-		if (motaHegazkina=='b') {
-			char m = hegazkina.getTiroMota().motaChar();
-			if (m=='b') hegazkina.setTiroMota(new TiroRonbo());
-			if (m=='r') hegazkina.setTiroMota(new TiroBakarra());
-		}
-		// BLUE hegazkina
-		if (motaHegazkina=='r') {
-			char m = hegazkina.getTiroMota().motaChar();
-			if (m=='b') hegazkina.setTiroMota(new TiroTriple());
-			if (m=='t') hegazkina.setTiroMota(new TiroRonbo());
-			if (m=='r') hegazkina.setTiroMota(new TiroBakarra());
-		}
+		hegazkina.tiroMotaAldatu();
 	}
 	 
 	// === MUGIMENDU EGOKIA DEN ALA EZ EGIAZTATZEKO ===
