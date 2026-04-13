@@ -149,7 +149,7 @@ public class Tableroa extends Observable {
     }
 	 
 	// === HEGAZKINA SORTU ===
-    public void sortuHegazkina(String mota) {
+    private void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
         margotuHegazkina();
 	}
@@ -273,9 +273,6 @@ public class Tableroa extends Observable {
 	}
 	 	 
 	// === PARTIDA AMAITZEKO METODOAK ===
-	public boolean isGameOver() {
-		return gameOver;
-	}
 	private void partidaAmaitu() {
 		gameOver = true;
 		stopJokoa();
