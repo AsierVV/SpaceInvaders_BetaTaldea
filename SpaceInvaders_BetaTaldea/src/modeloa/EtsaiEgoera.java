@@ -6,7 +6,6 @@ public class EtsaiEgoera implements Egoera{
 	
 	@Override
 	public char getMota() {
-		// TODO Auto-generated method stub
 		return 'e';
 	}
 
@@ -29,6 +28,4 @@ public class EtsaiEgoera implements Egoera{
 	public void jarriTiroa(Gelaxka pG) {
 		pG.setEgoera(new TiroEgoera());
 	}
-
-
 }

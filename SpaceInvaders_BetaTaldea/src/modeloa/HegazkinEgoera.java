@@ -3,12 +3,15 @@ package modeloa;
 public class HegazkinEgoera implements Egoera{
 	private char hegazkinMota;
 	
-	public HegazkinEgoera(char pHegazkinMota) {this.hegazkinMota = pHegazkinMota;}
+	public HegazkinEgoera(char pHegazkinMota) {
+		hegazkinMota = pHegazkinMota;
+	}
+	
 	@Override
 	public char getMota() {
-		// TODO Auto-generated method stub
-		return this.hegazkinMota;
+		return hegazkinMota;
 	}
+
 	@Override
 	public void hutsikUtzi(Gelaxka pG) {
 		pG.setEgoera(new HutsuneEgoera());

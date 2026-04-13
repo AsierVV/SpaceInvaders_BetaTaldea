@@ -11,7 +11,7 @@ public class Gelaxka extends Observable{
 		this.gelaxkaPosizioa = pKoord;
 		this.egoera = pEgoera;
 	}
-	
+
 	public void setEgoera(Egoera pEgoera) {
 		this.egoera= pEgoera	;
 		setChanged();

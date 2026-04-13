@@ -1,7 +1,6 @@
 package modeloa;
 
 public interface Egoera {
-	
 	char getMota();
 	
 	void hutsikUtzi(Gelaxka pG);
@@ -11,5 +10,4 @@ public interface Egoera {
 	void jarriEtsaia(Gelaxka pG);
 	
 	void jarriTiroa(Gelaxka pG);
-
 }
