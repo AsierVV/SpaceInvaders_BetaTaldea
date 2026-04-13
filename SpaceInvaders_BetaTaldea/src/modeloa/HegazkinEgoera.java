@@ -9,5 +9,24 @@ public class HegazkinEgoera implements Egoera{
 		// TODO Auto-generated method stub
 		return this.hegazkinMota;
 	}
+	@Override
+	public void hutsikUtzi(Gelaxka pG) {
+		pG.setEgoera(new HutsuneEgoera());
+	}
+
+	@Override
+	public void jarriHegazkina(Gelaxka pG, char pHegazkinMota) {	
+		//Ez de ezer egiten jadanik hegazkina dagoelako
+	}
+
+	@Override
+	public void jarriEtsaia(Gelaxka pG) {		
+		pG.setEgoera(new EtsaiEgoera());
+	}
+
+	@Override
+	public void jarriTiroa(Gelaxka pG) {		
+		pG.setEgoera(new TiroEgoera());
+	}
 
 }
