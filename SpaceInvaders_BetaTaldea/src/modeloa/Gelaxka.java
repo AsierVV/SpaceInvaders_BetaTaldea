@@ -12,7 +12,7 @@ public class Gelaxka extends Observable{
 		this.egoera = pEgoera;
 	}
 	
-	public void setEgoera(Egoera pEgoera) {
+	public void egoeraAldatu(Egoera pEgoera) {
 		this.egoera = pEgoera;
 		setChanged();
 		notifyObservers();
@@ -23,19 +23,19 @@ public class Gelaxka extends Observable{
 	}
 	
 	public void hutsikUtzi() {
-	    setEgoera(new HutsuneEgoera());
+	    egoera.hutsikUtzi(this);
 	}
 	
 	public void jarriHegazkina(char pHegazkinMota) {
-		setEgoera(new HegazkinEgoera(pHegazkinMota));
+		egoera.jarriHegazkina(this, pHegazkinMota);
 	}
 	
 	public void jarriEtsaia() {
-		setEgoera(new EtsaiEgoera());
+		egoera.jarriEtsaia(this);
 	}
 	
 	public void jarriTiroa() {
-		setEgoera(new TiroEgoera());
+		egoera.jarriTiroa(this);
 	}
 	
 	public Koordenatua getGelaxkaKord() {
