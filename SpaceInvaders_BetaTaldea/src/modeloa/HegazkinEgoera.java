@@ -11,25 +11,25 @@ public class HegazkinEgoera implements Egoera{
 	public char getMota() {
 		return hegazkinMota;
 	}
-	
+
 	@Override
-	public void jarriHegazkina(Gelaxka g, char pHegazkinMota) {
-		// Ez da ezer egin behar, dagoeneko hegazkina dago		
+	public void hutsikUtzi(Gelaxka pG) {
+		pG.setEgoera(new HutsuneEgoera());
 	}
-	
+
 	@Override
-	public void jarriEtsaia(Gelaxka g) {
-		g.egoeraAldatu(new EtsaiEgoera());
+	public void jarriHegazkina(Gelaxka pG, char pHegazkinMota) {	
+		//Ez de ezer egiten jadanik hegazkina dagoelako
 	}
-	
+
 	@Override
-	public void jarriTiroa(Gelaxka g) {
-		g.egoeraAldatu(new TiroEgoera());
+	public void jarriEtsaia(Gelaxka pG) {		
+		pG.setEgoera(new EtsaiEgoera());
 	}
-	
+
 	@Override
-	public void hutsikUtzi(Gelaxka g) {
-		g.egoeraAldatu(new HutsuneEgoera());
+	public void jarriTiroa(Gelaxka pG) {		
+		pG.setEgoera(new TiroEgoera());
 	}
 
 }

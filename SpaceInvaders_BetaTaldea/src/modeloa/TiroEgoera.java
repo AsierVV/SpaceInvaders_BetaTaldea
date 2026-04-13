@@ -10,23 +10,23 @@ public class TiroEgoera implements Egoera{
 	}
 
 	@Override
-	public void jarriHegazkina(Gelaxka g, char pHegazkinMota) {
-		g.egoeraAldatu(new HegazkinEgoera(pHegazkinMota));
+	public void hutsikUtzi(Gelaxka pG) {
+		pG.setEgoera(new HutsuneEgoera());
 	}
 
 	@Override
-	public void jarriEtsaia(Gelaxka g) {
-		g.egoeraAldatu(new EtsaiEgoera());
+	public void jarriHegazkina(Gelaxka pG, char pHegazkinMota) {
+		pG.setEgoera(new HegazkinEgoera(pHegazkinMota));
 	}
 
 	@Override
-	public void jarriTiroa(Gelaxka g) {
-		// Ez da ezer egin behar, dagoeneko tiroa dago
+	public void jarriEtsaia(Gelaxka pG) {
+		pG.setEgoera(new EtsaiEgoera());
 	}
 
 	@Override
-	public void hutsikUtzi(Gelaxka g) {
-		g.egoeraAldatu(new HutsuneEgoera());
+	public void jarriTiroa(Gelaxka pG) {
+		//Ez da ezer egiten jadanik tiroa dagoelako
 	}
 
 }

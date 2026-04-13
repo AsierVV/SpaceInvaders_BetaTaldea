@@ -6,27 +6,27 @@ public class HutsuneEgoera implements Egoera{
 	
 	@Override
 	public char getMota() {
+		// TODO Auto-generated method stub
 		return 'u';
 	}
 
 	@Override
-	public void jarriHegazkina(Gelaxka g, char pHegazkinMota) {
-		g.egoeraAldatu(new HegazkinEgoera(pHegazkinMota));
+	public void hutsikUtzi(Gelaxka pG) {
+		//Ez de ezer egiten jadanik hutsunea dagoelako
 	}
 
 	@Override
-	public void jarriEtsaia(Gelaxka g) {
-		g.egoeraAldatu(new EtsaiEgoera());
+	public void jarriHegazkina(Gelaxka pG, char pHegazkinMota) {	
+		pG.setEgoera(new HegazkinEgoera(pHegazkinMota));
 	}
 
 	@Override
-	public void jarriTiroa(Gelaxka g) {
-		g.egoeraAldatu(new TiroEgoera());
+	public void jarriEtsaia(Gelaxka pG) {		
+		pG.setEgoera(new EtsaiEgoera());
 	}
 
 	@Override
-	public void hutsikUtzi(Gelaxka g) {
-		// Ez da ezer egin behar, dagoeneko hutsunea dago
+	public void jarriTiroa(Gelaxka pG) {		
+		pG.setEgoera(new TiroEgoera());
 	}
-
 }

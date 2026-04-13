@@ -2,8 +2,12 @@ package modeloa;
 
 public interface Egoera {
 	char getMota();
-	void jarriHegazkina(Gelaxka g, char pHegazkinMota);
-	void jarriEtsaia(Gelaxka g);
-	void jarriTiroa(Gelaxka g);
-	void hutsikUtzi(Gelaxka g);
+	
+	void hutsikUtzi(Gelaxka pG);
+	
+	void jarriHegazkina(Gelaxka pG, char pHegazkinMota);
+	
+	void jarriEtsaia(Gelaxka pG);
+	
+	void jarriTiroa(Gelaxka pG);
 }
