@@ -3,7 +3,7 @@ package modeloa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EtsaiaTaldea extends Pixel{
+public abstract class EtsaiaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private int indizea;
 	
@@ -70,6 +70,8 @@ public class EtsaiaTaldea extends Pixel{
         posizioa.setX(xBerria);
         posizioa.setY(yBerria);
 	}
+	
+	public abstract char getMotaChar();
 	
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {

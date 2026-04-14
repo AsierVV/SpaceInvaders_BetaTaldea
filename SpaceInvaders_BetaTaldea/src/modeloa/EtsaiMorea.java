@@ -6,4 +6,8 @@ public class EtsaiMorea extends EtsaiaTaldea{
 		super(pPosizioa, pInd);
 	}
 	
+	@Override
+	public char getMotaChar() {
+		return 'm';
+	}
 }
