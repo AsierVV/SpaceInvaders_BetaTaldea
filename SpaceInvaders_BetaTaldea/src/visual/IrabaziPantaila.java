@@ -14,9 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class IrabaziPantaila extends JPanel{
-	private JFrame bukFrame = new JFrame("Space Invaders - You Won");
 
-	public IrabaziPantaila() {
+	public IrabaziPantaila(JFrame bukFrame) {
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		

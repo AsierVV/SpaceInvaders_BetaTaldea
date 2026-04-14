@@ -39,7 +39,6 @@ public class Tableroa extends Observable {
 	private boolean tiroEgin;
 
     private boolean gameOver;
-    private boolean etsaiakBeheraIritsi;
     private boolean jokoHasita = false;
     
     // === ERAIKITZAILEA ===
@@ -48,7 +47,6 @@ public class Tableroa extends Observable {
         etsaiak = new ArrayList<>();
         tiroak = new ArrayList<>();
         gameOver = false;
-        etsaiakBeheraIritsi = false;
         
         // --- MATRIZEA SORTU ---
         for (int i = 0; i < zabalera; i++) {
@@ -149,7 +147,7 @@ public class Tableroa extends Observable {
     }
 	 
 	// === HEGAZKINA SORTU ===
-    public void sortuHegazkina(String mota) {
+    private void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
         margotuHegazkina();
 	}
@@ -218,12 +216,10 @@ public class Tableroa extends Observable {
 	 
 	// === ETSAIEN MUGIMENDUA ===
 	public void mugituEtsaiak() {		
-		if (etsaiakBeheraIritsi) partidaGaldu();
+		if (gameOver) partidaGaldu();
 		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
-		while (it.hasNext()) {
-			if (gameOver) partidaGaldu();
-			
+		while (it.hasNext()) {			
 			EtsaiaTaldea e = it.next();
 			Koordenatua dif = e.etsaiaAusazkoMugimendua();
 			
@@ -235,7 +231,7 @@ public class Tableroa extends Observable {
 		    	e.mugitu(dx, dy);
 		    	margotuEtsaia(e);
 			}
-			if (etsaiaBeheraHelduDa(e)) etsaiakBeheraIritsi = true;
+			if (etsaiaBeheraHelduDa(e)) gameOver = true;
 		}
 	}
 	 
@@ -273,9 +269,6 @@ public class Tableroa extends Observable {
 	}
 	 	 
 	// === PARTIDA AMAITZEKO METODOAK ===
-	public boolean isGameOver() {
-		return gameOver;
-	}
 	private void partidaAmaitu() {
 		gameOver = true;
 		stopJokoa();
