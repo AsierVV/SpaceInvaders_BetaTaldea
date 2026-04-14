@@ -9,12 +9,12 @@ public class EtsaiaFactory {
 		if(nEMA == null) {nEMA = new EtsaiaFactory();}
 		return nEMA;
 	}
-	public static Etsaia sortuEtsaia(String mota, Koordenatua pPosizioa) {
-		Etsaia e = null;
+	public EtsaiaTaldea sortuEtsaia(String mota, Koordenatua pPosizioa, int pInd) {
+		EtsaiaTaldea e = null;
         switch (mota) {
-        case "BROWN": e= new EtsaiMarroia(pPosizioa); break;
-        case "PURPLE": e= new EtsaiMorea(pPosizioa); break;
-        case "RED": e= new EtsaiGorria(pPosizioa); break;
+        case "BROWN": e = new EtsaiMarroia(pPosizioa, pInd); break;
+        case "PURPLE": e = new EtsaiMorea(pPosizioa, pInd); break;
+        case "RED": e = new EtsaiGorria(pPosizioa, pInd); break;
         }
         return e;
 	}
