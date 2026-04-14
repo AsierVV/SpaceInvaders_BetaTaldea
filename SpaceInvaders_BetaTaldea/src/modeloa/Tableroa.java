@@ -40,6 +40,7 @@ public class Tableroa extends Observable {
 
     private boolean gameOver;
     private boolean jokoHasita = false;
+    private boolean irabaziDuzu = false;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -125,8 +126,9 @@ public class Tableroa extends Observable {
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
+    		irabaziDuzu = true;
     		partidaIrabazi();
-		 }
+		}
     }
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
@@ -214,8 +216,8 @@ public class Tableroa extends Observable {
 	}
 	 
 	// === ETSAIEN MUGIMENDUA ===
-	public void mugituEtsaiak() {		
-		if (gameOver) partidaGaldu();
+	public void mugituEtsaiak() {
+		if (gameOver && !irabaziDuzu) partidaGaldu();
 		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
