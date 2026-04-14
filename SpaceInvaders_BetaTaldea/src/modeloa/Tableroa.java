@@ -211,7 +211,6 @@ public class Tableroa extends Observable {
 	    	hegazkina.mugitu(dx, dy);
 	    	margotuHegazkina();
 		}
-		if (gameOver) partidaGaldu();
 	}
 	 
 	// === ETSAIEN MUGIMENDUA ===
