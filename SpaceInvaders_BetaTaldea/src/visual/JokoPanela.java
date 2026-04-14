@@ -73,10 +73,10 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
 	
-		    JFrame frame = new JFrame("Game Over");
+		    JFrame frame = new JFrame("Game Over!");
 		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
-		    frame.setContentPane(new GalduPantaila());
+		    frame.setContentPane(new GalduPantaila(frame));
 		    frame.pack();
 		    frame.setLocationRelativeTo(null);
 		    frame.setVisible(true);
@@ -86,7 +86,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		    JFrame frame = new JFrame("Irabazi duzu!");
 		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		    frame.setContentPane(new IrabaziPantaila());
+		    frame.setContentPane(new IrabaziPantaila(frame));
 		    frame.pack();
 		    frame.setLocationRelativeTo(null);
 		    frame.setVisible(true);
