@@ -22,9 +22,8 @@ import java.io.IOException;
 
 
 public class GalduPantaila extends JPanel{
-	private JFrame bukFrame = new JFrame("Space Invaders - Game Over");
 
-	public GalduPantaila() {
+	public GalduPantaila(JFrame bukFrame) {
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		
