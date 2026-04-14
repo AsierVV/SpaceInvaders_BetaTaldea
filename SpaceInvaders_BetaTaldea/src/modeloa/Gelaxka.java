@@ -23,19 +23,19 @@ public class Gelaxka extends Observable{
 	}
 	
 	public void hutsikUtzi() {
-	    egoera.hutsikUtzi(this);
+	    setEgoera(new HutsuneEgoera());
 	}
 	
 	public void jarriHegazkina(char pHegazkinMota) {
-		egoera.jarriHegazkina(this, pHegazkinMota);
+		setEgoera(new HegazkinEgoera(pHegazkinMota));
 	}
 	
 	public void jarriEtsaia() {
-		egoera.jarriEtsaia(this);
+		setEgoera(new EtsaiEgoera());
 	}
 	
 	public void jarriTiroa() {
-		egoera.jarriTiroa(this);
+		setEgoera(new TiroEgoera());
 	}
 	
 	public Koordenatua getGelaxkaKord() {
