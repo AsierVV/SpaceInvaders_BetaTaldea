@@ -60,7 +60,7 @@ public class GalduPantaila extends JPanel{
 	private void audioaJarri() {
 		AudioInputStream audioa;
 		try {
-			audioa = AudioSystem.getAudioInputStream(getClass().getResource("galduAudio.wav"));
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("galdu.wav"));
 			Clip c = AudioSystem.getClip();
 			c.open(audioa);
 			c.start();
