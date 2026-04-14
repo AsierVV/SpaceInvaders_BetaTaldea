@@ -5,6 +5,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +16,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+
 
 public class GalduPantaila extends JPanel{
 	private JFrame bukFrame = new JFrame("Space Invaders - Game Over");
@@ -25,6 +33,13 @@ public class GalduPantaila extends JPanel{
         bukFrame.pack();
         bukFrame.setLocationRelativeTo(null);
         bukFrame.setVisible(true);
+        
+        bukFrame.addWindowListener(new WindowAdapter(){
+        	@Override
+        	public void windowOpened(WindowEvent e) {
+        		audioaJarri();
+        	}
+        });
         
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -41,5 +56,18 @@ public class GalduPantaila extends JPanel{
 
 	    bukG.add(lblAlien, BorderLayout.CENTER);
 	    return bukG;
+	}
+	
+	private void audioaJarri() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("galduAudio.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
