@@ -14,7 +14,8 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	
 	private JFrame hasiFrame = new JFrame("Space Invaders - Hasiera");
 	private static HasierakoPantaila nireEMA = null;
-	private String motaAukeratua = "GREEN";
+	private String motaHegazkina = "GREEN";
+	private String motaEtsaia = "RED";
 	private JLabel lblAukera;
 	
 	private HasierakoPantaila() {
@@ -54,7 +55,8 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 
 	    
 	    // TEXTO ABAJO
-	    lblAukera = new JLabel("Aukeratuta: GREEN", JLabel.CENTER);
+	    lblAukera = new JLabel("", JLabel.CENTER);
+	    eguneratuTestua();
 	    lblAukera.setForeground(Color.WHITE);
 
 	    has.add(lblAukera, BorderLayout.SOUTH);
@@ -62,6 +64,9 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 		
 	    
 	    return has;
+	}
+	private void eguneratuTestua() {
+	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia);
 	}
 
 	@Override
@@ -76,25 +81,41 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
-			JokoKudeatzailea.getEMA().irekiJokoa(motaAukeratua);
-			break;
+	    switch (e.getKeyCode()) {
+	    case KeyEvent.VK_SPACE:
+	        JokoKudeatzailea.getEMA().irekiJokoa(motaHegazkina, motaEtsaia);
+	        break;
+
 	    case KeyEvent.VK_G:
-	        motaAukeratua = "GREEN";
-	        lblAukera.setText("Aukeratuta: GREEN");
+	        motaHegazkina = "GREEN";
+	        eguneratuTestua();
 	        break;
 
 	    case KeyEvent.VK_B:
-	        motaAukeratua = "BLUE";
-	        lblAukera.setText("Aukeratuta: BLUE");
+	        motaHegazkina = "BLUE";
+	        eguneratuTestua();
 	        break;
 
 	    case KeyEvent.VK_R:
-	        motaAukeratua = "RED";
-	        lblAukera.setText("Aukeratuta: RED");
+	        motaHegazkina = "RED";
+	        eguneratuTestua();
 	        break;
-		}
+
+	    case KeyEvent.VK_E:
+	        motaEtsaia = "RED";
+	        eguneratuTestua();
+	        break;
+
+	    case KeyEvent.VK_P:
+	        motaEtsaia = "PURPLE";
+	        eguneratuTestua();
+	        break;
+
+	    case KeyEvent.VK_C:
+	        motaEtsaia = "CYAN";
+	        eguneratuTestua();
+	        break;
+	    }
 	}
 
 	@Override

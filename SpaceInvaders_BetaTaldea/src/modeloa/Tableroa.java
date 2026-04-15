@@ -132,14 +132,14 @@ public class Tableroa extends Observable {
     }
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
-    public void hasiJokoa(String mota) {
+    public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
     	jokoHasita = true;
     	
         setChanged();
         notifyObservers("TABLEROA_SORTUTA");
         
-    	sortuHegazkina(mota);
-    	sortuEtsaiak();
+    	sortuHegazkina(motaHegazkina);
+    	sortuEtsaiak(motaEtsaia);
     	
         if (!timer.isRunning()) timer.start();
     }
@@ -155,7 +155,7 @@ public class Tableroa extends Observable {
 	}
     
 	// === ETSAIAK SORTU ===
-	private void sortuEtsaiak() {
+	private void sortuEtsaiak(String mota) {
 		Random r = new Random();
 	    int kopurua = 4 + r.nextInt(5); // 4-8 etsai: r.nextInt(5) --> 0 eta 5-1 arteko zenbaki bat ematen du
 	    int ind = 1;
@@ -165,7 +165,7 @@ public class Tableroa extends Observable {
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
 	        if (etsaiaSortuDaiteke(zutabea, 5)) {
-	        	EtsaiaTaldea e = new EtsaiaTaldea(new Koordenatua(zutabea, 5), ind);
+	        	EtsaiaTaldea e = EtsaiaFactory.nireEMA().sortuEtsaia(mota, new Koordenatua(zutabea, 5), ind);
 	        	ind ++;
 	            etsaiak.add(e);
 	            margotuEtsaia(e);
@@ -360,7 +360,7 @@ public class Tableroa extends Observable {
 	
 	private void margotuEtsaia(EtsaiaTaldea e) {
 		for (Koordenatua k : e.getKoordenatuLista()) {
-	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia();
+	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar());
 	    }
 	}
 	private void garbituEtsaia(EtsaiaTaldea e) {
@@ -395,7 +395,7 @@ public class Tableroa extends Observable {
 
 	        if (!posizioBaliozkoa(xBerria, yBerria)) return false;
 		    char mota = tableroMatrizea[xBerria][yBerria].getMota();
-		    if (mota == 'e') {
+		    if (mota == 'e' || mota == 'm' || mota == 'c') {
 		    	gameOver = true;
 		    	return false;
 		    }
