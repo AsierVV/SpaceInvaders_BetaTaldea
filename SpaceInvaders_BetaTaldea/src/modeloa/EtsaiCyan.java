@@ -10,4 +10,16 @@ public class EtsaiCyan extends EtsaiaTaldea {
 	public char getMotaChar() {
 		return 'c';
 	}
+	@Override
+	protected void sortuForma() {
+	    int x = posizioa.getX();
+	    int y = posizioa.getY();
+
+	    // Forma en cruz
+	    addElementua(new Etsaia(new Koordenatua(x, y)));
+	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
+	    addElementua(new Etsaia(new Koordenatua(x+1, y)));
+	    addElementua(new Etsaia(new Koordenatua(x, y-1)));
+	    addElementua(new Etsaia(new Koordenatua(x, y+1)));
+	}
 }

@@ -10,19 +10,22 @@ public abstract class EtsaiaTaldea extends Pixel{
 	public EtsaiaTaldea(Koordenatua pPosizioa, int pInd) {
         super(pPosizioa);
         indizea = pInd;
-        sortuEtsaiaTaldea();
+        //sortuEtsaiaTaldea();
+        sortuForma();
     }
 	
-	private void sortuEtsaiaTaldea() {
-        int x = this.posizioa.getX();
-        int y = this.posizioa.getY();
+	protected abstract void sortuForma();
+	
+	//private void sortuEtsaiaTaldea() {
+    //    int x = this.posizioa.getX();
+   //     int y = this.posizioa.getY();
 
         // Etsaien forma
-        addElementua(new Etsaia(new Koordenatua(x, y)));
-        addElementua(new Etsaia(new Koordenatua(x-1, y)));
-        addElementua(new Etsaia(new Koordenatua(x+1, y)));
-        addElementua(new Etsaia(new Koordenatua(x, y+1)));
-    }
+    //    addElementua(new Etsaia(new Koordenatua(x, y)));
+    //    addElementua(new Etsaia(new Koordenatua(x-1, y)));
+    //    addElementua(new Etsaia(new Koordenatua(x+1, y)));
+    //    addElementua(new Etsaia(new Koordenatua(x, y+1)));
+    //}
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);
