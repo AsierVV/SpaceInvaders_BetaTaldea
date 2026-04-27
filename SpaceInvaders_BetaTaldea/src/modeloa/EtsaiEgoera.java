@@ -1,11 +1,14 @@
 package modeloa;
 
 public class EtsaiEgoera implements Egoera{
+	private char etsaiMota;
 	
-	public EtsaiEgoera() {}
+	public EtsaiEgoera(char pEtsaiMota) {
+		this.etsaiMota = pEtsaiMota;
+	}
 	
 	@Override
 	public char getMota() {
-		return 'e';
+		return etsaiMota;
 	}
 }

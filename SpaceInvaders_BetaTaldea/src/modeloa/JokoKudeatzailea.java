@@ -19,8 +19,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	}
 
 	// === JOKOA HASTEKO ===
-    public void irekiJokoa(String mota) {
-    	Tableroa.getTableroaEMA().hasiJokoa(mota);
+    public void irekiJokoa(String motaHegazkina, String motaEtsaia) {
+    	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia);
     }
     
     // === TABLEROAREN DATUAK BISTARAKO ===

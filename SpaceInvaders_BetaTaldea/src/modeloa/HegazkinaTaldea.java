@@ -12,7 +12,7 @@ public abstract class HegazkinaTaldea extends Pixel{
 	
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
-        sortuHegazkinaTaldea();
+        sortuHegazkinaTaldea();  
     }
 	
 	private void sortuHegazkinaTaldea() {
