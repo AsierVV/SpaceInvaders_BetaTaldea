@@ -35,7 +35,8 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    
 	    frame.getContentPane().add(panel);
 	    frame.pack();
-	    frame.setLocationRelativeTo(null);
+	    //frame.setLocationRelativeTo(null);
+	    frame.setLocation(250, 50);
 	    frame.setVisible(false);
 
 	    JokoKudeatzailea.getEMA().addObserver(this);
