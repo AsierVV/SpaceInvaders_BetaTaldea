@@ -147,6 +147,22 @@ public class Tableroa extends Observable {
     	return denboraSegundoak;
     }
     
+    public int getTiroKopGezia() {
+    	return hegazkina.getTiroKopGezia();
+    }
+    
+    public int getTiroKopErronbo() {
+    	return hegazkina.getTiroKopErronbo();
+    }
+    
+    public char getHegazkinMota() {
+    	return hegazkina.getMotaChar();
+    }
+    
+    public char getTiroMota() {
+    	return hegazkina.getTiroMota().motaChar();
+    }
+    
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
     	jokoHasita = true;
@@ -157,9 +173,15 @@ public class Tableroa extends Observable {
     	sortuHegazkina(motaHegazkina);
     	sortuEtsaiak(motaEtsaia);
     	
+    	setChanged();
+        notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
+        
         if (!timer.isRunning()) timer.start();
         
         azkenDenboraEguneraketa = System.currentTimeMillis();
+        
+        setChanged();
+        notifyObservers("JOKOA_FOCUS_HARTU");
     }
     
     // === START/STOP ===
@@ -220,6 +242,8 @@ public class Tableroa extends Observable {
 			 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
 			 		hegazkina.tiroaKontsumitu();
 			 		azkenTiroa = tiroOrain;
+			 		setChanged();
+			 		notifyObservers("TIRO_KOP_EGUNERATU");
 		 		}
 			}
 		}
@@ -333,6 +357,8 @@ public class Tableroa extends Observable {
 				it.remove();
 				garbituEtsaia(e);
 				eliminatuta = true;
+				setChanged();
+				notifyObservers("ETSAIAK_KOP_EGUNERATU");
 			}
 		}
 		etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.

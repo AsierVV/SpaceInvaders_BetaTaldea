@@ -48,6 +48,14 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		return Tableroa.getTableroaEMA().getDenboraSegundoak();
 	}
 	
+	public int getTiroKopGezia() {return Tableroa.getTableroaEMA().getTiroKopGezia();}
+	
+	public int getTiroKopErronbo() {return Tableroa.getTableroaEMA().getTiroKopErronbo();}
+	
+	public char getHegazkinaMota() {return Tableroa.getTableroaEMA().getHegazkinMota();}
+	
+	public char getTiroMota() {return Tableroa.getTableroaEMA().getTiroMota();}
+	
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
 	public void ezkerraAskatu() {Tableroa.getTableroaEMA().ezkerraAskatu();}
@@ -64,7 +72,11 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	public void tiroaSakatu() {Tableroa.getTableroaEMA().tiroaSakatu();}
 	public void tiroaAskatu() {Tableroa.getTableroaEMA().tiroaAskatu();}
 	
-	public void tiroaAldatu() {Tableroa.getTableroaEMA().tiroaAldatu();}
+	public void tiroaAldatu() {
+		Tableroa.getTableroaEMA().tiroaAldatu();
+		setChanged();
+		notifyObservers("TIRO_MOTA_EGUNERATU");
+	}
 	
 	public void startStopJokoa() {Tableroa.getTableroaEMA().startStopJokoa();}
     
@@ -74,6 +86,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		if ("TABLEROA_SORTUTA".equals(arg)) {
 			setChanged();
 			notifyObservers("JOKOA_HASI");
+		} else if ("JOKOA_FOCUS_HARTU".equals(arg)) {
+			setChanged();
+			notifyObservers("JOKOA_FOCUS_HARTU");
 		} else if ("STOP".equals(arg)) {
 			setChanged();
 			notifyObservers("STOP");
@@ -83,6 +98,15 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("DENBORA_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("DENBORA_EGUNERATU");
+		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
+			setChanged();
+			notifyObservers("TIRO_KOP_EGUNERATU");
+		} else if ("PUNTUAZIO_PANTAILA_EGUNERATU".equals(arg)) {
+			setChanged();
+			notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
+		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
+			setChanged();
+			notifyObservers("ETSAIAK_KOP_EGUNERATU");
 		} else if (partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");

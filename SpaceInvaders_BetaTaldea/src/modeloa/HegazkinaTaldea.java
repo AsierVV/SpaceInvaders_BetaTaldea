@@ -59,6 +59,10 @@ public abstract class HegazkinaTaldea extends Pixel{
 		return true;
 	}
 	
+	public int getTiroKopGezia() {return geziTiroKop;}
+	
+	public int getTiroKopErronbo() {return erronboTiroKop;}
+	
 	public abstract void tiroMotaAldatu();
 	
 	public abstract char getMotaChar();

@@ -28,7 +28,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    
 	    panel = new JPanel();
 	    panel.setLayout(new GridLayout(JokoKudeatzailea.getEMA().getAltuera(), JokoKudeatzailea.getEMA().getZabalera(), 0, 0));
-	    panel.setPreferredSize(new Dimension(1200, 720));	// Panelaren tamaiña totala
+	    panel.setPreferredSize(new Dimension(1200, 720));	// Panelaren tamaina totala
 	    panel.addKeyListener(this);							// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
 	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
@@ -61,8 +61,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			}
 		}
 	    frame.setVisible(true);
-	    panel.requestFocusInWindow();
-
 	}
 	
 	@Override
@@ -71,6 +69,8 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
 			matrizeakSortu();
 			matrizeaSortuta = true;
+		} else if ("JOKOA_FOCUS_HARTU".equals(arg)) {
+			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
 		    JFrame frame = new JFrame("Game Over!");
@@ -83,7 +83,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		    framePause.setContentPane(new PausePantaila(framePause));
 		} else if ("START".equals(arg)) {
 			framePause.dispose();
-		    panel.requestFocusInWindow();
 		}
 	}
 

@@ -32,12 +32,9 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	private JLabel puntuakLabel;
 	private JLabel etsaiLabel;
 	private JLabel tiroMotaLabel;
-	private JLabel munizioLabel;
-	
-	private int puntuazioa;
-	private int etsaiKop;
-	private String tiroMota;
-	private int tiroKop;
+	private JLabel bakarraLabel;
+	private JLabel geziLabel;
+	private JLabel erronboLabel;
 	
 	/* COSAS PARA AÑADIR EN ESTE PANEL
 		- Marcador
@@ -53,12 +50,20 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	    panel = new JPanel();
-	    panel.setLayout(new GridLayout(5, 1, 0, 10));
-	    panel.setPreferredSize(new Dimension(100, 500));
+	    panel.setLayout(new GridLayout(5, 1, 0, 5));
+	    panel.setPreferredSize(new Dimension(150, 500));
 	    
-	    parametroakHasieratu();
-	    
-	    // Labelak gehitu
+	    frame.getContentPane().add(panel);
+	    frame.pack();
+	    frame.setLocation(50, 100);
+	    //frame.setFocusableWindowState(false);
+	    frame.setVisible(false);
+
+	    JokoKudeatzailea.getEMA().addObserver(this);
+	}
+	
+	// === HASIERATU LABELAK ===
+	private void hasieratuLabelak() {
 	    JPanel denboraPanel = new JPanel(new BorderLayout());
 	    denboraPanel.setBackground(Color.BLACK);
 	    denboraLabel = new JLabel("", JLabel.CENTER);
@@ -87,29 +92,52 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    tiroMotaPanel.add(tiroMotaLabel, BorderLayout.CENTER);
 	    panel.add(tiroMotaPanel);
 	    
-	    JPanel munizioPanel = new JPanel(new BorderLayout());
-	    munizioPanel.setBackground(Color.BLACK);
-	    munizioLabel = new JLabel("", JLabel.CENTER);
-	    munizioLabel.setForeground(Color.WHITE);
-	    munizioPanel.add(munizioLabel, BorderLayout.CENTER);
-	    panel.add(munizioPanel);
+	    JPanel munizioPanel;
+	    switch(JokoKudeatzailea.getEMA().getHegazkinaMota()) {
+		    case 'g':
+		    	munizioPanel = new JPanel(new GridLayout(2,1));
+	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
+	    	    bakarraLabel.setForeground(Color.WHITE);
+	    	    geziLabel = new JLabel("", JLabel.CENTER);
+	    	    geziLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
+	    	    munizioPanel.add(geziLabel, BorderLayout.CENTER);
+	    	    panel.add(munizioPanel);
+	    	    break;
+	    	case 'b':
+	    		munizioPanel = new JPanel(new GridLayout(2,1));
+	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
+	    	    bakarraLabel.setForeground(Color.WHITE);
+	    	    erronboLabel = new JLabel("", JLabel.CENTER);
+	    	    erronboLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
+	    	    munizioPanel.add(erronboLabel, BorderLayout.CENTER);
+	    	    panel.add(munizioPanel);
+	    	    break;
+	    	case 'r':
+	    		munizioPanel = new JPanel(new GridLayout(3,1));
+	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
+	    	    bakarraLabel.setForeground(Color.WHITE);
+	    	    geziLabel = new JLabel("", JLabel.CENTER);
+	    	    geziLabel.setForeground(Color.WHITE);
+	    	    erronboLabel = new JLabel("", JLabel.CENTER);
+	    	    erronboLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
+	    	    munizioPanel.add(geziLabel, BorderLayout.CENTER);
+	    	    munizioPanel.add(erronboLabel, BorderLayout.CENTER);
+	    	    panel.add(munizioPanel);
+	    	    break;
+	    }
 	    
 	    eguneratuDenbora();
 	    eguneratuPuntuazioa();
+	    eguneratuEtsaiBizirik();
+	    eguneratuTiroMota();
+	    eguneratuTiroKop();
 	    
-	    frame.getContentPane().add(panel);
-	    frame.pack();
-	    frame.setLocation(100, 100);
-	    frame.setVisible(false);
-
-	    JokoKudeatzailea.getEMA().addObserver(this);
-	}
-	
-	private void parametroakHasieratu() {
-		puntuazioa = 0;
-		etsaiKop = JokoKudeatzailea.getEMA().getEtsaiKop();
-		tiroMota = "Normala";
-		//tiroKop = 100;
 	}
 	
 	// === EGUNERATU LABELAK ===
@@ -126,19 +154,41 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	}
 
 	private void eguneratuPuntuazioa() {
-		puntuakLabel.setText("Puntuazioa: " + puntuazioa);
+		puntuakLabel.setText("Puntuazioa: ");
 	}
-/*
+
 	private void eguneratuEtsaiBizirik() {
-	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia);
+		etsaiLabel.setText("Etsai bizirik: " + JokoKudeatzailea.getEMA().getEtsaiKop());
 	}
+	
 	private void eguneratuTiroMota() {
-	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia);
+		String mota;
+		switch(JokoKudeatzailea.getEMA().getTiroMota()) {
+			case 'b': mota = "BAKARRA"; break;
+			case 't': mota = "GEZIA"; break;
+			case 'r': mota = "ERRONBOA"; break;
+			default: mota = "BAKARRA"; break;
+		}
+	    tiroMotaLabel.setText("Tiro mota: " + mota);
 	}
+	
 	private void eguneratuTiroKop() {
-	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia);
+	    switch(JokoKudeatzailea.getEMA().getHegazkinaMota()) {
+	    case 'g':
+	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
+			geziLabel.setText("Gezi tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopGezia());
+			break;
+	    case 'b':
+	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
+			erronboLabel.setText("Erronbo tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopErronbo());
+			break;
+	    case 'r':
+	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
+			geziLabel.setText("Gezi tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopGezia());
+			erronboLabel.setText("Erronbo tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopErronbo());
+			break;
+		}
 	}
-	*/
 	
 	public static PuntuazioPantaila getEMA() {
 		if (nireEMA == null) {
@@ -150,10 +200,17 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg == null) return;
-		if ("JOKOA_HASI".equals(arg)) {
+		if ("PUNTUAZIO_PANTAILA_EGUNERATU".equals(arg)) {
 		    frame.setVisible(true);
+		    hasieratuLabelak();
 		} else if ("DENBORA_EGUNERATU".equals(arg)) {
 			eguneratuDenbora();
+		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
+			eguneratuTiroKop();
+		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
+			eguneratuEtsaiBizirik();
+		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {
+			eguneratuTiroMota();
 		}
 	}
 }
