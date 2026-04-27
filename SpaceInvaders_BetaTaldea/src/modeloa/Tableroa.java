@@ -21,6 +21,8 @@ public class Tableroa extends Observable {
 	
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
+	private int denboraSegundoak = 0;
+	private long azkenDenboraEguneraketa = 0;
 	
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
 	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2 --> Batean hasi parametroa, horrela 100ms pasatzen diren bigarren aldian 200ms pasatu dira.
@@ -63,6 +65,16 @@ public class Tableroa extends Observable {
         		
         		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
+        		
+        		// Konprobatu 1s pasatu den
+        		long orain = System.currentTimeMillis();
+        		if (orain - azkenDenboraEguneraketa > 1000) {
+        			denboraSegundoak++;
+        			azkenDenboraEguneraketa = orain;
+        			
+        			setChanged();
+        			notifyObservers("DENBORA_EGUNERATU");
+        		}
         		
         		// Konprobatu 100ms pasatu diren
         		if (mugituHegazkinaKont <= 0) {
@@ -131,6 +143,10 @@ public class Tableroa extends Observable {
 		}
     }
     
+    public int getDenboraSegundoak(){
+    	return denboraSegundoak;
+    }
+    
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
     	jokoHasita = true;
@@ -142,6 +158,8 @@ public class Tableroa extends Observable {
     	sortuEtsaiak(motaEtsaia);
     	
         if (!timer.isRunning()) timer.start();
+        
+        azkenDenboraEguneraketa = System.currentTimeMillis();
     }
     
     // === START/STOP ===
@@ -360,36 +378,54 @@ public class Tableroa extends Observable {
 	
 	// === PIXELAK MARGOTZEKO ETA GARBITZEKO METODOAK ===
 	private void margotuHegazkina() {
+		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar()));
+		/*
 		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar());
 		}
+		*/
 	}
 	private void garbituHegazkina() {
+		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : hegazkina.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
         }
+        */
     }
 	
 	private void margotuEtsaia(EtsaiaTaldea e) {
+		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar()));
+		/*
 		for (Koordenatua k : e.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar());
 	    }
+	    */
 	}
 	private void garbituEtsaia(EtsaiaTaldea e) {
+		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : e.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
         }
+        */
     }
 	
 	private void margotuTiroa(TiroaTaldea t) {
+		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriTiroa());
+		/*
 		for (Koordenatua k : t.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].jarriTiroa();
 	    }
+	    */
 	}
     private void garbituTiroa(TiroaTaldea t) {
+		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : t.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
 	    }
+	    */
     }
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
@@ -420,9 +456,12 @@ public class Tableroa extends Observable {
 	    // Kordenatu berrien lista bat sortzen dugu, eta gero lista horren kordenatu guztiak libre dauden konprobatzen dugu.
 		List<Koordenatua> kordBerriak = new ArrayList<>(); 
 		
+		e.getKoordenatuLista().stream().forEach(k->kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy)));
+		/*
 		for (Koordenatua k : e.getKoordenatuLista()) {
 			kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy));
 		}
+		*/
 		
 		return koordenatuakLibreDaudeEtsaia(kordBerriak, e.getIndizea());
 	}
