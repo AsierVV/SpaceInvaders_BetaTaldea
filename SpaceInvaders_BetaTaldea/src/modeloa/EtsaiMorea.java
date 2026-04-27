@@ -18,14 +18,16 @@ public class EtsaiMorea extends EtsaiaTaldea{
 	    int x = posizioa.getX();
 	    int y = posizioa.getY();
 
-	    //addElementua(new Etsaia(new Koordenatua(x, y)));
-	    // Gezi forma behera
+	    // H forma modukoa
 	    addElementua(new Etsaia(new Koordenatua(x, y)));
-	    addElementua(new Etsaia(new Koordenatua(x, y-1)));
-	    addElementua(new Etsaia(new Koordenatua(x-1, y-1)));
+	    addElementua(new Etsaia(new Koordenatua(x+1, y+1)));
+	    addElementua(new Etsaia(new Koordenatua(x+1, y)));
 	    addElementua(new Etsaia(new Koordenatua(x+1, y-1)));
-	    addElementua(new Etsaia(new Koordenatua(x-2, y-2)));
-	    addElementua(new Etsaia(new Koordenatua(x+2, y-2)));
+	    addElementua(new Etsaia(new Koordenatua(x-1, y+1)));
+	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
+	    addElementua(new Etsaia(new Koordenatua(x-1, y-1)));
+	    addElementua(new Etsaia(new Koordenatua(x+2, y-1)));
+	    addElementua(new Etsaia(new Koordenatua(x-2, y-1)));
 	}
 	
 	public static List<Koordenatua> sortuKoordenatuak(Koordenatua pos) {
