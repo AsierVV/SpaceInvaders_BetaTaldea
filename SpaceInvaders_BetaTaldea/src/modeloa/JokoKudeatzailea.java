@@ -40,6 +40,14 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		partidaIrabazita = pEgoera;
 	}
 	
+	public int getEtsaiKop() {
+		return Tableroa.getTableroaEMA().getEtsaiak().size();
+	}
+	
+	public int getDenboraSegunduak() {
+		return Tableroa.getTableroaEMA().getDenboraSegundoak();
+	}
+	
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
 	public void ezkerraAskatu() {Tableroa.getTableroaEMA().ezkerraAskatu();}
@@ -72,6 +80,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("START".equals(arg)) {
 			setChanged();
 			notifyObservers("START");
+		} else if ("DENBORA_EGUNERATU".equals(arg)) {
+			setChanged();
+			notifyObservers("DENBORA_EGUNERATU");
 		} else if (partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");
