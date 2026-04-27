@@ -154,9 +154,9 @@ public class Tableroa extends Observable {
     		setChanged();
         	notifyObservers("STOP");
     	} else if (!timer.isRunning()) {
-    		timer.start();
     		setChanged();
         	notifyObservers("START");
+        	timer.start();
     	}
     }
 	 

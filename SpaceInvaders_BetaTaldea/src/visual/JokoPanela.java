@@ -18,7 +18,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	private static JokoPanela nireEMA = null;
 	private JPanel panel;
 	private JFrame frame;
-	private JFrame framePause = new JFrame("PAUSE");
+    private JFrame framePause = new JFrame("PAUSE");
 	
 	private boolean matrizeaSortuta = false;
 	
@@ -73,26 +73,14 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			matrizeaSortuta = true;
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
-	
 		    JFrame frame = new JFrame("Game Over!");
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
 		    frame.setContentPane(new GalduPantaila(frame));
-		    frame.pack();
-		    frame.setLocationRelativeTo(null);
-		    frame.setVisible(true);
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
-		    	
 		    JFrame frame = new JFrame("Irabazi duzu!");
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		    frame.setContentPane(new IrabaziPantaila(frame));
-		    frame.pack();
-		    frame.setLocationRelativeTo(null);
-		    frame.setVisible(true);
-		} else if ("STOP".equals(arg)) {
-			new PausePantaila();
+		} else if ("STOP".equals(arg)) {	    	
+		    framePause.setContentPane(new PausePantaila(framePause));
 		} else if ("START".equals(arg)) {
 			framePause.dispose();
 		    panel.requestFocusInWindow();
