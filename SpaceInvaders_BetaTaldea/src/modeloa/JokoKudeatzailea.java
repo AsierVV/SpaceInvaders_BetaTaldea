@@ -57,6 +57,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	public void tiroaAskatu() {Tableroa.getTableroaEMA().tiroaAskatu();}
 	
 	public void tiroaAldatu() {Tableroa.getTableroaEMA().tiroaAldatu();}
+	
+	public void startStopJokoa() {Tableroa.getTableroaEMA().startStopJokoa();}
     
 	// === TABLEROATIK JASOTAKO EVENTUAK BISTETARA BIRBIDALI ===
 	@Override
@@ -64,6 +66,12 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		if ("TABLEROA_SORTUTA".equals(arg)) {
 			setChanged();
 			notifyObservers("JOKOA_HASI");
+		} else if ("STOP".equals(arg)) {
+			setChanged();
+			notifyObservers("STOP");
+		} else if ("START".equals(arg)) {
+			setChanged();
+			notifyObservers("START");
 		} else if (partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");

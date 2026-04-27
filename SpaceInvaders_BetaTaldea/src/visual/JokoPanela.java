@@ -18,6 +18,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	private static JokoPanela nireEMA = null;
 	private JPanel panel;
 	private JFrame frame;
+	private JFrame framePause = new JFrame("PAUSE");
 	
 	private boolean matrizeaSortuta = false;
 	
@@ -90,6 +91,11 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		    frame.pack();
 		    frame.setLocationRelativeTo(null);
 		    frame.setVisible(true);
+		} else if ("STOP".equals(arg)) {
+			new PausePantaila();
+		} else if ("START".equals(arg)) {
+			framePause.dispose();
+		    panel.requestFocusInWindow();
 		}
 	}
 
@@ -120,6 +126,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			break;
 		case KeyEvent.VK_R:
 			JokoKudeatzailea.getEMA().tiroaAldatu();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			JokoKudeatzailea.getEMA().startStopJokoa();
 		}
 	}
 

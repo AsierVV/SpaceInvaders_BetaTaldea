@@ -143,9 +143,21 @@ public class Tableroa extends Observable {
     	
         if (!timer.isRunning()) timer.start();
     }
-
-    public void stopJokoa() {
-    	if (timer.isRunning()) timer.stop();
+    
+    // === START/STOP ===
+    public void amaituJokoa() {
+    	timer.stop();
+    }
+    public void startStopJokoa() {
+    	if (timer.isRunning()) {
+    		timer.stop();
+    		setChanged();
+        	notifyObservers("STOP");
+    	} else if (!timer.isRunning()) {
+    		timer.start();
+    		setChanged();
+        	notifyObservers("START");
+    	}
     }
 	 
 	// === HEGAZKINA SORTU ===
@@ -180,7 +192,7 @@ public class Tableroa extends Observable {
 	 																		//izan ere, bestela tiro handiekin kolisioa sortzen da hegazkinarekin
 		long tiroOrain = System.currentTimeMillis(); 						//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	
-		if (tiroOrain - azkenTiroa >= tiroKadentzia) {
+		if (tiroOrain - azkenTiroa >= tiroKadentzia && timer.isRunning()) {
 	 		List<Koordenatua> koordenatuak = hegazkina.getTiroMota().sortuKoordenatuak(new Koordenatua(x,y));	// Tiroa sortuko du. "Strategy"-ren bidez, momenturo dagkion tiro mota egokia sortuko du.
 			
 	 		if (hegazkina.tiroaEginDaiteke()) {	// Konprobatzen du ea mota horretako tirorik geratzen diren
@@ -272,7 +284,7 @@ public class Tableroa extends Observable {
 	// === PARTIDA AMAITZEKO METODOAK ===
 	private void partidaAmaitu() {
 		gameOver = true;
-		stopJokoa();
+		amaituJokoa();
 	}
 	private void partidaIrabazi() {
 		partidaAmaitu();
