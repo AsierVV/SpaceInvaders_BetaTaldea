@@ -176,7 +176,7 @@ public class Tableroa extends Observable {
 	    	int zutabea = r.nextInt(zabalera);
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
-	        if (etsaiaSortuDaiteke(zutabea, 5)) {
+	        if (etsaiaSortuDaiteke(mota, zutabea, 5)) {
 	        	EtsaiaTaldea e = EtsaiaFactory.nireEMA().sortuEtsaia(mota, new Koordenatua(zutabea, 5), ind);
 	        	ind ++;
 	            etsaiak.add(e);
@@ -427,8 +427,8 @@ public class Tableroa extends Observable {
 		return koordenatuakLibreDaudeEtsaia(kordBerriak, e.getIndizea());
 	}
 	
-	private boolean etsaiaSortuDaiteke(int x, int y) {
-		return koordenatuakLibreDaudeEtsaia(EtsaiaTaldea.sortuKoordenatuak(new Koordenatua(x,y)), -1);
+	private boolean etsaiaSortuDaiteke(String mota, int x, int y) {
+		return koordenatuakLibreDaudeEtsaia(EtsaiaFactory.nireEMA().sortuKoordenatuak(mota, new Koordenatua(x,y)), -1);
 	}
 	
     private boolean koordenatuakLibreDaudeEtsaia(List<Koordenatua> koordBerriak, int nireEtsaia) {

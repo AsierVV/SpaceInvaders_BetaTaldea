@@ -10,22 +10,12 @@ public abstract class EtsaiaTaldea extends Pixel{
 	public EtsaiaTaldea(Koordenatua pPosizioa, int pInd) {
         super(pPosizioa);
         indizea = pInd;
-        //sortuEtsaiaTaldea();
         sortuForma();
     }
 	
-	protected abstract void sortuForma();
+	public abstract char getMotaChar();
 	
-	//private void sortuEtsaiaTaldea() {
-    //    int x = this.posizioa.getX();
-   //     int y = this.posizioa.getY();
-
-        // Etsaien forma
-    //    addElementua(new Etsaia(new Koordenatua(x, y)));
-    //    addElementua(new Etsaia(new Koordenatua(x-1, y)));
-    //    addElementua(new Etsaia(new Koordenatua(x+1, y)));
-    //    addElementua(new Etsaia(new Koordenatua(x, y+1)));
-    //}
+	protected abstract void sortuForma();
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);
@@ -73,9 +63,7 @@ public abstract class EtsaiaTaldea extends Pixel{
         posizioa.setX(xBerria);
         posizioa.setY(yBerria);
 	}
-	
-	public abstract char getMotaChar();
-	
+		
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
 		List<Koordenatua> koordenatuak = new ArrayList<>();
@@ -94,6 +82,7 @@ public abstract class EtsaiaTaldea extends Pixel{
 	    }
 	}
 	
+	/*
 	public static List<Koordenatua> sortuKoordenatuak(Koordenatua pos) {
 	    List<Koordenatua> lista = new ArrayList<>();
 	    int x = pos.getX();
@@ -106,4 +95,5 @@ public abstract class EtsaiaTaldea extends Pixel{
 
 	    return lista;
 	}
+	*/
 }
