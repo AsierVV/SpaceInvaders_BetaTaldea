@@ -1,5 +1,8 @@
 package modeloa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EtsaiCyan extends EtsaiaTaldea {
 
 	public EtsaiCyan(Koordenatua pPosizioa, int pInd) {
@@ -15,10 +18,26 @@ public class EtsaiCyan extends EtsaiaTaldea {
 	    int x = posizioa.getX();
 	    int y = posizioa.getY();
 
+
+	    // Gurutze forma
 	    addElementua(new Etsaia(new Koordenatua(x, y)));
 	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
 	    addElementua(new Etsaia(new Koordenatua(x+1, y)));
 	    addElementua(new Etsaia(new Koordenatua(x, y-1)));
 	    addElementua(new Etsaia(new Koordenatua(x, y+1)));
+	}
+
+	public static List<Koordenatua> sortuKoordenatuak(Koordenatua pos) {
+		List<Koordenatua> lista = new ArrayList<>();
+	    int x = pos.getX();
+	    int y = pos.getY();
+
+	    lista.add(new Koordenatua(x, y));
+	    lista.add(new Koordenatua(x-1, y));
+	    lista.add(new Koordenatua(x+1, y));
+	    lista.add(new Koordenatua(x, y-1));
+	    lista.add(new Koordenatua(x, y+1));
+
+	    return lista;
 	}
 }

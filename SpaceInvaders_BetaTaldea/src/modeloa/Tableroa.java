@@ -21,6 +21,8 @@ public class Tableroa extends Observable {
 	
 	private Timer timer;
 	private final int abiaduraTimer = 50;	//50ms
+	private int denboraSegundoak = 0;
+	private long azkenDenboraEguneraketa = 0;
 	
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
 	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2 --> Batean hasi parametroa, horrela 100ms pasatzen diren bigarren aldian 200ms pasatu dira.
@@ -63,6 +65,16 @@ public class Tableroa extends Observable {
         		
         		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
+        		
+        		// Konprobatu 1s pasatu den
+        		long orain = System.currentTimeMillis();
+        		if (orain - azkenDenboraEguneraketa > 1000) {
+        			denboraSegundoak++;
+        			azkenDenboraEguneraketa = orain;
+        			
+        			setChanged();
+        			notifyObservers("DENBORA_EGUNERATU");
+        		}
         		
         		// Konprobatu 100ms pasatu diren
         		if (mugituHegazkinaKont <= 0) {
@@ -131,6 +143,26 @@ public class Tableroa extends Observable {
 		}
     }
     
+    public int getDenboraSegundoak(){
+    	return denboraSegundoak;
+    }
+    
+    public int getTiroKopGezia() {
+    	return hegazkina.getTiroKopGezia();
+    }
+    
+    public int getTiroKopErronbo() {
+    	return hegazkina.getTiroKopErronbo();
+    }
+    
+    public char getHegazkinMota() {
+    	return hegazkina.getMotaChar();
+    }
+    
+    public char getTiroMota() {
+    	return hegazkina.getTiroMota().motaChar();
+    }
+    
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
     	jokoHasita = true;
@@ -141,11 +173,31 @@ public class Tableroa extends Observable {
     	sortuHegazkina(motaHegazkina);
     	sortuEtsaiak(motaEtsaia);
     	
+    	setChanged();
+        notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
+        
         if (!timer.isRunning()) timer.start();
+        
+        azkenDenboraEguneraketa = System.currentTimeMillis();
+        
+        setChanged();
+        notifyObservers("JOKOA_FOCUS_HARTU");
     }
-
-    public void stopJokoa() {
-    	if (timer.isRunning()) timer.stop();
+    
+    // === START/STOP ===
+    public void amaituJokoa() {
+    	timer.stop();
+    }
+    public void startStopJokoa() {
+    	if (timer.isRunning()) {
+    		timer.stop();
+    		setChanged();
+        	notifyObservers("STOP");
+    	} else if (!timer.isRunning()) {
+    		setChanged();
+        	notifyObservers("START");
+        	timer.start();
+    	}
     }
 	 
 	// === HEGAZKINA SORTU ===
@@ -164,7 +216,7 @@ public class Tableroa extends Observable {
 	    	int zutabea = r.nextInt(zabalera);
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
-	        if (etsaiaSortuDaiteke(zutabea, 5)) {
+	        if (etsaiaSortuDaiteke(mota, zutabea, 5)) {
 	        	EtsaiaTaldea e = EtsaiaFactory.nireEMA().sortuEtsaia(mota, new Koordenatua(zutabea, 5), ind);
 	        	ind ++;
 	            etsaiak.add(e);
@@ -180,7 +232,7 @@ public class Tableroa extends Observable {
 	 																		//izan ere, bestela tiro handiekin kolisioa sortzen da hegazkinarekin
 		long tiroOrain = System.currentTimeMillis(); 						//Oraingo momentuko denbora hartzen dugu, 300ms pasatu ez badira ez da tiro bat sortuko		
 	 	
-		if (tiroOrain - azkenTiroa >= tiroKadentzia) {
+		if (tiroOrain - azkenTiroa >= tiroKadentzia && timer.isRunning()) {
 	 		List<Koordenatua> koordenatuak = hegazkina.getTiroMota().sortuKoordenatuak(new Koordenatua(x,y));	// Tiroa sortuko du. "Strategy"-ren bidez, momenturo dagkion tiro mota egokia sortuko du.
 			
 	 		if (hegazkina.tiroaEginDaiteke()) {	// Konprobatzen du ea mota horretako tirorik geratzen diren
@@ -190,6 +242,8 @@ public class Tableroa extends Observable {
 			 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
 			 		hegazkina.tiroaKontsumitu();
 			 		azkenTiroa = tiroOrain;
+			 		setChanged();
+			 		notifyObservers("TIRO_KOP_EGUNERATU");
 		 		}
 			}
 		}
@@ -272,7 +326,7 @@ public class Tableroa extends Observable {
 	// === PARTIDA AMAITZEKO METODOAK ===
 	private void partidaAmaitu() {
 		gameOver = true;
-		stopJokoa();
+		amaituJokoa();
 	}
 	private void partidaIrabazi() {
 		partidaAmaitu();
@@ -303,6 +357,8 @@ public class Tableroa extends Observable {
 				it.remove();
 				garbituEtsaia(e);
 				eliminatuta = true;
+				setChanged();
+				notifyObservers("ETSAIAK_KOP_EGUNERATU");
 			}
 		}
 		etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.
@@ -348,36 +404,54 @@ public class Tableroa extends Observable {
 	
 	// === PIXELAK MARGOTZEKO ETA GARBITZEKO METODOAK ===
 	private void margotuHegazkina() {
+		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar()));
+		/*
 		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar());
 		}
+		*/
 	}
 	private void garbituHegazkina() {
+		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : hegazkina.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
         }
+        */
     }
 	
 	private void margotuEtsaia(EtsaiaTaldea e) {
+		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar()));
+		/*
 		for (Koordenatua k : e.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar());
 	    }
+	    */
 	}
 	private void garbituEtsaia(EtsaiaTaldea e) {
+		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : e.getKoordenatuLista()) {
             tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
         }
+        */
     }
 	
 	private void margotuTiroa(TiroaTaldea t) {
+		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriTiroa());
+		/*
 		for (Koordenatua k : t.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].jarriTiroa();
 	    }
+	    */
 	}
     private void garbituTiroa(TiroaTaldea t) {
+		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+		/*
     	for (Koordenatua k : t.getKoordenatuLista()) {
 	        tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
 	    }
+	    */
     }
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
@@ -408,15 +482,18 @@ public class Tableroa extends Observable {
 	    // Kordenatu berrien lista bat sortzen dugu, eta gero lista horren kordenatu guztiak libre dauden konprobatzen dugu.
 		List<Koordenatua> kordBerriak = new ArrayList<>(); 
 		
+		e.getKoordenatuLista().stream().forEach(k->kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy)));
+		/*
 		for (Koordenatua k : e.getKoordenatuLista()) {
 			kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy));
 		}
+		*/
 		
 		return koordenatuakLibreDaudeEtsaia(kordBerriak, e.getIndizea());
 	}
 	
-	private boolean etsaiaSortuDaiteke(int x, int y) {
-		return koordenatuakLibreDaudeEtsaia(EtsaiaTaldea.sortuKoordenatuak(new Koordenatua(x,y)), -1);
+	private boolean etsaiaSortuDaiteke(String mota, int x, int y) {
+		return koordenatuakLibreDaudeEtsaia(EtsaiaFactory.nireEMA().sortuKoordenatuak(mota, new Koordenatua(x,y)), -1);
 	}
 	
     private boolean koordenatuakLibreDaudeEtsaia(List<Koordenatua> koordBerriak, int nireEtsaia) {

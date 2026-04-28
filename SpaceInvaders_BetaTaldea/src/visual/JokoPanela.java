@@ -18,6 +18,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	private static JokoPanela nireEMA = null;
 	private JPanel panel;
 	private JFrame frame;
+    private JFrame framePause = new JFrame("PAUSE");
 	
 	private boolean matrizeaSortuta = false;
 	
@@ -27,14 +28,14 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    
 	    panel = new JPanel();
 	    panel.setLayout(new GridLayout(JokoKudeatzailea.getEMA().getAltuera(), JokoKudeatzailea.getEMA().getZabalera(), 0, 0));
-	    panel.setPreferredSize(new Dimension(1200, 720));	// Panelaren tamaiña totala
+	    panel.setPreferredSize(new Dimension(1200, 720));	// Panelaren tamaina totala
 	    panel.addKeyListener(this);							// Panelak teklatua detektatzeko
 	    panel.setFocusable(true);							// Panelak focus-a euki dezake
 	    panel.requestFocusInWindow();						// Focus-a panelean jartzen dugu
 	    
 	    frame.getContentPane().add(panel);
 	    frame.pack();
-	    frame.setLocationRelativeTo(null);
+	    frame.setLocation(250, 50);
 	    frame.setVisible(false);
 
 	    JokoKudeatzailea.getEMA().addObserver(this);
@@ -60,8 +61,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			}
 		}
 	    frame.setVisible(true);
-	    panel.requestFocusInWindow();
-
 	}
 	
 	@Override
@@ -70,26 +69,20 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
 			matrizeakSortu();
 			matrizeaSortuta = true;
+		} else if ("JOKOA_FOCUS_HARTU".equals(arg)) {
+			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
-	
 		    JFrame frame = new JFrame("Game Over!");
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
 		    frame.setContentPane(new GalduPantaila(frame));
-		    frame.pack();
-		    frame.setLocationRelativeTo(null);
-		    frame.setVisible(true);
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
-		    	
 		    JFrame frame = new JFrame("Irabazi duzu!");
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		    frame.setContentPane(new IrabaziPantaila(frame));
-		    frame.pack();
-		    frame.setLocationRelativeTo(null);
-		    frame.setVisible(true);
+		} else if ("STOP".equals(arg)) {	    	
+		    framePause.setContentPane(new PausePantaila(framePause));
+		} else if ("START".equals(arg)) {
+			framePause.dispose();
 		}
 	}
 
@@ -120,6 +113,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			break;
 		case KeyEvent.VK_R:
 			JokoKudeatzailea.getEMA().tiroaAldatu();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			JokoKudeatzailea.getEMA().startStopJokoa();
 		}
 	}
 
