@@ -36,7 +36,15 @@ public class EtsaiMorea extends EtsaiaTaldea{
 	    int y = pos.getY();
 
 	    lista.add(new Koordenatua(x, y));
-	    
+	    lista.add(new Koordenatua(x+1, y+1));
+	    lista.add(new Koordenatua(x+1, y));
+	    lista.add(new Koordenatua(x+1, y-1));
+	    lista.add(new Koordenatua(x-1, y+1));
+	    lista.add(new Koordenatua(x-1, y));
+	    lista.add(new Koordenatua(x-1, y-1));
+	    lista.add(new Koordenatua(x+2, y-1));
+	    lista.add(new Koordenatua(x-2, y-1));
+
 	    return lista;
 	}
 }
