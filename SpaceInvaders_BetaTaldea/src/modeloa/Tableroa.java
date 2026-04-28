@@ -44,6 +44,7 @@ public class Tableroa extends Observable {
     private boolean jokoHasita = false;
     private boolean irabaziDuzu = false;
     private String maila;
+    private MailaPortaera mailaPortaera;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -170,6 +171,8 @@ public class Tableroa extends Observable {
     
     // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
     public void hasiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+    	
+    	this.mailaPortaera = sortuMaila(maila);
     	jokoHasita = true;
     	
         setChanged();
@@ -205,7 +208,21 @@ public class Tableroa extends Observable {
     	}
     }
     // === MAILAK ===
-    
+    public MailaPortaera sortuMaila(String maila) {
+    	//eleguir estrategia segun el nivel
+    	switch (maila) {
+		case "Erraza":
+			return new MailaErraza();
+		case "Normala":
+			return new MailaNormala();
+		case "Zaila":
+			return new MailaZaila();
+		case "Progresibo": 
+			return  new MailaProgresibo();
+		default:
+			return  new MailaErraza();
+		}
+    }
     public boolean isErraza() {
     	return "Erraza".equals(maila);
     }
@@ -292,6 +309,8 @@ public class Tableroa extends Observable {
 	// === ETSAIEN MUGIMENDUA ===
 	public void mugituEtsaiak() {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
+		
+		mailaPortaera.aplikatu(this);
 		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
