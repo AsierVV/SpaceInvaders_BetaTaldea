@@ -56,7 +56,6 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    frame.getContentPane().add(panel);
 	    frame.pack();
 	    frame.setLocation(50, 100);
-	    //frame.setFocusableWindowState(false);
 	    frame.setVisible(false);
 
 	    JokoKudeatzailea.getEMA().addObserver(this);
@@ -154,7 +153,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	}
 
 	private void eguneratuPuntuazioa() {
-		puntuakLabel.setText("Puntuazioa: ");
+		puntuakLabel.setText("Puntuazioa: " + JokoKudeatzailea.getEMA().getPuntuazioa());
 	}
 
 	private void eguneratuEtsaiBizirik() {
@@ -201,7 +200,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	public void update(Observable o, Object arg) {
 		if (arg == null) return;
 		if ("PUNTUAZIO_PANTAILA_EGUNERATU".equals(arg)) {
-		    frame.setVisible(true);
+			frame.setVisible(true);
 		    hasieratuLabelak();
 		} else if ("DENBORA_EGUNERATU".equals(arg)) {
 			eguneratuDenbora();
@@ -209,8 +208,15 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 			eguneratuTiroKop();
 		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
 			eguneratuEtsaiBizirik();
+			eguneratuPuntuazioa();
 		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {
 			eguneratuTiroMota();
+		} else if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
+			nireEMA = null;
+			getEMA();
+		} else if ("IRABAZI".equals(arg) || "GALDU".equals(arg)) {
+			frame.dispose();
 		}
 	}
 }

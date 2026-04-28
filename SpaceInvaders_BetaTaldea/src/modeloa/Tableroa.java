@@ -23,6 +23,7 @@ public class Tableroa extends Observable {
 	private final int abiaduraTimer = 50;	//50ms
 	private int denboraSegundoak = 0;
 	private long azkenDenboraEguneraketa = 0;
+	private int puntuazioa = 0;
 	
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
 	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2 --> Batean hasi parametroa, horrela 100ms pasatzen diren bigarren aldian 200ms pasatu dira.
@@ -163,7 +164,11 @@ public class Tableroa extends Observable {
     	return hegazkina.getTiroMota().motaChar();
     }
     
-    // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
+    public int getPuntuazioa() {
+    	return puntuazioa;
+    }
+    
+    // === JOKOA HASTEKO METODOA ===
     public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
     	jokoHasita = true;
     	
@@ -182,6 +187,16 @@ public class Tableroa extends Observable {
         
         setChanged();
         notifyObservers("JOKOA_FOCUS_HARTU");
+    }
+    
+    // === JOKOA RESETEATU ===
+    public void jokoaReset() {
+    	amaituJokoa();
+    	nireEMA = null;
+    	getTableroaEMA();
+    	
+    	setChanged();
+    	notifyObservers("RESET");
     }
     
     // === START/STOP ===
@@ -357,6 +372,7 @@ public class Tableroa extends Observable {
 				it.remove();
 				garbituEtsaia(e);
 				eliminatuta = true;
+				puntuazioa = puntuazioa + 20;
 				setChanged();
 				notifyObservers("ETSAIAK_KOP_EGUNERATU");
 			}
@@ -456,7 +472,9 @@ public class Tableroa extends Observable {
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
 	private boolean hegazkinarenKoordenatuaDa(int x, int y) {
-	    for (Koordenatua k : hegazkina.getKoordenatuLista()) { // hegazkina.getKoordenatuak --> hegazkina pixel guztien koordenatuen lista bat itzultzen du
+	    
+		//return hegazkina.getKoordenatuLista().stream()
+		for (Koordenatua k : hegazkina.getKoordenatuLista()) { // hegazkina.getKoordenatuak --> hegazkina pixel guztien koordenatuen lista bat itzultzen du
 	        if (k.getX() == x && k.getY() == y) return true;
 	    }
 	    return false;

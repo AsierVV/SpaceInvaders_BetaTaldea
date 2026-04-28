@@ -1,6 +1,9 @@
 package visual;
 
 import javax.swing.JPanel;
+
+import modeloa.JokoKudeatzailea;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -16,14 +19,23 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class GalduPantaila extends JPanel{
+public class GalduPantaila extends JPanel implements Observer, KeyListener{
 
-	public GalduPantaila(JFrame bukFrame) {
+	private JFrame bukFrame;
+	
+	public GalduPantaila(JFrame pBukFrame) {
+		
+		bukFrame = pBukFrame;
+		
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		
@@ -42,6 +54,9 @@ public class GalduPantaila extends JPanel{
         
         this.setFocusable(true);
         this.requestFocusInWindow();
+        this.addKeyListener(this);
+        
+	    JokoKudeatzailea.getEMA().addObserver(this);
 	}
 	
 	public JPanel getBukaera() {
@@ -67,6 +82,34 @@ public class GalduPantaila extends JPanel{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_SPACE:
+			JokoKudeatzailea.getEMA().jokoaReset();
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if ("RESET".equals(arg)) {
+			bukFrame.dispose();
 		}
 	}
 }

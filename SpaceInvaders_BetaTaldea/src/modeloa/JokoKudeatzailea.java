@@ -23,6 +23,13 @@ public class JokoKudeatzailea extends Observable implements Observer{
     	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia);
     }
     
+    // === JOKOA RESETEATU ===
+    public void jokoaReset() {
+    	Tableroa.getTableroaEMA().jokoaReset();
+		Tableroa.getTableroaEMA().addObserver(this);
+		partidaIrabazita = false;
+    }
+    
     // === TABLEROAREN DATUAK BISTARAKO ===
     public int getZabalera() {
 		return Tableroa.getTableroaEMA().getZabalera();
@@ -55,6 +62,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	public char getHegazkinaMota() {return Tableroa.getTableroaEMA().getHegazkinMota();}
 	
 	public char getTiroMota() {return Tableroa.getTableroaEMA().getTiroMota();}
+	
+	public int getPuntuazioa() {return Tableroa.getTableroaEMA().getPuntuazioa();}
 	
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
@@ -107,6 +116,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("ETSAIAK_KOP_EGUNERATU");
+		} else if ("RESET".equals(arg)) {
+			setChanged();
+			notifyObservers("RESET");
 		} else if (partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");

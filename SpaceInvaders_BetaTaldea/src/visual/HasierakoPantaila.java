@@ -71,6 +71,9 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	public void update(Observable o, Object arg) {
 		if ("JOKOA_HASI".equals(arg)) {
 			hasiFrame.dispose();
+		} else if ("RESET".equals(arg)) {
+			nireEMA = null;
+			getEMA();
 		}
 	}
 

@@ -83,6 +83,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		    framePause.setContentPane(new PausePantaila(framePause));
 		} else if ("START".equals(arg)) {
 			framePause.dispose();
+		} else if ("RESET".equals(arg)) {
+			nireEMA = null;
+			getEMA();
 		}
 	}
 
