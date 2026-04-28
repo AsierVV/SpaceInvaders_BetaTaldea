@@ -15,7 +15,6 @@ public class EtsaiCyan extends EtsaiaTaldea {
 	    int x = posizioa.getX();
 	    int y = posizioa.getY();
 
-	    // Forma en cruz
 	    addElementua(new Etsaia(new Koordenatua(x, y)));
 	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
 	    addElementua(new Etsaia(new Koordenatua(x+1, y)));
