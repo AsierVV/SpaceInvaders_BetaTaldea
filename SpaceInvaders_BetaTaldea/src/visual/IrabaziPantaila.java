@@ -9,6 +9,9 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,8 +28,11 @@ public class IrabaziPantaila extends JPanel{
         bukFrame.setLocationRelativeTo(null);
         bukFrame.setVisible(true);
         
+        audioaJarri();
+        
         this.setFocusable(true);
         this.requestFocusInWindow();
+        
 	}
 	
 	public JPanel getBukaera() {
@@ -40,5 +46,18 @@ public class IrabaziPantaila extends JPanel{
 
 	    bukI.add(lblAlien, BorderLayout.CENTER);
 	    return bukI;
+	}
+	
+	private void audioaJarri() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("irabazi.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

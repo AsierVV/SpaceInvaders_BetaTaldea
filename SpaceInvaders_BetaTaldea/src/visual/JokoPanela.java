@@ -1,5 +1,8 @@
 package visual;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
     private JFrame framePause = new JFrame("PAUSE");
 	
 	private boolean matrizeaSortuta = false;
+	private Clip clip;
 	
 	private JokoPanela() {
 	    frame = new JFrame("Space Invaders");
@@ -69,21 +73,106 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		if ("JOKOA_HASI".equals(arg) && !matrizeaSortuta) {
 			matrizeakSortu();
 			matrizeaSortuta = true;
+			jokoAudioa();
+			etsaiakHelduDiraAudioa();
 		} else if ("JOKOA_FOCUS_HARTU".equals(arg)) {
 			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
 		    JFrame frame = new JFrame("Game Over!");
+		    stopAudioa();
 		    frame.setContentPane(new GalduPantaila(frame));
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
 		    JFrame frame = new JFrame("Irabazi duzu!");
+		    stopAudioa();
 		    frame.setContentPane(new IrabaziPantaila(frame));
 		} else if ("STOP".equals(arg)) {	    	
 		    framePause.setContentPane(new PausePantaila(framePause));
+		    stopAudioa();
+		    menuaAudioa();
 		} else if ("START".equals(arg)) {
 			framePause.dispose();
+			stopAudioa();
+		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
+			etsaiaHilAudioa();
+		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
+			tirokaEginAudioa();
 		}
+	}
+	
+	private void etsaiaHilAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("etsaiaHil.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void tirokaEginAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("tiroa.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void etsaiakHelduDiraAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("etsaiakHelduDira.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void menuaAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("menua.wav"));
+			clip = AudioSystem.getClip();
+			clip.open(audioa);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void jokoAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("musika1.wav"));
+			clip = AudioSystem.getClip();
+			clip.open(audioa);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void stopAudioa() {
+	    if (clip != null && clip.isRunning()) {
+	        clip.stop();
+	        clip.close();
+	    }
 	}
 
 	@Override

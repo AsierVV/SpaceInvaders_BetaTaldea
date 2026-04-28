@@ -33,12 +33,7 @@ public class GalduPantaila extends JPanel{
         bukFrame.setLocationRelativeTo(null);
         bukFrame.setVisible(true);
         
-        bukFrame.addWindowListener(new WindowAdapter(){
-        	@Override
-        	public void windowOpened(WindowEvent e) {
-        		audioaJarri();
-        	}
-        });
+		audioaJarri();
         
         this.setFocusable(true);
         this.requestFocusInWindow();
