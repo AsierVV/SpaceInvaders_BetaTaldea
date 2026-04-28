@@ -16,6 +16,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,11 +40,14 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
         bukFrame.setLocationRelativeTo(null);
         bukFrame.setVisible(true);
         
+        audioaJarri();
+        
         this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(this);
         
 	    JokoKudeatzailea.getEMA().addObserver(this);
+
 	}
 	
 	public JPanel getBukaera() {
@@ -82,6 +88,19 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 	public void update(Observable o, Object arg) {
 		if ("RESET".equals(arg)) {
 			bukFrame.dispose();
+		}
+	}
+	
+	private void audioaJarri() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("irabazi.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

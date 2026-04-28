@@ -44,6 +44,7 @@ public class Tableroa extends Observable {
     private boolean gameOver;
     private boolean jokoHasita = false;
     private boolean irabaziDuzu = false;
+    private String maila;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -164,12 +165,17 @@ public class Tableroa extends Observable {
     	return hegazkina.getTiroMota().motaChar();
     }
     
+    public String getMaila() {
+    	return this.maila;
+    }
+
     public int getPuntuazioa() {
     	return puntuazioa;
     }
-    
-    // === JOKOA HASTEKO METODOA ===
-    public void hasiJokoa(String motaHegazkina, String motaEtsaia) {
+
+	// === JOKOA HASTEKO METODOA ===
+    public void hasiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+
     	jokoHasita = true;
     	
         setChanged();
@@ -214,7 +220,22 @@ public class Tableroa extends Observable {
         	timer.start();
     	}
     }
-	 
+    // === MAILAK ===
+    
+    public boolean isErraza() {
+    	return "Erraza".equals(maila);
+    }
+    public boolean isNormala() {
+    	return "Normala".equals(maila);
+    }
+    public boolean isZaila() {
+    	return "Zaila".equals(maila);
+    }
+    public boolean isProgresibo() {
+    	return "Progresibo".equals(maila);
+    }
+	
+
 	// === HEGAZKINA SORTU ===
     private void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
