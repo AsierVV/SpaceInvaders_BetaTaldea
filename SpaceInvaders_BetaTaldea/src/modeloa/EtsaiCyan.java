@@ -18,6 +18,7 @@ public class EtsaiCyan extends EtsaiaTaldea {
 	    int x = posizioa.getX();
 	    int y = posizioa.getY();
 
+
 	    // Gurutze forma
 	    addElementua(new Etsaia(new Koordenatua(x, y)));
 	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
