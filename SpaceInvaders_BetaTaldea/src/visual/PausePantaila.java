@@ -33,14 +33,12 @@ public class PausePantaila extends JPanel implements KeyListener {
 	    JPanel pause = new JPanel();
 	    pause.setLayout(new BorderLayout());
 	    pause.setBackground(Color.BLACK);
-	    // HEMEN KODE KOMENTATU HAU ALDATU BEHAR DA ETA PANTAILA BERRIA EGIN PAUSE PANTAILARAKO
-	    /*
-	    ImageIcon hasiera = new ImageIcon(getClass().getResource("bukaeraIrabazita.png"));
+
+	    ImageIcon hasiera = new ImageIcon(getClass().getResource("pausePantaila.png"));
 	    JLabel lblAlien = new JLabel(hasiera);
 	    lblAlien.setHorizontalAlignment(JLabel.CENTER);
 
 	    pause.add(lblAlien, BorderLayout.CENTER);
-	    */
 	    return pause;
 	}
 	
