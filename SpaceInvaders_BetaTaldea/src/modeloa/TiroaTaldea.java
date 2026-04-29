@@ -5,11 +5,13 @@ import java.util.List;
 
 public class TiroaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<>();
+	private int dy;
 	
-	public TiroaTaldea(List<Koordenatua> pKoordenatuak) {
+	public TiroaTaldea(List<Koordenatua> pKoordenatuak, int dy) {
 		// Super hau egiterakoan koordenatuaren kopia berria sortu behar dugu, bestela arazoak ematen ditu koordenatuak pasatzerakoan
-        super(new Koordenatua(pKoordenatuak.get(0).getX(),pKoordenatuak.get(0).getY()));	// Listaren lehenengo koordenatua hartzen du, eta pixel ama klaseak posizioa bezala gordetzen du
-        sortuTiroaTaldea(pKoordenatuak);
+	    super(new Koordenatua(pKoordenatuak.get(0).getX(), pKoordenatuak.get(0).getY()));
+	    this.dy = dy;
+	    sortuTiroaTaldea(pKoordenatuak);
     }
 	
 	private void sortuTiroaTaldea(List<Koordenatua> pKoordenatuak) {
@@ -17,6 +19,9 @@ public class TiroaTaldea extends Pixel{
         	addElementua(new Tiroa(new Koordenatua(k.getX(),k.getY())));	// Elementu berria gehitzerakoan koordenatuaren kopia berria sortu behar dugu, bestela arazoak ematen ditu
         }
     }
+	public int getDy() {
+	    return dy;
+	}
 	
 	public void addElementua(Pixel p) {
 		pixelak.add(p);

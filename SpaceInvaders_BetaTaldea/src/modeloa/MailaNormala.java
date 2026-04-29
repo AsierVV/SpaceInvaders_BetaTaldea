@@ -4,6 +4,7 @@ public class MailaNormala implements MailaPortaera{
 	@Override
 	public void aplikatu(Tableroa t) {
 		// enemigos disparan
+	    t.etsaiekTiroEgin();
 	}
 
 }

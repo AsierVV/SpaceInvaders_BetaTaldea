@@ -274,7 +274,7 @@ public class Tableroa extends Observable {
 			
 	 		if (hegazkina.tiroaEginDaiteke()) {	// Konprobatzen du ea mota horretako tirorik geratzen diren
 		 		if (tiroaSortuDaiteke(koordenatuak)) {	// Tiro osoa sortu daitekeen konprobatu
-			 		TiroaTaldea t = new TiroaTaldea(koordenatuak);					// TiroaTaldea sortzen du (bere forma egokiarekin)
+			 		TiroaTaldea t = new TiroaTaldea(koordenatuak, -1);					// TiroaTaldea sortzen du (bere forma egokiarekin)
 					tiroak.add(t);													// Tiroa "tiroak" listan sartzen du
 			 		margotuTiroa(t);												// Gelaxka eguneratzen du tableroan
 			 		hegazkina.tiroaKontsumitu();
@@ -285,7 +285,21 @@ public class Tableroa extends Observable {
 			}
 		}
 	 }
-	
+	public void etsaiekTiroEgin() {
+	    for (EtsaiaTaldea e : etsaiak) {
+	        
+	        int x = e.getPosizioa().getX();
+	        int y = e.getPosizioa().getY() + 2; // debajo del enemigo
+	        
+	        List<Koordenatua> koordenatuak = List.of(new Koordenatua(x, y));
+	        
+	        if (tiroaSortuDaiteke(koordenatuak)) {
+	            TiroaTaldea t = new TiroaTaldea(koordenatuak, 1);
+	            tiroak.add(t);
+	            margotuTiroa(t);
+	        }
+	    }
+	}
 	// === TIROA ALDATU ===
 	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
 	public void tiroaAldatu() {
@@ -335,7 +349,7 @@ public class Tableroa extends Observable {
 		while (it.hasNext()) {
 			TiroaTaldea t = it.next();
 			
-			List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(),0,-1);
+			List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(),0,t.getDy());
 			
 			// Konprobatu etsai bat kolpatu duen
 			EtsaiaTaldea kolpatuta = null;
@@ -357,7 +371,7 @@ public class Tableroa extends Observable {
 				continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
 			}
 			
-			t.mugitu(0,-1);
+			t.mugitu(0,t.getDy());
 			margotuTiroa(t);
 		}
 	}
