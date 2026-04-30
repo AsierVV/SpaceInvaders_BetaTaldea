@@ -64,6 +64,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 		
 	    return has;
 	}
+	
 	private void eguneratuTestua() {
 	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia + " | Maila: " + maila);
 	}
