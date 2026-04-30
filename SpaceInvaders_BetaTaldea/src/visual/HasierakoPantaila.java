@@ -79,6 +79,11 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 		}
 	}
 
+	public void erakutsi() {
+	    hasiFrame.setVisible(true);
+	    this.requestFocusInWindow();
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
@@ -139,7 +144,10 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	        break;
 	    case KeyEvent.VK_ESCAPE:
 			System.exit(0);
-			break;
+			break;        
+	    case KeyEvent.VK_I:
+	    	hasiFrame.setVisible(false);
+	    	Kontrolak.getEMA().erakutsi();
 	    }
 	}
 
