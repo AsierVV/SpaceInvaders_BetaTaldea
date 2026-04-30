@@ -53,6 +53,8 @@ public class Tableroa extends Observable {
     private boolean irabaziDuzu = false;
     private String maila;
     private MailaPortaera mailaPortaera;
+    private long azkenEtsaiTiroa = 0;
+    private final long etsaiTiroDenbora = 800;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -187,6 +189,7 @@ public class Tableroa extends Observable {
     	motaHegazkina = pMotaHegazkina;
     	motaEtsaia = pMotaEtsaia;
     	maila = pMaila;
+    	mailaPortaera = sortuMaila(maila);
     	
     	zailtasunaAplikatu(maila);
     	
@@ -198,7 +201,6 @@ public class Tableroa extends Observable {
 			}
 		});
     	
-
     	jokoHasita = true;
     	
         setChanged();
@@ -213,6 +215,9 @@ public class Tableroa extends Observable {
         if (!timer.isRunning()) {
         	timer.start();
         	timerEtsai.start();
+        }
+        if (!timerEtsai.isRunning()) {
+            timerEtsai.start();
         }
         
         azkenDenboraEguneraketa = System.currentTimeMillis();
@@ -374,7 +379,15 @@ public class Tableroa extends Observable {
 		}
 	 }
 	public void etsaiekTiroEgin() {
-	    for (EtsaiaTaldea e : etsaiak) {
+	    long orain = System.currentTimeMillis();
+
+	    if (orain - azkenEtsaiTiroa < etsaiTiroDenbora) return;
+
+	    azkenEtsaiTiroa = orain;
+		Random r = new Random();
+		for (EtsaiaTaldea e : etsaiak) {
+	        //Probabilidad de disparo (40%)
+	        if (r.nextInt(100) < 40) {
 	        
 	        int x = e.getPosizioa().getX();
 	        int y = e.getPosizioa().getY() + 2; // debajo del enemigo
@@ -386,8 +399,10 @@ public class Tableroa extends Observable {
 	            tiroak.add(t);
 	            margotuTiroa(t);
 	        }
-	    }
+	     }
+		}
 	}
+	       
 	// === TIROA ALDATU ===
 	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
 	public void tiroaAldatu() {
@@ -413,6 +428,10 @@ public class Tableroa extends Observable {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
 		
 		mailaPortaera.aplikatu(this);
+		
+	    if (isNormala() || isZaila()) {
+	        etsaiekTiroEgin();
+	    }
 		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
