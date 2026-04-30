@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.Dimension;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 public class JokoPanela extends JPanel implements Observer, KeyListener{
 	
@@ -24,7 +25,13 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
     private JFrame framePause = new JFrame("PAUSE");
 	
 	private boolean matrizeaSortuta = false;
+	
+	//Audiorako atributuak
 	private Clip clip;
+	private Clip clipMenu;
+	private long audioDenbora = 0;
+	private String[] musikak = {"musika1.wav", "musika2.wav", "musika3.wav"};
+	private String egungoMusika;
 	
 	private JokoPanela() {
 	    frame = new JFrame("Space Invaders");
@@ -79,25 +86,34 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
-		    JFrame frame = new JFrame("Game Over!");
+		    //JFrame frame = new JFrame("Game Over!");
 		    stopAudioa();
-		    frame.setContentPane(new GalduPantaila(frame));
+		    //frame.setContentPane(new GalduPantaila(frame));
+		    GalduPantaila.getEMA();
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
-		    JFrame frame = new JFrame("Irabazi duzu!");
+		    //JFrame frame = new JFrame("Irabazi duzu!");
 		    stopAudioa();
-		    frame.setContentPane(new IrabaziPantaila(frame));
+		    //frame.setContentPane(new IrabaziPantaila(frame));
+		    IrabaziPantaila.getEMA();
 		} else if ("STOP".equals(arg)) {	    	
 		    framePause.setContentPane(new PausePantaila(framePause));
-		    stopAudioa();
+		    pausatuAudioa();
 		    menuaAudioa();
 		} else if ("START".equals(arg)) {
 			framePause.dispose();
 			stopAudioa();
+			jarraituAudioa();
 		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
 			etsaiaHilAudioa();
 		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
 			tirokaEginAudioa();
+		} else if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
+			frame.dispose();
+			nireEMA = null;
+		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {
+			tiroAldatuAudioa();
 		}
 	}
 	
@@ -135,7 +151,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -144,6 +159,24 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		AudioInputStream audioa;
 		try {
 			audioa = AudioSystem.getAudioInputStream(getClass().getResource("menua.wav"));
+			clipMenu = AudioSystem.getClip();
+			clipMenu.open(audioa);
+			clipMenu.loop(Clip.LOOP_CONTINUOUSLY);
+			clipMenu.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void jokoAudioa() {
+		AudioInputStream audioa;
+		try {
+			Random r = new Random();
+			egungoMusika = musikak[r.nextInt(musikak.length)]; 
+					
+					
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource(egungoMusika));
 			clip = AudioSystem.getClip();
 			clip.open(audioa);
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -154,14 +187,13 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		}
 	}
 	
-	private void jokoAudioa() {
+	private void tiroAldatuAudioa() {
 		AudioInputStream audioa;
 		try {
-			audioa = AudioSystem.getAudioInputStream(getClass().getResource("musika1.wav"));
-			clip = AudioSystem.getClip();
-			clip.open(audioa);
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
-			clip.start();
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("tiroAldatu.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -172,9 +204,27 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 	    if (clip != null && clip.isRunning()) {
 	        clip.stop();
 	        clip.close();
+	    } else if (clipMenu != null && clipMenu.isRunning()) {
+	        clipMenu.stop();
+	        clipMenu.close();
 	    }
 	}
 
+	private void pausatuAudioa() {
+		if (clip != null && clip.isRunning()) {
+			audioDenbora = clip.getMicrosecondPosition();
+			clip.stop();
+		}
+	}
+	
+	private void jarraituAudioa() {
+		if (clip != null) {
+			clip.setMicrosecondPosition(audioDenbora);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip.start();
+		}
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {}
 

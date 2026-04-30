@@ -25,7 +25,7 @@ public abstract class EtsaiaTaldea extends Pixel{
 
 	public Koordenatua etsaiaAusazkoMugimendua() {
 		int mugimenduMota = (int) (Math.random() * 3);
-		Koordenatua k = new Koordenatua(0,0);;
+		Koordenatua k = new Koordenatua(0,0);
 		switch (mugimenduMota) {
         	case 0: // Behera
         		k = new Koordenatua(0,1);
@@ -40,6 +40,32 @@ public abstract class EtsaiaTaldea extends Pixel{
 		return k;
 	}
 	
+	public Koordenatua mugimenduAdimenduaEtsaia() {
+		// Hegazkinaren koordenatuak hartu
+		Koordenatua kordHegazkin = Tableroa.getTableroaEMA().getHegazkina().getPosizioa();
+		int xH = kordHegazkin.getX();
+		int yH = kordHegazkin.getY();
+		
+		// Mugituko dena
+		int dXE = 0;
+		int dYE = 0;
+		
+		int mugimenduMota = (int) (Math.random() * 2);
+		switch (mugimenduMota) {
+        	case 0: // Etsaia hurbildu hegazkinera
+        		if (xH < posizioa.getX()) dXE--;
+        		else if (xH > posizioa.getX()) dXE++;
+        		break;
+        	case 1: // Behera
+        		dYE++;
+        		break;
+		}
+		
+		// Koordenatu berriak bueltatu
+		return new Koordenatua(dXE, dYE);
+	}
+	
+	/*
 	public void mugituEtsaia() {
         // Ausazko mugimendua sortu (0, 1, edo 2)
         int mugimenduMota = (int) (Math.random() * 3);
@@ -63,6 +89,7 @@ public abstract class EtsaiaTaldea extends Pixel{
         posizioa.setX(xBerria);
         posizioa.setY(yBerria);
 	}
+	*/
 		
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {

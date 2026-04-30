@@ -24,13 +24,6 @@ public class EtsaiGorria extends EtsaiaTaldea{
 	    addElementua(new Etsaia(new Koordenatua(x, y+1)));
 	    addElementua(new Etsaia(new Koordenatua(x+1, y)));
 	    addElementua(new Etsaia(new Koordenatua(x-1, y)));
-	    /*
-	    addElementua(new Etsaia(new Koordenatua(x, y)));       // centro arriba
-	    addElementua(new Etsaia(new Koordenatua(x-1, y+1)));
-	    addElementua(new Etsaia(new Koordenatua(x+1, y+1)));
-	    addElementua(new Etsaia(new Koordenatua(x-2, y+2)));
-	    addElementua(new Etsaia(new Koordenatua(x+2, y+2)));
-	    */
 	}
 	
 	public static List<Koordenatua> sortuKoordenatuak(Koordenatua pos) {
@@ -39,10 +32,9 @@ public class EtsaiGorria extends EtsaiaTaldea{
 	    int y = pos.getY();
 
 	    lista.add(new Koordenatua(x, y));
-	    lista.add(new Koordenatua(x-1, y+1));
-	    lista.add(new Koordenatua(x+1, y+1));
-	    lista.add(new Koordenatua(x-2, y+2));
-	    lista.add(new Koordenatua(x+2, y-2));
+	    lista.add(new Koordenatua(x, y+1));
+	    lista.add(new Koordenatua(x+1, y));
+	    lista.add(new Koordenatua(x-1, y));
 
 	    return lista;
 	}

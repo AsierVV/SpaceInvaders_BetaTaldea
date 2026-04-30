@@ -19,13 +19,21 @@ public class Tableroa extends Observable {
 	private List<EtsaiaTaldea> etsaiak;
 	private List<TiroaTaldea> tiroak;
 	
+	private String motaEtsaia;
+	private String motaHegazkina;
+	
 	private Timer timer;
+	private Timer timerEtsai;
 	private final int abiaduraTimer = 50;	//50ms
 	private int denboraSegundoak = 0;
 	private long azkenDenboraEguneraketa = 0;
+	private int puntuazioa = 0;
+	
+	private int etsaiKop = 4;
+	private int etsaiAbiadura = 200;		//200ms (default abiadura)
+	private int puntuazioBiderkatzailea = 1;
 	
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
-	private int mugituEtsaiakKont = 1;		//200ms, beraz 100ms * 2 --> Batean hasi parametroa, horrela 100ms pasatzen diren bigarren aldian 200ms pasatu dira.
 	private int tiroEginKont = 2;			//300ms, beraz 100ms * 3 --> Bian hasi parametroa, horrela 100ms pasatzen diren hirugarren aldian 300ms pasatu dira.
 	
 	private long azkenTiroa = 0;
@@ -83,12 +91,6 @@ public class Tableroa extends Observable {
         			mugituHegazkinaControl();
         			mugituHegazkinaKont = 1;
         			
-        			// Konprobatu 200ms pasatu diren
-            		if (mugituEtsaiakKont <= 0) {
-        				mugituEtsaiak();
-        				mugituEtsaiakKont = 1;
-            		} else mugituEtsaiakKont--;
-            		
             		// Konprobatu 300ms pasatu diren
             		if (tiroEginKont <= 0) {
     					tiroakSortu();
@@ -140,8 +142,13 @@ public class Tableroa extends Observable {
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
-    		irabaziDuzu = true;
-    		partidaIrabazi();
+    		if (maila.equals("Progresiboa") &&
+    			JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
+    			hurrengoMaila();
+    		} else {
+        		irabaziDuzu = true;
+        		partidaIrabazi();    			
+    		}
 		}
     }
     
@@ -168,11 +175,30 @@ public class Tableroa extends Observable {
     public String getMaila() {
     	return this.maila;
     }
-    
-    // === JOKOA HASTEKO ETA GELDITZEKO METODOAK ===
-    public void hasiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+
+
+    public int getPuntuazioa() {
+    	return puntuazioa;
+    }
+
+	// === JOKOA HASTEKO METODOA ===
+    public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pMaila) {
+
+    	motaHegazkina = pMotaHegazkina;
+    	motaEtsaia = pMotaEtsaia;
+    	maila = pMaila;
     	
-    	this.mailaPortaera = sortuMaila(maila);
+    	zailtasunaAplikatu(maila);
+    	
+    	// --- ETSAIEN TIMERRA ERAIKI ---
+        timerEtsai = new Timer(etsaiAbiadura, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mugituEtsaiak();
+			}
+		});
+    	
+
     	jokoHasita = true;
     	
         setChanged();
@@ -184,7 +210,10 @@ public class Tableroa extends Observable {
     	setChanged();
         notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
         
-        if (!timer.isRunning()) timer.start();
+        if (!timer.isRunning()) {
+        	timer.start();
+        	timerEtsai.start();
+        }
         
         azkenDenboraEguneraketa = System.currentTimeMillis();
         
@@ -192,21 +221,35 @@ public class Tableroa extends Observable {
         notifyObservers("JOKOA_FOCUS_HARTU");
     }
     
+    // === JOKOA RESETEATU ===
+    public void jokoaReset() {
+    	amaituJokoa();
+    	nireEMA = null;
+    	getTableroaEMA();
+    	
+    	setChanged();
+    	notifyObservers("RESET");
+    }
+    
     // === START/STOP ===
     public void amaituJokoa() {
     	timer.stop();
+    	timerEtsai.stop();
     }
     public void startStopJokoa() {
     	if (timer.isRunning()) {
     		timer.stop();
+        	timerEtsai.stop();
     		setChanged();
         	notifyObservers("STOP");
     	} else if (!timer.isRunning()) {
     		setChanged();
         	notifyObservers("START");
         	timer.start();
+        	timerEtsai.start();
     	}
     }
+
     // === MAILAK ===
     public MailaPortaera sortuMaila(String maila) {
     	//eleguir estrategia segun el nivel
@@ -223,6 +266,35 @@ public class Tableroa extends Observable {
 			return  new MailaErraza();
 		}
     }
+
+    
+    private void zailtasunaAplikatu(String maila) {
+    	switch(maila) {
+    		case "Erraza":
+    			etsaiKop = 4;
+    			etsaiAbiadura = 200;	//200ms-ro mugitu
+    			puntuazioBiderkatzailea = 1;
+    			break;
+    		case "Normala":
+    			etsaiKop = 8;
+    			etsaiAbiadura = 150;	//150ms-ro mugitu
+    			puntuazioBiderkatzailea = 2;
+    			break;
+    		case "Zaila":
+    			etsaiKop = 12;
+    			etsaiAbiadura = 100;	//100ms-ro mugitu
+    			puntuazioBiderkatzailea = 3;
+    			break;
+    		case "Progresiboa":
+    			etsaiKop = 4;
+    			etsaiAbiadura = 200;	//200ms-ro mugitu
+    			puntuazioBiderkatzailea = 1;
+    			break;
+    	}
+    }
+    
+    // === MAILAK ===
+
     public boolean isErraza() {
     	return "Erraza".equals(maila);
     }
@@ -233,7 +305,7 @@ public class Tableroa extends Observable {
     	return "Zaila".equals(maila);
     }
     public boolean isProgresibo() {
-    	return "Progresibo".equals(maila);
+    	return "Progresiboa".equals(maila);
     }
 	
 
@@ -246,10 +318,26 @@ public class Tableroa extends Observable {
 	// === ETSAIAK SORTU ===
 	private void sortuEtsaiak(String mota) {
 		Random r = new Random();
-	    int kopurua = 4 + r.nextInt(5); // 4-8 etsai: r.nextInt(5) --> 0 eta 5-1 arteko zenbaki bat ematen du
-	    int ind = 1;
+	    int kopurua = etsaiKop + r.nextInt(etsaiKop/2 + 1); // r.nextInt(5) --> 0 eta 4 arteko zenbaki bat ematen du
+			/* ETSAI KOPURUAK:
+			 *	- Erraza -> 4-6
+			 *	- Normala -> 8-12
+			 *	- Zaila -> 12-18
+			 */
 	    
-	    while (etsaiak.size() < kopurua) {
+	    // Etsaiak "PURPLE" direnean asko okupatzen dute eta errorea ematen du 20 baino gehiago sortu behar badira,
+	    // izan ere ez dira sartzen pantailan --> Hau konpontzeko momentuz purple etsaiak 18-ra limitatu dira
+	    if ("PURPLE".equals(mota)) {
+	        kopurua = Math.min(kopurua, 18);	// kopurua eta 18 balioetatik txikiena hartzen du, beraz ez da inoiz 18 baino etsai purple gehiago egongo
+	    }
+	    
+	    int ind = 1;
+	    int saiakerak = 0;
+	    int maxSaiakerak = 100;
+	    
+	    while (etsaiak.size() < kopurua && saiakerak < maxSaiakerak) {
+	    	saiakerak++;
+	    	
 	    	int zutabea = r.nextInt(zabalera);
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
@@ -329,8 +417,12 @@ public class Tableroa extends Observable {
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
 			EtsaiaTaldea e = it.next();
-			Koordenatua dif = e.etsaiaAusazkoMugimendua();
 			
+			Koordenatua dif;
+			if (maila.equals("Erraza") || maila.equals("Normala") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()<=2)) dif = e.etsaiaAusazkoMugimendua();
+			else if (maila.equals("Zaila") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()>=3)) dif = e.mugimenduAdimenduaEtsaia();
+			else dif = e.etsaiaAusazkoMugimendua();
+				
 			int dx = dif.getX();
 			int dy = dif.getY();
 			
@@ -385,13 +477,13 @@ public class Tableroa extends Observable {
 		partidaAmaitu();
 		JokoKudeatzailea.getEMA().setIrabazi(true);
 		setChanged();
-		notifyObservers();
+		notifyObservers("PARTIDA_AMAITUTA");
 	}
 	private void partidaGaldu() {
 		partidaAmaitu();
 		JokoKudeatzailea.getEMA().setIrabazi(false);
 		setChanged();
-		notifyObservers();
+		notifyObservers("PARTIDA_AMAITUTA");
 	}
 	private boolean etsaiaBeheraHelduDa(EtsaiaTaldea e) {
 		for (Koordenatua k : e.getKoordenatuLista()) {
@@ -410,6 +502,7 @@ public class Tableroa extends Observable {
 				it.remove();
 				garbituEtsaia(e);
 				eliminatuta = true;
+				puntuazioa = puntuazioa + 20*puntuazioBiderkatzailea;
 				setChanged();
 				notifyObservers("ETSAIAK_KOP_EGUNERATU");
 			}
@@ -509,7 +602,9 @@ public class Tableroa extends Observable {
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
 	private boolean hegazkinarenKoordenatuaDa(int x, int y) {
-	    for (Koordenatua k : hegazkina.getKoordenatuLista()) { // hegazkina.getKoordenatuak --> hegazkina pixel guztien koordenatuen lista bat itzultzen du
+	    
+		//return hegazkina.getKoordenatuLista().stream()
+		for (Koordenatua k : hegazkina.getKoordenatuLista()) { // hegazkina.getKoordenatuak --> hegazkina pixel guztien koordenatuen lista bat itzultzen du
 	        if (k.getX() == x && k.getY() == y) return true;
 	    }
 	    return false;
@@ -614,5 +709,27 @@ public class Tableroa extends Observable {
     		if (tableroMatrizea[x][y].getMota() == 't') return false;
     	}
     	return true;
+    }
+    
+    // === PROGRESIBO MODUA ===
+    private void hurrengoMaila() {
+    	JokoKudeatzailea.getEMA().hurrengoMaila();
+    	etsaiKopMailaAldatu();
+    	
+    	tableroaGarbitu();
+    	sortuEtsaiak(motaEtsaia);
+    	sortuHegazkina(motaHegazkina);
+    }
+    
+    private void tableroaGarbitu() {
+    	for (int i = 0; i < zabalera; i++) {
+            for (int j = 0; j < altuera; j++) {
+            	tableroMatrizea[i][j].hutsikUtzi();
+            }
+        }
+    }
+    
+    private void etsaiKopMailaAldatu() {
+    	etsaiKop = etsaiKop + (JokoKudeatzailea.getEMA().getMailaProgresiboa() * 2);
     }
 }

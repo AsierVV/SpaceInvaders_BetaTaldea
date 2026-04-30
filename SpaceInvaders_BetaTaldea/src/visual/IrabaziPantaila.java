@@ -1,12 +1,19 @@
 package visual;
 
 import javax.swing.JPanel;
+
+import modeloa.JokoKudeatzailea;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
 
 import javax.sound.sampled.AudioInputStream;
@@ -16,9 +23,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class IrabaziPantaila extends JPanel{
-
-	public IrabaziPantaila(JFrame bukFrame) {
+public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
+	
+	private JFrame bukFrame = new JFrame("Irabazi duzu!");
+	private static IrabaziPantaila nireEMA = null;
+	
+	public IrabaziPantaila() {
+			
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		
@@ -32,7 +43,16 @@ public class IrabaziPantaila extends JPanel{
         
         this.setFocusable(true);
         this.requestFocusInWindow();
+        this.addKeyListener(this);
         
+	    JokoKudeatzailea.getEMA().addObserver(this);
+	}
+	
+	public static IrabaziPantaila getEMA() {
+		if (nireEMA == null) {
+			nireEMA = new IrabaziPantaila();
+		}
+		return nireEMA;
 	}
 	
 	public JPanel getBukaera() {
@@ -47,6 +67,33 @@ public class IrabaziPantaila extends JPanel{
 	    bukI.add(lblAlien, BorderLayout.CENTER);
 	    return bukI;
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_SPACE:
+			JokoKudeatzailea.getEMA().jokoaReset();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			System.exit(0);
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
+			bukFrame.dispose();
+			nireEMA = null;
+		}
+	}
 	
 	private void audioaJarri() {
 		AudioInputStream audioa;
@@ -56,7 +103,6 @@ public class IrabaziPantaila extends JPanel{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
