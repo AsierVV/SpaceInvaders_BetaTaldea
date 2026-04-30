@@ -141,7 +141,7 @@ public class Tableroa extends Observable {
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
-    		if (maila == "Progresiboa" &&
+    		if (maila.equals("Progresiboa") &&
     			JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
     			hurrengoMaila();
     		} else {
@@ -283,7 +283,7 @@ public class Tableroa extends Observable {
     	return "Zaila".equals(maila);
     }
     public boolean isProgresibo() {
-    	return "Progresibo".equals(maila);
+    	return "Progresiboa".equals(maila);
     }
 	
 
@@ -302,8 +302,20 @@ public class Tableroa extends Observable {
 			 *	- Normala -> 8-12
 			 *	- Zaila -> 12-18
 			 */
+	    
+	    // Etsaiak "PURPLE" direnean asko okupatzen dute eta errorea ematen du 20 baino gehiago sortu behar badira,
+	    // izan ere ez dira sartzen pantailan --> Hau konpontzeko momentuz purple etsaiak 18-ra limitatu dira
+	    if ("PURPLE".equals(mota)) {
+	        kopurua = Math.min(kopurua, 18);	// kopurua eta 18 balioetatik txikiena hartzen du, beraz ez da inoiz 18 baino etsai purple gehiago egongo
+	    }
+	    
 	    int ind = 1;
-	    while (etsaiak.size() < kopurua) {
+	    int saiakerak = 0;
+	    int maxSaiakerak = 100;
+	    
+	    while (etsaiak.size() < kopurua && saiakerak < maxSaiakerak) {
+	    	saiakerak++;
+	    	
 	    	int zutabea = r.nextInt(zabalera);
 	
 	    	// Konprobatu ea hutsik dagoen gelaxka
@@ -367,8 +379,12 @@ public class Tableroa extends Observable {
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
 			EtsaiaTaldea e = it.next();
-			Koordenatua dif = e.etsaiaAusazkoMugimendua();
 			
+			Koordenatua dif;
+			if (maila.equals("Erraza") || maila.equals("Normala") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()<=2)) dif = e.etsaiaAusazkoMugimendua();
+			else if (maila.equals("Zaila") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()>=3)) dif = e.mugimenduAdimenduaEtsaia();
+			else dif = e.etsaiaAusazkoMugimendua();
+				
 			int dx = dif.getX();
 			int dy = dif.getY();
 			
