@@ -25,12 +25,11 @@ import javax.swing.JFrame;
 
 public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 	
-	private JFrame bukFrame;
+	private JFrame bukFrame = new JFrame("Irabazi duzu!");
+	private static IrabaziPantaila nireEMA = null;
 	
-	public IrabaziPantaila(JFrame pBukFrame) {
-		
-		bukFrame = pBukFrame;
-		
+	public IrabaziPantaila() {
+			
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		
@@ -47,7 +46,13 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
         this.addKeyListener(this);
         
 	    JokoKudeatzailea.getEMA().addObserver(this);
-
+	}
+	
+	public static IrabaziPantaila getEMA() {
+		if (nireEMA == null) {
+			nireEMA = new IrabaziPantaila();
+		}
+		return nireEMA;
 	}
 	
 	public JPanel getBukaera() {
@@ -64,10 +69,7 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -75,19 +77,21 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 		case KeyEvent.VK_SPACE:
 			JokoKudeatzailea.getEMA().jokoaReset();
 			break;
+		case KeyEvent.VK_ESCAPE:
+			System.exit(0);
+			break;
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
 			bukFrame.dispose();
+			nireEMA = null;
 		}
 	}
 	
@@ -99,7 +103,6 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

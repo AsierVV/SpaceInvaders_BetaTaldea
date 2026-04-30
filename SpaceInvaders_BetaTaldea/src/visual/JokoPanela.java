@@ -79,14 +79,16 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
-		    JFrame frame = new JFrame("Game Over!");
+		    //JFrame frame = new JFrame("Game Over!");
 		    stopAudioa();
-		    frame.setContentPane(new GalduPantaila(frame));
+		    //frame.setContentPane(new GalduPantaila(frame));
+		    GalduPantaila.getEMA();
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
-		    JFrame frame = new JFrame("Irabazi duzu!");
+		    //JFrame frame = new JFrame("Irabazi duzu!");
 		    stopAudioa();
-		    frame.setContentPane(new IrabaziPantaila(frame));
+		    //frame.setContentPane(new IrabaziPantaila(frame));
+		    IrabaziPantaila.getEMA();
 		} else if ("STOP".equals(arg)) {	    	
 		    framePause.setContentPane(new PausePantaila(framePause));
 		    stopAudioa();
@@ -99,8 +101,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
 			tirokaEginAudioa();
 		} else if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
+			frame.dispose();
 			nireEMA = null;
-			getEMA();
 		}
 	}
 	
@@ -138,7 +141,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

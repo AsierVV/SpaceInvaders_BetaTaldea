@@ -213,8 +213,8 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 			eguneratuTiroMota();
 		} else if ("RESET".equals(arg)) {
 			JokoKudeatzailea.getEMA().deleteObserver(this);
+			frame.dispose();
 			nireEMA = null;
-			getEMA();
 		} else if ("IRABAZI".equals(arg) || "GALDU".equals(arg)) {
 			frame.dispose();
 		}

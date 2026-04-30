@@ -65,16 +65,17 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    return has;
 	}
 	private void eguneratuTestua() {
-	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia + " | Maila: ");
+	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia + " | Maila: " + maila);
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		if ("JOKOA_HASI".equals(arg)) {
-			hasiFrame.dispose();
+			hasiFrame.setVisible(false);
 		} else if ("RESET".equals(arg)) {
-			nireEMA = null;
-			getEMA();
+			hasiFrame.setVisible(true);
+			hasiFrame.toFront();
+		    requestFocusInWindow();
 		}
 	}
 
@@ -89,22 +90,22 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	        break;
 	    case KeyEvent.VK_1:
 	    	maila = "Erraza";
-	        eguneratuTestua();
+	    	eguneratuTestua();
 	        break;
 	        
 	    case KeyEvent.VK_2:
 	    	maila = "Normala";
-	        eguneratuTestua();
+	    	eguneratuTestua();
 	        break;
 	        
 	    case KeyEvent.VK_3:
 	    	maila = "Zaila";
-	        eguneratuTestua();
+	    	eguneratuTestua();
 	        break;
 	        
 	    case KeyEvent.VK_4:
-	    	maila = "Progresibo";
-	        eguneratuTestua();
+	    	maila = "Progresiboa";
+	    	eguneratuTestua();
 	        break;
 	        
 	    case KeyEvent.VK_G:
@@ -136,6 +137,9 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	        motaEtsaia = "CYAN";
 	        eguneratuTestua();
 	        break;
+	    case KeyEvent.VK_ESCAPE:
+			System.exit(0);
+			break;
 	    }
 	}
 

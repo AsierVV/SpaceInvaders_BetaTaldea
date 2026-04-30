@@ -3,9 +3,13 @@ package modeloa;
 import java.util.Observable;
 import java.util.Observer;
 
+import visual.JokoPanela;
+import visual.PuntuazioPantaila;
+
 public class JokoKudeatzailea extends Observable implements Observer{
 	private static JokoKudeatzailea nireEma  = null;
 	private boolean partidaIrabazita;
+	private int mailaProgresiboa;
 	
 	private JokoKudeatzailea() {
 		Tableroa.getTableroaEMA().addObserver(this);
@@ -20,6 +24,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 
 	// === JOKOA HASTEKO ===
     public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+    	mailaProgresiboa = 1;
+    	JokoPanela.getEMA();
+    	PuntuazioPantaila.getEMA();
     	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila);
     }
     
@@ -28,6 +35,11 @@ public class JokoKudeatzailea extends Observable implements Observer{
     	Tableroa.getTableroaEMA().jokoaReset();
 		Tableroa.getTableroaEMA().addObserver(this);
 		partidaIrabazita = false;
+    }
+    
+    // === MODU PROGRESIBOA KUDEATZEKO ===
+    public void hurrengoMaila() {
+    	if (mailaProgresiboa < 4) mailaProgresiboa++;
     }
     
     // === TABLEROAREN DATUAK BISTARAKO ===
@@ -65,6 +77,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	
 	public int getPuntuazioa() {return Tableroa.getTableroaEMA().getPuntuazioa();}
 	
+	public int getMailaProgresiboa() {return mailaProgresiboa;}
+		
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
 	public void ezkerraAskatu() {Tableroa.getTableroaEMA().ezkerraAskatu();}
@@ -119,10 +133,10 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("RESET".equals(arg)) {
 			setChanged();
 			notifyObservers("RESET");
-		} else if (partidaIrabazita) {
+		} else if ("PARTIDA_AMAITUTA".equals(arg) && partidaIrabazita) {
 			setChanged();
 			notifyObservers("IRABAZI");
-		} else if (!partidaIrabazita) {
+		} else if ("PARTIDA_AMAITUTA".equals(arg) && !partidaIrabazita) {
 			setChanged();
 			notifyObservers("GALDU");
 		}

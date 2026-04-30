@@ -30,11 +30,14 @@ import java.util.Observer;
 
 public class GalduPantaila extends JPanel implements Observer, KeyListener{
 
-	private JFrame bukFrame;
+	private JFrame bukFrame = new JFrame("Game Over!");
+	private static GalduPantaila nireEMA = null;
 	
-	public GalduPantaila(JFrame pBukFrame) {
-		
-		bukFrame = pBukFrame;
+	
+	//public GalduPantaila(JFrame pBukFrame) {
+	public GalduPantaila() {
+	
+		//bukFrame = pBukFrame;
 		
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
@@ -54,6 +57,13 @@ public class GalduPantaila extends JPanel implements Observer, KeyListener{
 	    JokoKudeatzailea.getEMA().addObserver(this);
 	}
 	
+	public static GalduPantaila getEMA() {
+		if (nireEMA == null) {
+			nireEMA = new GalduPantaila();
+		}
+		return nireEMA;
+	}
+	
 	public JPanel getBukaera() {
 	    JPanel bukG = new JPanel();
 	    bukG.setLayout(new BorderLayout());
@@ -66,6 +76,33 @@ public class GalduPantaila extends JPanel implements Observer, KeyListener{
 	    bukG.add(lblAlien, BorderLayout.CENTER);
 	    return bukG;
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_SPACE:
+			JokoKudeatzailea.getEMA().jokoaReset();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			System.exit(0);
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if ("RESET".equals(arg)) {
+			JokoKudeatzailea.getEMA().deleteObserver(this);
+			bukFrame.dispose();
+			nireEMA = null;
+		}
+	}
 	
 	private void audioaJarri() {
 		AudioInputStream audioa;
@@ -75,36 +112,7 @@ public class GalduPantaila extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
-			JokoKudeatzailea.getEMA().jokoaReset();
-			break;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		if ("RESET".equals(arg)) {
-			bukFrame.dispose();
 		}
 	}
 }
