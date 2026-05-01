@@ -202,7 +202,7 @@ public class Tableroa extends Observable {
     	motaEtsaia = pMotaEtsaia;
     	zailtasunMota = pZailtasunMota;
     	
-    	zailtasunPortaera = sortuZailtasuna(zailtasunMota);
+    	zailtasunPortaera = ZailtasunFactory.nireEMA().sortuZailtasuna(zailtasunMota);
     	zailtasunaAplikatu();
     	
     	// --- ETSAIEN TIMERRA ERAIKI ---
@@ -265,24 +265,6 @@ public class Tableroa extends Observable {
         	timerEtsai.start();
     	}
     }
-
-    // === MAILAK ===
-    public ZailtasunPortaera sortuZailtasuna(String pZailtasunMota) {
-    	// Estrategia desberdina aukeratu mailaren arabera
-    	switch (pZailtasunMota) {
-		case "Erraza":
-			return new ZailtasunErraza();
-		case "Normala":
-			return new ZailtasunNormala();
-		case "Zaila":
-			return new ZailtasunZaila();
-		case "Progresiboa": 
-			return  new ZailtasunProgresibo(JokoKudeatzailea.getEMA().getMailaProgresiboa());
-		default:
-			return  new ZailtasunErraza();
-		}
-    }
-
     
     private void zailtasunaAplikatu() {
     	etsaiKop = zailtasunPortaera.etsaiKopLortu();
@@ -780,7 +762,7 @@ public class Tableroa extends Observable {
     // === PROGRESIBO MODUA ===
     private void hurrengoMailaProgresiboa() {
     	JokoKudeatzailea.getEMA().hurrengoMailaProgresiboa();
-    	zailtasunPortaera = sortuZailtasuna(zailtasunMota);
+    	zailtasunPortaera = ZailtasunFactory.nireEMA().sortuZailtasuna(zailtasunMota);
     	zailtasunaAplikatu();
     	
     	// Zailtasun berria aplikatu eta gero, etsaien timerra eguneratu behar dugu
