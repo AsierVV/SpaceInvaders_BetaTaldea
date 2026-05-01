@@ -1,5 +1,9 @@
 package modeloa;
 
 public interface MailaPortaera {
-	void aplikatu(Tableroa t);
+	int etsaiKopLortu();
+    int etsaiAbiaduraLortu();
+    int puntuazioBiderkatzaileaLortu();
+    boolean etsaiekTiroEginBeharDute();
+    boolean mugimenduAdimendunaErabili();
 }

@@ -29,15 +29,18 @@ public class Tableroa extends Observable {
 	private long azkenDenboraEguneraketa = 0;
 	private int puntuazioa = 0;
 	
-	private int etsaiKop = 4;
-	private int etsaiAbiadura = 200;		//200ms (default abiadura)
-	private int puntuazioBiderkatzailea = 1;
+	private int etsaiKop = 4;					//4 etsai (default)
+	private int etsaiAbiadura = 200;			//200ms (default)
+	private int puntuazioBiderkatzailea = 1;	//x1 (default)
 	
 	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
 	private int tiroEginKont = 2;			//300ms, beraz 100ms * 3 --> Bian hasi parametroa, horrela 100ms pasatzen diren hirugarren aldian 300ms pasatu dira.
 	
 	private long azkenTiroa = 0;
     private final long tiroKadentzia= 300;	//300ms
+    
+    private long azkenEtsaiTiroa = 0;
+    private final long etsaiTiroDenbora = 800;
 	
 	private final int zabalera = 100;
     private final int altuera = 60;
@@ -51,10 +54,10 @@ public class Tableroa extends Observable {
     private boolean gameOver;
     private boolean jokoHasita = false;
     private boolean irabaziDuzu = false;
+    
     private String maila;
     private MailaPortaera mailaPortaera;
-    private long azkenEtsaiTiroa = 0;
-    private final long etsaiTiroDenbora = 800;
+    private boolean hurrengoNivelProgEskatuta = false;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -77,6 +80,16 @@ public class Tableroa extends Observable {
         		
         		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
+        		
+        		// HAU BAKARRIK ERABILIKO DA MAILA PROGRESIBOAN
+        		// Hurrengo nivel progresiboa eskatuta badago, aurrera egin
+        		// Hau hemen egiten dugu arazoak ekiditeko; izan ere, mugituTiroak metodoaren while barruan hurrengo mailara joatea eskatzen badugu,
+        		// arazoak emango ditu iteradorea, tiroak.clear() egiten dugulako nivelez aldatzerakoan
+        		if (hurrengoNivelProgEskatuta) {
+        			hurrengoNivelProgEskatuta = false;
+        			hurrengoNivelProgresiboa();
+        			return;
+        		}
         		
         		// Konprobatu 1s pasatu den
         		long orain = System.currentTimeMillis();
@@ -144,9 +157,8 @@ public class Tableroa extends Observable {
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
-    		if (maila.equals("Progresiboa") &&
-    			JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
-    			hurrengoMaila();
+    		if (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getNivelProgresiboa() < 4) {
+    			hurrengoNivelProgEskatuta = true;
     		} else {
         		irabaziDuzu = true;
         		partidaIrabazi();    			
@@ -189,9 +201,9 @@ public class Tableroa extends Observable {
     	motaHegazkina = pMotaHegazkina;
     	motaEtsaia = pMotaEtsaia;
     	maila = pMaila;
-    	mailaPortaera = sortuMaila(maila);
     	
-    	zailtasunaAplikatu(maila);
+    	mailaPortaera = sortuMaila(maila);
+    	zailtasunaAplikatu();
     	
     	// --- ETSAIEN TIMERRA ERAIKI ---
         timerEtsai = new Timer(etsaiAbiadura, new ActionListener() {
@@ -214,7 +226,6 @@ public class Tableroa extends Observable {
         
         if (!timer.isRunning()) {
         	timer.start();
-        	timerEtsai.start();
         }
         if (!timerEtsai.isRunning()) {
             timerEtsai.start();
@@ -257,7 +268,7 @@ public class Tableroa extends Observable {
 
     // === MAILAK ===
     public MailaPortaera sortuMaila(String maila) {
-    	//eleguir estrategia segun el nivel
+    	// Estrategia desberdina aukeratu mailaren arabera
     	switch (maila) {
 		case "Erraza":
 			return new MailaErraza();
@@ -266,36 +277,17 @@ public class Tableroa extends Observable {
 		case "Zaila":
 			return new MailaZaila();
 		case "Progresiboa": 
-			return  new MailaProgresibo();
+			return  new MailaProgresibo(JokoKudeatzailea.getEMA().getNivelProgresiboa());
 		default:
 			return  new MailaErraza();
 		}
     }
 
     
-    private void zailtasunaAplikatu(String maila) {
-    	switch(maila) {
-    		case "Erraza":
-    			etsaiKop = 4;
-    			etsaiAbiadura = 200;	//200ms-ro mugitu
-    			puntuazioBiderkatzailea = 1;
-    			break;
-    		case "Normala":
-    			etsaiKop = 8;
-    			etsaiAbiadura = 150;	//150ms-ro mugitu
-    			puntuazioBiderkatzailea = 2;
-    			break;
-    		case "Zaila":
-    			etsaiKop = 12;
-    			etsaiAbiadura = 100;	//100ms-ro mugitu
-    			puntuazioBiderkatzailea = 3;
-    			break;
-    		case "Progresiboa":
-    			etsaiKop = 4;
-    			etsaiAbiadura = 200;	//200ms-ro mugitu
-    			puntuazioBiderkatzailea = 1;
-    			break;
-    	}
+    private void zailtasunaAplikatu() {
+    	etsaiKop = mailaPortaera.etsaiKopLortu();
+    	etsaiAbiadura = mailaPortaera.etsaiAbiaduraLortu();
+    	puntuazioBiderkatzailea = mailaPortaera.puntuazioBiderkatzaileaLortu();
     }
     
     // === MAILAK ===
@@ -427,20 +419,21 @@ public class Tableroa extends Observable {
 	public void mugituEtsaiak() {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
 		
-		mailaPortaera.aplikatu(this);
-		/*
-	    if (isNormala() || isZaila()) {
-	        etsaiekTiroEgin();
-	    }
-		*/
+		if (mailaPortaera.etsaiekTiroEginBeharDute()) {
+		    etsaiekTiroEgin();
+		}
+		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
 			EtsaiaTaldea e = it.next();
 			
 			Koordenatua dif;
-			if (maila.equals("Erraza") || maila.equals("Normala") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()<=2)) dif = e.etsaiaAusazkoMugimendua();
-			else if (maila.equals("Zaila") || (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa()>=3)) dif = e.mugimenduAdimenduaEtsaia();
-			else dif = e.etsaiaAusazkoMugimendua();
+
+			if (mailaPortaera.mugimenduAdimendunaErabili()) {
+			    dif = e.mugimenduAdimenduaEtsaia();
+			} else {
+			    dif = e.etsaiaAusazkoMugimendua();
+			}
 				
 			int dx = dif.getX();
 			int dy = dif.getY();
@@ -786,13 +779,26 @@ public class Tableroa extends Observable {
     }
     
     // === PROGRESIBO MODUA ===
-    private void hurrengoMaila() {
-    	JokoKudeatzailea.getEMA().hurrengoMaila();
-    	etsaiKopMailaAldatu();
+    private void hurrengoNivelProgresiboa() {
+    	JokoKudeatzailea.getEMA().hurrengoNivelProg();
+    	mailaPortaera = sortuMaila(maila);
+    	zailtasunaAplikatu();
     	
-    	tableroaGarbitu();
+    	// Zailtasun berria aplikatu eta gero, etsaien timerra eguneratu behar dugu
+    	if (timerEtsai != null) {
+            timerEtsai.setDelay(etsaiAbiadura);
+        }
+    	
+    	tableroaGarbitu();	// Tableroa guztiz garbitu berriro hasteko
+    	
+    	tiroak.clear();		// Tiro zerrenda garbitu
+    	etsaiak.clear();	// Etsai zerrenda garbitu (ez luke beharrezkoa izango)
+    	
     	sortuEtsaiak(motaEtsaia);
     	sortuHegazkina(motaHegazkina);
+    	
+    	setChanged();
+    	notifyObservers("ETSAIAK_KOP_EGUNERATU");
     }
     
     private void tableroaGarbitu() {
@@ -801,9 +807,5 @@ public class Tableroa extends Observable {
             	tableroMatrizea[i][j].hutsikUtzi();
             }
         }
-    }
-    
-    private void etsaiKopMailaAldatu() {
-    	etsaiKop = etsaiKop + (JokoKudeatzailea.getEMA().getMailaProgresiboa() * 2);
     }
 }
