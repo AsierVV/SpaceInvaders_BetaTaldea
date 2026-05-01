@@ -1,6 +1,6 @@
 package modeloa;
 
-public interface MailaPortaera {
+public interface ZailtasunPortaera {
 	int etsaiKopLortu();
     int etsaiAbiaduraLortu();
     int puntuazioBiderkatzaileaLortu();

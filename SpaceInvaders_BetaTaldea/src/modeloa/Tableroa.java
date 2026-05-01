@@ -55,9 +55,9 @@ public class Tableroa extends Observable {
     private boolean jokoHasita = false;
     private boolean irabaziDuzu = false;
     
-    private String maila;
-    private MailaPortaera mailaPortaera;
-    private boolean hurrengoNivelProgEskatuta = false;
+    private String zailtasunMota;
+    private ZailtasunPortaera zailtasunPortaera;
+    private boolean hurrengoMailaProgEskatuta = false;
     
     // === ERAIKITZAILEA ===
     private Tableroa() {
@@ -85,9 +85,9 @@ public class Tableroa extends Observable {
         		// Hurrengo nivel progresiboa eskatuta badago, aurrera egin
         		// Hau hemen egiten dugu arazoak ekiditeko; izan ere, mugituTiroak metodoaren while barruan hurrengo mailara joatea eskatzen badugu,
         		// arazoak emango ditu iteradorea, tiroak.clear() egiten dugulako nivelez aldatzerakoan
-        		if (hurrengoNivelProgEskatuta) {
-        			hurrengoNivelProgEskatuta = false;
-        			hurrengoNivelProgresiboa();
+        		if (hurrengoMailaProgEskatuta) {
+        			hurrengoMailaProgEskatuta = false;
+        			hurrengoMailaProgresiboa();
         			return;
         		}
         		
@@ -157,8 +157,8 @@ public class Tableroa extends Observable {
     
     private void etsaiakBizirik() {
     	if (etsaiak.isEmpty()) {
-    		if (maila.equals("Progresiboa") && JokoKudeatzailea.getEMA().getNivelProgresiboa() < 4) {
-    			hurrengoNivelProgEskatuta = true;
+    		if (zailtasunMota.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
+    			hurrengoMailaProgEskatuta = true;
     		} else {
         		irabaziDuzu = true;
         		partidaIrabazi();    			
@@ -186,8 +186,8 @@ public class Tableroa extends Observable {
     	return hegazkina.getTiroMota().motaChar();
     }
     
-    public String getMaila() {
-    	return this.maila;
+    public String getZailtasunMota() {
+    	return this.zailtasunMota;
     }
 
 
@@ -196,13 +196,13 @@ public class Tableroa extends Observable {
     }
 
 	// === JOKOA HASTEKO METODOA ===
-    public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pMaila) {
+    public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pZailtasunMota) {
 
     	motaHegazkina = pMotaHegazkina;
     	motaEtsaia = pMotaEtsaia;
-    	maila = pMaila;
+    	zailtasunMota = pZailtasunMota;
     	
-    	mailaPortaera = sortuMaila(maila);
+    	zailtasunPortaera = sortuZailtasuna(zailtasunMota);
     	zailtasunaAplikatu();
     	
     	// --- ETSAIEN TIMERRA ERAIKI ---
@@ -267,42 +267,41 @@ public class Tableroa extends Observable {
     }
 
     // === MAILAK ===
-    public MailaPortaera sortuMaila(String maila) {
+    public ZailtasunPortaera sortuZailtasuna(String pZailtasunMota) {
     	// Estrategia desberdina aukeratu mailaren arabera
-    	switch (maila) {
+    	switch (pZailtasunMota) {
 		case "Erraza":
-			return new MailaErraza();
+			return new ZailtasunErraza();
 		case "Normala":
-			return new MailaNormala();
+			return new ZailtasunNormala();
 		case "Zaila":
-			return new MailaZaila();
+			return new ZailtasunZaila();
 		case "Progresiboa": 
-			return  new MailaProgresibo(JokoKudeatzailea.getEMA().getNivelProgresiboa());
+			return  new ZailtasunProgresibo(JokoKudeatzailea.getEMA().getMailaProgresiboa());
 		default:
-			return  new MailaErraza();
+			return  new ZailtasunErraza();
 		}
     }
 
     
     private void zailtasunaAplikatu() {
-    	etsaiKop = mailaPortaera.etsaiKopLortu();
-    	etsaiAbiadura = mailaPortaera.etsaiAbiaduraLortu();
-    	puntuazioBiderkatzailea = mailaPortaera.puntuazioBiderkatzaileaLortu();
+    	etsaiKop = zailtasunPortaera.etsaiKopLortu();
+    	etsaiAbiadura = zailtasunPortaera.etsaiAbiaduraLortu();
+    	puntuazioBiderkatzailea = zailtasunPortaera.puntuazioBiderkatzaileaLortu();
     }
     
-    // === MAILAK ===
-
+    // === ZAILTASUN MOTAK ===
     public boolean isErraza() {
-    	return "Erraza".equals(maila);
+    	return "Erraza".equals(zailtasunMota);
     }
     public boolean isNormala() {
-    	return "Normala".equals(maila);
+    	return "Normala".equals(zailtasunMota);
     }
     public boolean isZaila() {
-    	return "Zaila".equals(maila);
+    	return "Zaila".equals(zailtasunMota);
     }
     public boolean isProgresibo() {
-    	return "Progresiboa".equals(maila);
+    	return "Progresiboa".equals(zailtasunMota);
     }
 	
 
@@ -419,7 +418,7 @@ public class Tableroa extends Observable {
 	public void mugituEtsaiak() {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
 		
-		if (mailaPortaera.etsaiekTiroEginBeharDute()) {
+		if (zailtasunPortaera.etsaiekTiroEginBeharDute()) {
 		    etsaiekTiroEgin();
 		}
 		
@@ -429,7 +428,7 @@ public class Tableroa extends Observable {
 			
 			Koordenatua dif;
 
-			if (mailaPortaera.mugimenduAdimendunaErabili()) {
+			if (zailtasunPortaera.mugimenduAdimendunaErabili()) {
 			    dif = e.mugimenduAdimenduaEtsaia();
 			} else {
 			    dif = e.etsaiaAusazkoMugimendua();
@@ -779,9 +778,9 @@ public class Tableroa extends Observable {
     }
     
     // === PROGRESIBO MODUA ===
-    private void hurrengoNivelProgresiboa() {
-    	JokoKudeatzailea.getEMA().hurrengoNivelProg();
-    	mailaPortaera = sortuMaila(maila);
+    private void hurrengoMailaProgresiboa() {
+    	JokoKudeatzailea.getEMA().hurrengoMailaProgresiboa();
+    	zailtasunPortaera = sortuZailtasuna(zailtasunMota);
     	zailtasunaAplikatu();
     	
     	// Zailtasun berria aplikatu eta gero, etsaien timerra eguneratu behar dugu

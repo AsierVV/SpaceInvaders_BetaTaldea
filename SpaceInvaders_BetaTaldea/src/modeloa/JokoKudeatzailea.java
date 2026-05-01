@@ -9,7 +9,7 @@ import visual.PuntuazioPantaila;
 public class JokoKudeatzailea extends Observable implements Observer{
 	private static JokoKudeatzailea nireEma  = null;
 	private boolean partidaIrabazita;
-	private int nivelProgresiboa;
+	private int mailaProgresiboa;
 	
 	private JokoKudeatzailea() {
 		Tableroa.getTableroaEMA().addObserver(this);
@@ -24,7 +24,7 @@ public class JokoKudeatzailea extends Observable implements Observer{
 
 	// === JOKOA HASTEKO ===
     public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
-    	nivelProgresiboa = 1;
+    	mailaProgresiboa = 1;
     	JokoPanela.getEMA();
     	PuntuazioPantaila.getEMA();
     	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila);
@@ -38,8 +38,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
     }
     
     // === MODU PROGRESIBOA KUDEATZEKO ===
-    public void hurrengoNivelProg() {
-    	if (nivelProgresiboa < 4) nivelProgresiboa++;
+    public void hurrengoMailaProgresiboa() {
+    	if (mailaProgresiboa < 4) mailaProgresiboa++;
     }
     
     // === TABLEROAREN DATUAK BISTARAKO ===
@@ -77,7 +77,7 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	
 	public int getPuntuazioa() {return Tableroa.getTableroaEMA().getPuntuazioa();}
 	
-	public int getNivelProgresiboa() {return nivelProgresiboa;}
+	public int getMailaProgresiboa() {return mailaProgresiboa;}
 		
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}

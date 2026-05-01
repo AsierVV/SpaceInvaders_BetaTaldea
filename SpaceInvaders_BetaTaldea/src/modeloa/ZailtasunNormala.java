@@ -1,6 +1,6 @@
 package modeloa;
 
-public class MailaNormala implements MailaPortaera{
+public class ZailtasunNormala implements ZailtasunPortaera{
 	@Override
 	public int etsaiKopLortu() {
 		return 8;

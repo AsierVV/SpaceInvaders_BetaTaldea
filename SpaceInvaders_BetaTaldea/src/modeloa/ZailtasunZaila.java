@@ -1,28 +1,28 @@
 package modeloa;
 
-public class MailaErraza implements MailaPortaera{
+public class ZailtasunZaila implements ZailtasunPortaera{
 	@Override
 	public int etsaiKopLortu() {
-		return 4;
+		return 12;
 	}
 
 	@Override
 	public int etsaiAbiaduraLortu() {
-		return 200;
+		return 120;
 	}
 
 	@Override
 	public int puntuazioBiderkatzaileaLortu() {
-		return 1;
+		return 3;
 	}
 
 	@Override
 	public boolean etsaiekTiroEginBeharDute() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean mugimenduAdimendunaErabili() {
-		return false;
+		return true;
 	}
 }
