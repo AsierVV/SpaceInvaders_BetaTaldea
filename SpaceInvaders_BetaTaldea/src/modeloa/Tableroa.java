@@ -456,6 +456,7 @@ public class Tableroa extends Observable {
 	 
 	// === TIROAREN MUGIMENDUA ===
 	public void mugituTiroak() {
+		List<TiroaTaldea> tiroakEzabatzeko = new ArrayList<>();
 		Iterator<TiroaTaldea> it = tiroak.iterator();
 		while (it.hasNext()) {
 			TiroaTaldea t = it.next();
@@ -464,21 +465,52 @@ public class Tableroa extends Observable {
 			List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(),0,t.getDy());
 			
 			// Konprobatu etsai bat kolpatu duen
-			EtsaiaTaldea kolpatuta = null;
+			//EtsaiaTaldea kolpatuta = null;
+			boolean tiroaEzabatu = false;
 			for (Koordenatua k : hurrengoKoordenatuak) {
-				kolpatuta = kolpatutakoEtsaia(k.getX(), k.getY());
-				if (kolpatuta!=null) break;	// Tiroak etsai bat kolpatu du, beraz for-etik ateratzen gara
+				//kolpatuta = kolpatutakoEtsaia(k.getX(), k.getY());
+				//if (kolpatuta!=null) break;	// Tiroak etsai bat kolpatu du, beraz for-etik ateratzen gara
+	            int x = k.getX();
+	            int y = k.getY(); 
+	            
+	            //hegazkin tiro bat etsaia bat kolpatu
+	            if (t.getDy() == -1) {
+	                EtsaiaTaldea e = kolpatutakoEtsaia(x, y);
+	                if (e != null) {
+	                    etsaiaEzabatu(e.getIndizea());
+	                    tiroaEzabatu = true;
+	                    break;
+	                }
+	            }
+
+	            //Etsaia tiro bat hegazkina kolpatu
+	            if (t.getDy() == 1) {
+	                if (kolpatutakoHegazkina(x, y)) {
+	                    partidaGaldu();
+	                    tiroaEzabatu = true;
+	                    break;
+	                }
+	            }
+
+	            //Etsai tiroa eta hegazkin tiroa kolapatu
+	            TiroaTaldea besteTiroa = kolpatutakoTiroa(x, y, t);
+	            if (besteTiroa != null) {
+	                tiroakEzabatzeko.add(t);    
+	                tiroakEzabatzeko.add(besteTiroa);
+	                tiroaEzabatu = true;
+	                break;
+	            }
 			}
 			
 			garbituTiroa(t);
 			
-			if (kolpatuta != null) {
-				it.remove();                 			// Tiroa ezabatu
-				etsaiaEzabatu(kolpatuta.getIndizea());	// EtsaiaTaldea ezabatu
-				continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
-			}
+			//if (kolpatuta != null) {
+			//	it.remove();                 			// Tiroa ezabatu
+			//	etsaiaEzabatu(kolpatuta.getIndizea());	// EtsaiaTaldea ezabatu
+			//	continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
+			//}
 			
-			if (!koordenatuGuztiakBaliozkoak(hurrengoKoordenatuak)) {
+			if (tiroaEzabatu || !koordenatuGuztiakBaliozkoak(hurrengoKoordenatuak)) {
 				it.remove();	// Tiroaren posizioaren bat tablerotik atera bada, ezabatuko dugu
 				continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
 			}
@@ -486,6 +518,27 @@ public class Tableroa extends Observable {
 			t.mugitu(0,t.getDy());
 			margotuTiroa(t);
 		}
+		tiroak.removeAll(tiroakEzabatzeko);
+	}
+	private TiroaTaldea kolpatutakoTiroa(int x, int y, TiroaTaldea nireTiroa) {
+	    for (TiroaTaldea t : tiroak) {
+	        if (t != nireTiroa) {
+	            for (Koordenatua k : t.getKoordenatuLista()) {
+	                if (k.getX() == x && k.getY() == y) {
+	                    return t;
+	                }
+	            }
+	        }
+	    }
+	    return null;
+	}
+	private boolean kolpatutakoHegazkina(int x, int y) {
+	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
+	        if (k.getX() == x && k.getY() == y) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	 	 
 	// === PARTIDA AMAITZEKO METODOAK ===
