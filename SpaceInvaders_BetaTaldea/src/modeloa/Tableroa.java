@@ -460,6 +460,7 @@ public class Tableroa extends Observable {
 		while (it.hasNext()) {
 			TiroaTaldea t = it.next();
 			
+			
 			List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(),0,t.getDy());
 			
 			// Konprobatu etsai bat kolpatu duen
