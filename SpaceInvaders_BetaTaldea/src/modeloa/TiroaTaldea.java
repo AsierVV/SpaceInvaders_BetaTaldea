@@ -27,6 +27,16 @@ public class TiroaTaldea extends Pixel{
 		pixelak.add(p);
 	}
 	
+	// Tiroa hegazkinarena den jakiteko --> dy = -1 bada, tiroa gora doa, beraz hegazkinarena da
+	public boolean hegazkinarenaDa() {
+	    return dy == -1;
+	}
+
+	// Tiroa etsaiarena den jakiteko --> dy = 1 bada, tiroa behera doa, beraz etsaiarena da
+	public boolean etsaiarenaDa() {
+	    return dy == 1;
+	}
+	
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
 		List<Koordenatua> koordenatuak = new ArrayList<>();

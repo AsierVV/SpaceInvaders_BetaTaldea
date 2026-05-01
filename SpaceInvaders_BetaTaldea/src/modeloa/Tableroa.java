@@ -265,7 +265,7 @@ public class Tableroa extends Observable {
 			return new MailaNormala();
 		case "Zaila":
 			return new MailaZaila();
-		case "Progresibo": 
+		case "Progresiboa": 
 			return  new MailaProgresibo();
 		default:
 			return  new MailaErraza();
@@ -428,11 +428,11 @@ public class Tableroa extends Observable {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
 		
 		mailaPortaera.aplikatu(this);
-		
+		/*
 	    if (isNormala() || isZaila()) {
 	        etsaiekTiroEgin();
 	    }
-		
+		*/
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
 			EtsaiaTaldea e = it.next();
@@ -454,73 +454,120 @@ public class Tableroa extends Observable {
 		}
 	}
 	 
-	// === TIROAREN MUGIMENDUA ===
+	// === TIROEN MUGIMENDUA ===
 	public void mugituTiroak() {
-		List<TiroaTaldea> tiroakEzabatzeko = new ArrayList<>();
-		Iterator<TiroaTaldea> it = tiroak.iterator();
-		while (it.hasNext()) {
-			TiroaTaldea t = it.next();
-			
-			
-			List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(),0,t.getDy());
-			
-			// Konprobatu etsai bat kolpatu duen
-			//EtsaiaTaldea kolpatuta = null;
-			boolean tiroaEzabatu = false;
-			for (Koordenatua k : hurrengoKoordenatuak) {
-				//kolpatuta = kolpatutakoEtsaia(k.getX(), k.getY());
-				//if (kolpatuta!=null) break;	// Tiroak etsai bat kolpatu du, beraz for-etik ateratzen gara
-	            int x = k.getX();
-	            int y = k.getY(); 
-	            
-	            //hegazkin tiro bat etsaia bat kolpatu
-	            if (t.getDy() == -1) {
-	                EtsaiaTaldea e = kolpatutakoEtsaia(x, y);
-	                if (e != null) {
-	                    etsaiaEzabatu(e.getIndizea());
-	                    tiroaEzabatu = true;
-	                    break;
-	                }
-	            }
+	    List<TiroaTaldea> ezabatzekoTiroak = new ArrayList<>();	// Beste tiro batekin talka egiten duten tiroak hemen gordeko dira, gero ezabatzeko
+	    
+	    Iterator<TiroaTaldea> it = tiroak.iterator();
 
-	            //Etsaia tiro bat hegazkina kolpatu
-	            if (t.getDy() == 1) {
-	                if (kolpatutakoHegazkina(x, y)) {
-	                    partidaGaldu();
-	                    tiroaEzabatu = true;
-	                    break;
-	                }
-	            }
+	    while (it.hasNext()) {
+	        TiroaTaldea t = it.next();
 
-	            //Etsai tiroa eta hegazkin tiroa kolapatu
-	            TiroaTaldea besteTiroa = kolpatutakoTiroa(x, y, t);
-	            if (besteTiroa != null) {
-	                tiroakEzabatzeko.add(t);    
-	                tiroakEzabatzeko.add(besteTiroa);
-	                tiroaEzabatu = true;
-	                break;
-	            }
-			}
-			
-			garbituTiroa(t);
-			
-			//if (kolpatuta != null) {
-			//	it.remove();                 			// Tiroa ezabatu
-			//	etsaiaEzabatu(kolpatuta.getIndizea());	// EtsaiaTaldea ezabatu
-			//	continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
-			//}
-			
-			if (tiroaEzabatu || !koordenatuGuztiakBaliozkoak(hurrengoKoordenatuak)) {
-				it.remove();	// Tiroaren posizioaren bat tablerotik atera bada, ezabatuko dugu
-				continue;	// Tiro honekin amaitu dugu, hurrengoarekin jarraitu
-			}
-			
-			t.mugitu(0,t.getDy());
-			margotuTiroa(t);
-		}
-		tiroak.removeAll(tiroakEzabatzeko);
+	        // Uneko tiro hau aurreko iterazioren batean ezabatzeko markatu bada, tiroa ez dugu gehiago mugitu behar, bakarrik borratu
+	        if (ezabatzekoTiroak.contains(t)) {
+	            garbituTiroa(t);
+	            it.remove();
+	            continue;	// Hurrengo tiroarekin jarraitu
+	        }
+
+	        List<Koordenatua> hurrengoKoordenatuak = tiroarenHurrengoKoordenatuak(t.getKoordenatuLista(), 0, t.getDy());
+
+	        // Hurrengo posizioa tablerotik kanpo badoa, tiroa ezabatzen dugu
+	        if (!koordenatuGuztiakBaliozkoak(hurrengoKoordenatuak)) {
+	            garbituTiroa(t);
+	            it.remove();
+	            continue;	// Hurrengo tiroarekin jarraitu
+	        }
+
+	        // Tiroak beste tiro bat jo duen konprobatzen dugu, horrela bada, biaka ezabatzen ditugu
+	        if (tiroakBesteTiroBatJoDu(t, hurrengoKoordenatuak, ezabatzekoTiroak)) {
+	            garbituTiroa(t);
+	            it.remove();
+	            continue;	// Hurrengo tiroarekin jarraitu
+	        }
+
+	        // Tiroak zerbait jo duen konprobatzen dugu --> hegazkinaren tiro batek etsai bat jo edo etsai baten tiro batek hegazkina jo
+	        if (tiroakZerbaitJoDu(t, hurrengoKoordenatuak)) {
+	            garbituTiroa(t);
+	            it.remove();
+	            continue;	// Hurrengo tiroarekin jarraitu
+	        }
+
+	        // Ez badu ezer jo eta tablero barruan badago, tiroa normal mugitzen dugu
+	        garbituTiroa(t);
+	        t.mugitu(0, t.getDy());
+	        margotuTiroa(t);
+	    }
+
+	    // Tiro guztiak iteratu eta gero, ezabatzeko markatutako tiroak tablerotik garbitzen ditugu
+	    for (TiroaTaldea t : ezabatzekoTiroak) {
+	        garbituTiroa(t);
+	    }
+	    
+	    // Eta amaitzeko, ezabatzeko markatutako tiroak zerrendatik kentzen ditugu
+	    tiroak.removeAll(ezabatzekoTiroak);
 	}
-	private TiroaTaldea kolpatutakoTiroa(int x, int y, TiroaTaldea nireTiroa) {
+	
+	// === TIROEN MUGIMENDURAKO METODO LAGUNGARRIAK ===
+	private boolean tiroakZerbaitJoDu(TiroaTaldea t, List<Koordenatua> hurrengoKoordenatuak) {
+		// Tiroa hegazkinarena bada, etsaia jo duen konprobatu
+		if (t.hegazkinarenaDa()) {
+	        return tiroakEtsaiaJoDu(hurrengoKoordenatuak);
+	    }
+		// Tiroa etsaiarena bada, hegazkina jo duen konprobatu
+	    if (t.etsaiarenaDa()) {
+	        return tiroakHegazkinaJoDu(hurrengoKoordenatuak);
+	    }
+	    return false;
+	}
+	
+	private boolean tiroakEtsaiaJoDu(List<Koordenatua> hurrengoKoordenatuak) {
+	    for (Koordenatua k : hurrengoKoordenatuak) {
+	        EtsaiaTaldea e = kolpatutakoEtsaia(k.getX(), k.getY());
+
+	        if (e != null) {	// Etsairen bat aurkitu bada, ezabatu egiten da
+	            etsaiaEzabatu(e.getIndizea());
+	            return true;
+	        }
+	    }
+	    return false;	// Ez badu etsairik jo
+	}
+	
+	private boolean tiroakHegazkinaJoDu(List<Koordenatua> hurrengoKoordenatuak) {
+	    for (Koordenatua k : hurrengoKoordenatuak) {
+	        if (kolpatutakoHegazkina(k.getX(), k.getY())) {	// Koordenatu horretan hegazkina badago, partida galtzen da
+	            partidaGaldu();
+	            return true;
+	        }
+	    }
+	    return false;	// Ez badu hegazkina jo
+	}
+	
+	private boolean tiroakBesteTiroBatJoDu(TiroaTaldea t, List<Koordenatua> hurrengoKoordenatuak, List<TiroaTaldea> ezabatzekoTiroak) {
+	    for (Koordenatua k : hurrengoKoordenatuak) {
+	        TiroaTaldea besteTiroa = kolpatutakoTiroa(k.getX(), k.getY(), t);
+	        
+	        // Koordenatu horretan beste tiro bat badago eta kontrako noranzkoan badoa, talka egin dute
+	        if (besteTiroa != null && besteTiroa.getDy() != t.getDy()) { 
+	        	ezabatzekoTiroak.add(besteTiroa);	// Iteratzen ez gauden tiroa ezabatzeko markatzen dugu
+	            return true;						// Iteratzen gauden tiroa ezabatu beharko dugu
+	        }
+	    }
+	    return false;	// Ez du beste tirorik jo
+	}
+
+    private EtsaiaTaldea kolpatutakoEtsaia(int x, int y) {
+        for (EtsaiaTaldea e : etsaiak) {
+            for (Koordenatua k : e.getKoordenatuLista()) {
+                if (k.getX() == x && k.getY() == y) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private TiroaTaldea kolpatutakoTiroa(int x, int y, TiroaTaldea nireTiroa) {
 	    for (TiroaTaldea t : tiroak) {
 	        if (t != nireTiroa) {
 	            for (Koordenatua k : t.getKoordenatuLista()) {
@@ -532,6 +579,7 @@ public class Tableroa extends Observable {
 	    }
 	    return null;
 	}
+    
 	private boolean kolpatutakoHegazkina(int x, int y) {
 	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
 	        if (k.getX() == x && k.getY() == y) {
@@ -540,7 +588,7 @@ public class Tableroa extends Observable {
 	    }
 	    return false;
 	}
-	 	 
+		 
 	// === PARTIDA AMAITZEKO METODOAK ===
 	private void partidaAmaitu() {
 		gameOver = true;
@@ -624,53 +672,21 @@ public class Tableroa extends Observable {
 	// === PIXELAK MARGOTZEKO ETA GARBITZEKO METODOAK ===
 	private void margotuHegazkina() {
 		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar()));
-		/*
-		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
-            tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar());
-		}
-		*/
 	}
 	private void garbituHegazkina() {
 		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
-		/*
-    	for (Koordenatua k : hegazkina.getKoordenatuLista()) {
-            tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
-        }
-        */
     }
-	
 	private void margotuEtsaia(EtsaiaTaldea e) {
 		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar()));
-		/*
-		for (Koordenatua k : e.getKoordenatuLista()) {
-	        tableroMatrizea[k.getX()][k.getY()].jarriEtsaia(e.getMotaChar());
-	    }
-	    */
 	}
 	private void garbituEtsaia(EtsaiaTaldea e) {
 		e.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
-		/*
-    	for (Koordenatua k : e.getKoordenatuLista()) {
-            tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
-        }
-        */
     }
-	
 	private void margotuTiroa(TiroaTaldea t) {
 		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriTiroa());
-		/*
-		for (Koordenatua k : t.getKoordenatuLista()) {
-	        tableroMatrizea[k.getX()][k.getY()].jarriTiroa();
-	    }
-	    */
 	}
     private void garbituTiroa(TiroaTaldea t) {
 		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
-		/*
-    	for (Koordenatua k : t.getKoordenatuLista()) {
-	        tableroMatrizea[k.getX()][k.getY()].hutsikUtzi();
-	    }
-	    */
     }
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
@@ -704,11 +720,6 @@ public class Tableroa extends Observable {
 		List<Koordenatua> kordBerriak = new ArrayList<>(); 
 		
 		e.getKoordenatuLista().stream().forEach(k->kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy)));
-		/*
-		for (Koordenatua k : e.getKoordenatuLista()) {
-			kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy));
-		}
-		*/
 		
 		return koordenatuakLibreDaudeEtsaia(kordBerriak, e.getIndizea());
 	}
@@ -744,16 +755,6 @@ public class Tableroa extends Observable {
         return true;
     }
     
-    private EtsaiaTaldea kolpatutakoEtsaia(int x, int y) {
-        for (EtsaiaTaldea e : etsaiak) {
-            for (Koordenatua k : e.getKoordenatuLista()) {
-                if (k.getX() == x && k.getY() == y) {
-                    return e;
-                }
-            }
-        }
-        return null;
-    }
     
     private List<Koordenatua> tiroarenHurrengoKoordenatuak(List<Koordenatua> koordenatuak, int dx, int dy) {
     	List<Koordenatua> koordenatuBerriak = new ArrayList<>();
