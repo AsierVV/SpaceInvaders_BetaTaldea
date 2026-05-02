@@ -22,7 +22,12 @@ public class ZailtasunErraza implements ZailtasunPortaera{
 	}
 
 	@Override
-	public boolean mugimenduAdimendunaErabili() {
+	public boolean mugimenduHegazkinAdimendunaErabili() {
 		return false;
+	}
+
+	@Override
+	public boolean mugimenduTiroAdimendunaErabili() {
+		return true;
 	}
 }

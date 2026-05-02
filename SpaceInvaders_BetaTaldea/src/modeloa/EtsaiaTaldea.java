@@ -40,11 +40,10 @@ public abstract class EtsaiaTaldea extends Pixel{
 		return k;
 	}
 	
-	public Koordenatua mugimenduAdimenduaEtsaia() {
+	public Koordenatua mugimenduHegazkinAdimenduaEtsaia() {
 		// Hegazkinaren koordenatuak hartu
 		Koordenatua kordHegazkin = Tableroa.getTableroaEMA().getHegazkina().getPosizioa();
 		int xH = kordHegazkin.getX();
-		int yH = kordHegazkin.getY();
 		
 		// Mugituko dena
 		int dXE = 0;
@@ -65,31 +64,41 @@ public abstract class EtsaiaTaldea extends Pixel{
 		return new Koordenatua(dXE, dYE);
 	}
 	
-	/*
-	public void mugituEtsaia() {
-        // Ausazko mugimendua sortu (0, 1, edo 2)
-        int mugimenduMota = (int) (Math.random() * 3);
-        
-        int xBerria = posizioa.getX();;
-        int yBerria = posizioa.getY();
-        
-        switch (mugimenduMota) {
-            case 0: // Behera
-            	yBerria++;
-                break;
-            case 1: // Ezkerrera
-                xBerria--;
-                break;
-            case 2: // Eskuinera
-                xBerria++;
-                break;
-        }
-        
-        // Koordenatuak eguneratu
-        posizioa.setX(xBerria);
-        posizioa.setY(yBerria);
+	public Koordenatua mugimenduTiroAdimenduaEtsaia() {
+		List<Koordenatua> tiroak = Tableroa.getTableroaEMA().getTiroenKoordenatuak();
+		
+		if (tiroak.isEmpty()) return etsaiaAusazkoMugimendua();
+
+		Koordenatua tiroHurbilena = null;
+		int distantziaTxikiena = Integer.MAX_VALUE;
+		
+		for (Koordenatua k : tiroak) {
+			int dx = Math.abs(k.getX() - posizioa.getX());
+			int dy = Math.abs(k.getY() - posizioa.getY());
+			int distantzia = dx + dy;
+			
+			if (distantzia < distantziaTxikiena) {
+				distantziaTxikiena = distantzia;
+				tiroHurbilena = k;
+			}
+		}
+		
+		if (distantziaTxikiena > 10) return etsaiaAusazkoMugimendua();
+		
+		// Mugituko dena
+		int dXE = 0;
+		int dYE = 0;
+		
+		if (tiroHurbilena.getX() < posizioa.getX()) dXE++;
+		else if (tiroHurbilena.getX() > posizioa.getX()) dXE--;
+		else {
+			if (Math.random() < 0.5) dXE++;
+			else dXE--;
+		}
+		
+		// Koordenatu berriak bueltatu
+		return new Koordenatua(dXE, dYE);
 	}
-	*/
 		
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
@@ -108,19 +117,4 @@ public abstract class EtsaiaTaldea extends Pixel{
 	    	p.mugitu(dx, dy);
 	    }
 	}
-	
-	/*
-	public static List<Koordenatua> sortuKoordenatuak(Koordenatua pos) {
-	    List<Koordenatua> lista = new ArrayList<>();
-	    int x = pos.getX();
-	    int y = pos.getY();
-
-	    lista.add(new Koordenatua(x, y));
-	    lista.add(new Koordenatua(x-1, y));
-	    lista.add(new Koordenatua(x+1, y));
-	    lista.add(new Koordenatua(x, y+1));
-
-	    return lista;
-	}
-	*/
 }

@@ -194,6 +194,10 @@ public class Tableroa extends Observable {
     public int getPuntuazioa() {
     	return puntuazioa;
     }
+    
+    public List<Koordenatua> getTiroenKoordenatuak() {
+    	return tiroak.stream().map(t->t.getPosizioa()).toList();
+    }
 
 	// === JOKOA HASTEKO METODOA ===
     public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pZailtasunMota) {
@@ -410,8 +414,10 @@ public class Tableroa extends Observable {
 			
 			Koordenatua dif;
 
-			if (zailtasunPortaera.mugimenduAdimendunaErabili()) {
-			    dif = e.mugimenduAdimenduaEtsaia();
+			if (zailtasunPortaera.mugimenduHegazkinAdimendunaErabili()) {
+			    dif = e.mugimenduHegazkinAdimenduaEtsaia();
+			} else if (zailtasunPortaera.mugimenduTiroAdimendunaErabili()) {
+				dif = e.mugimenduTiroAdimenduaEtsaia();
 			} else {
 			    dif = e.etsaiaAusazkoMugimendua();
 			}

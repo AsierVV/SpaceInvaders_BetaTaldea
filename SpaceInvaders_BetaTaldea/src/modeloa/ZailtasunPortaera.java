@@ -5,5 +5,6 @@ public interface ZailtasunPortaera {
     int etsaiAbiaduraLortu();
     int puntuazioBiderkatzaileaLortu();
     boolean etsaiekTiroEginBeharDute();
-    boolean mugimenduAdimendunaErabili();
+    boolean mugimenduHegazkinAdimendunaErabili();
+    boolean mugimenduTiroAdimendunaErabili();
 }
