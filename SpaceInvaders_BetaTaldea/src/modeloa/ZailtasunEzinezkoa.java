@@ -1,19 +1,19 @@
 package modeloa;
 
-public class ZailtasunZaila implements ZailtasunPortaera{
+public class ZailtasunEzinezkoa implements ZailtasunPortaera{
 	@Override
 	public int etsaiKopLortu() {
-		return 8;
+		return 10;
 	}
 
 	@Override
 	public int etsaiAbiaduraLortu() {
-		return 120;
+		return 100;
 	}
 
 	@Override
 	public int puntuazioBiderkatzaileaLortu() {
-		return 3;
+		return 4;
 	}
 
 	@Override

@@ -20,6 +20,8 @@ public class ZailtasunFactory {
 			return new ZailtasunNormala();
 		case "Zaila":
 			return new ZailtasunZaila();
+		case "Ezinezkoa":
+			return new ZailtasunEzinezkoa();
 		case "Progresiboa": 
 			return  new ZailtasunProgresibo(JokoKudeatzailea.getEMA().getMailaProgresiboa());
 		default:

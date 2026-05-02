@@ -23,7 +23,7 @@ public class ZailtasunNormala implements ZailtasunPortaera{
 
 	@Override
 	public boolean mugimenduHegazkinAdimendunaErabili() {
-		return false;
+		return true;
 	}
 
 	@Override

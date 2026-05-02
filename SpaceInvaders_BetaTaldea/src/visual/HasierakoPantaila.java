@@ -110,6 +110,11 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	        break;
 	        
 	    case KeyEvent.VK_4:
+	    	maila = "Ezinezkoa";
+	    	eguneratuTestua();
+	        break;
+	        
+	    case KeyEvent.VK_5:
 	    	maila = "Progresiboa";
 	    	eguneratuTestua();
 	        break;

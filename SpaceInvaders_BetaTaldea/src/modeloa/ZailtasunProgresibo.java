@@ -33,11 +33,11 @@ public class ZailtasunProgresibo implements ZailtasunPortaera{
 
 	@Override
 	public boolean mugimenduHegazkinAdimendunaErabili() {
-		return mailaProgresiboa >= 3;
+		return mailaProgresiboa == 2;
 	}
 
 	@Override
 	public boolean mugimenduTiroAdimendunaErabili() {
-		return false;
+		return mailaProgresiboa >= 3;
 	}
 }
