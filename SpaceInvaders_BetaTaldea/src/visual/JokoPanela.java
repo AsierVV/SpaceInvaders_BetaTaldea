@@ -255,6 +255,9 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			break;
 		case KeyEvent.VK_ESCAPE:
 			JokoKudeatzailea.getEMA().startStopJokoa();
+			break;
+		case KeyEvent.VK_C: 
+			JokoKudeatzailea.getEMA().barreraSakatu();
 		}
 	}
 
