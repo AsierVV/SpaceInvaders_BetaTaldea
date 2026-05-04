@@ -23,11 +23,11 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	}
 
 	// === JOKOA HASTEKO ===
-    public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+    public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila, String izena) {
     	mailaProgresiboa = 1;
     	JokoPanela.getEMA();
     	PuntuazioPantaila.getEMA();
-    	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila);
+    	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila, izena);
     }
     
     // === JOKOA RESETEATU ===

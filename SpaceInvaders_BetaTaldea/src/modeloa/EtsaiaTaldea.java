@@ -83,7 +83,7 @@ public abstract class EtsaiaTaldea extends Pixel{
 			}
 		}
 		
-		if (distantziaTxikiena > 10) return etsaiaAusazkoMugimendua();
+		if (distantziaTxikiena > 5) return etsaiaAusazkoMugimendua();
 		
 		// Mugituko dena
 		int dXE = 0;

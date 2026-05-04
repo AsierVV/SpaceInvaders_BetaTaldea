@@ -18,6 +18,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	private String motaEtsaia = "RED";
 	private JLabel lblAukera;
 	private String maila = "Erraza";
+	private String jokalariIzena = "";
 	
 	private HasierakoPantaila() {
 		setBackground(new Color(0, 0, 0));
@@ -55,7 +56,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    has.add(lblAlien, BorderLayout.CENTER);
 
 	    
-	    // TEXTO ABAJO
+	    // Azpiko testua
 	    lblAukera = new JLabel("", JLabel.CENTER);
 	    eguneratuTestua();
 	    lblAukera.setForeground(Color.WHITE);
@@ -67,6 +68,10 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	
 	private void eguneratuTestua() {
 	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia + " | Maila: " + maila);
+	}
+	
+	public void setJokalariIzena(String pIzena) {
+		jokalariIzena = pIzena;
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	public void keyPressed(KeyEvent e) {
 	    switch (e.getKeyCode()) {
 	    case KeyEvent.VK_SPACE:
-	        JokoKudeatzailea.getEMA().irekiJokoa(motaHegazkina, motaEtsaia, maila);
+	        JokoKudeatzailea.getEMA().irekiJokoa(motaHegazkina, motaEtsaia, maila, jokalariIzena);
 	        break;
 	    case KeyEvent.VK_1:
 	    	maila = "Erraza";
