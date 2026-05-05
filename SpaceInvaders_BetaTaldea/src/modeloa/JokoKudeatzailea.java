@@ -104,6 +104,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		notifyObservers("TIRO_MOTA_EGUNERATU");
 	}
 	
+	public void barreraSakatu() {Tableroa.getTableroaEMA().barreraSakatu();}
+	
 	public void startStopJokoa() {Tableroa.getTableroaEMA().startStopJokoa();}
     
 	// === TABLEROATIK JASOTAKO EVENTUAK BISTETARA BIRBIDALI ===

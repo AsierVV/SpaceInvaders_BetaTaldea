@@ -105,6 +105,7 @@ public class Tableroa extends Observable {
         		// Konprobatu 100ms pasatu diren
         		if (mugituHegazkinaKont <= 0) {
         			mugituHegazkinaControl();
+        			barreraEtsaiJoDu();
         			mugituHegazkinaKont = 1;
         			
             		// Konprobatu 300ms pasatu diren
@@ -392,6 +393,15 @@ public class Tableroa extends Observable {
 	    }
 
 	}
+	
+	// === BARRERA SORTU ===
+		public void barreraEgin() {
+			if(hegazkina.barrerakDaude()) {
+				hegazkina.barreraAktibatu();
+				hegazkina.barreraKontsumitu();
+				margotuBarrera();
+			}
+		}
 	       
 	// === TIROA ALDATU ===
 	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
@@ -408,8 +418,12 @@ public class Tableroa extends Observable {
 	public void mugituHegazkina(int dx, int dy) {
 		if (hegazkinaMugituDaiteke(dx, dy)) {
 	    	garbituHegazkina();
+	    	garbituBarrera();
 	    	hegazkina.mugitu(dx, dy);
 	    	margotuHegazkina();
+	    	if (hegazkina.barreraAktiboDago()) {
+	    		margotuBarrera();
+	    	}
 		}
 	}
 	 
@@ -497,6 +511,20 @@ public class Tableroa extends Observable {
 	    tiroak.removeAll(ezabatzekoTiroak);
 	}
 	
+	// === BARRERA ETSAIEN BAT JO ===
+	private void barreraEtsaiJoDu() {
+		List<Koordenatua> hurrengoKoordenatuak = hegazkina.getBarrera().getKoordenatuLista();
+		for (Koordenatua k : hurrengoKoordenatuak) {
+	        EtsaiaTaldea e = kolpatutakoEtsaia(k.getX(), k.getY());
+
+	        if (e != null && hegazkina.barreraAktiboDago()) {	
+	        	garbituBarrera();
+	            etsaiaEzabatu(e.getIndizea());
+	            hegazkina.barreraDesaktibatu();
+	        }
+	    }
+	}
+	
 	// === TIROEN MUGIMENDURAKO METODO LAGUNGARRIAK ===
 	private boolean tiroakZerbaitJoDu(TiroaTaldea t, List<Koordenatua> hurrengoKoordenatuak) {
 		// Tiroa hegazkinarena bada, etsaia jo duen konprobatu
@@ -505,7 +533,7 @@ public class Tableroa extends Observable {
 	    }
 		// Tiroa etsaiarena bada, hegazkina jo duen konprobatu
 	    if (t.etsaiarenaDa()) {
-	        return tiroakHegazkinaJoDu(hurrengoKoordenatuak);
+	    	return tiroakHegazkinaJoDu(hurrengoKoordenatuak) || tiroakBarreraJoDu(hurrengoKoordenatuak);
 	    }
 	    return false;
 	}
@@ -530,6 +558,18 @@ public class Tableroa extends Observable {
 	        }
 	    }
 	    return false;	// Ez badu hegazkina jo
+	}
+	
+	private boolean tiroakBarreraJoDu(List<Koordenatua> hurrengoKoordenatuak) {
+		for (Koordenatua k : hurrengoKoordenatuak) {
+	        if (kolpatutakoBarrera(k.getX(), k.getY()) && hegazkina.barreraAktiboDago()) {
+	        	garbituBarrera();
+	        	hegazkina.barreraDesaktibatu();
+	            return true;
+	        }
+	    }
+	    return false;
+	
 	}
 	
 	private boolean tiroakBesteTiroBatJoDu(TiroaTaldea t, List<Koordenatua> hurrengoKoordenatuak, List<TiroaTaldea> ezabatzekoTiroak) {
@@ -571,6 +611,15 @@ public class Tableroa extends Observable {
     
 	private boolean kolpatutakoHegazkina(int x, int y) {
 	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
+	        if (k.getX() == x && k.getY() == y) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	private boolean kolpatutakoBarrera(int x, int y) {
+		for (Koordenatua k : hegazkina.getBarrera().getKoordenatuLista()) {
 	        if (k.getX() == x && k.getY() == y) {
 	            return true;
 	        }
@@ -687,6 +736,12 @@ public class Tableroa extends Observable {
 	}
 	public void tiroaAskatu() {tiroEgin = false;}
 	
+	public void barreraSakatu() {
+		if(!hegazkina.barreraAktiboDago()) {
+			barreraEgin();
+		}
+	}
+	
 	// === PIXELAK MARGOTZEKO ETA GARBITZEKO METODOAK ===
 	private void margotuHegazkina() {
 		hegazkina.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriHegazkina(hegazkina.getMotaChar()));
@@ -705,6 +760,12 @@ public class Tableroa extends Observable {
 	}
     private void garbituTiroa(TiroaTaldea t) {
 		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+    }
+    private void margotuBarrera() {
+    	hegazkina.getBarrera().getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriBarrera());
+    }
+    private void garbituBarrera() {
+    	hegazkina.getBarrera().getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
     }
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===

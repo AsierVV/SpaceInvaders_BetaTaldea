@@ -6,9 +6,11 @@ import java.util.List;
 public abstract class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private TiroMota tiroMota;
+	private BarreraTaldea barrera;
 	
 	private int geziTiroKop;
 	private int erronboTiroKop;
+	private int barreraKop;
 	
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
@@ -18,6 +20,7 @@ public abstract class HegazkinaTaldea extends Pixel{
 	private void sortuHegazkinaTaldea() {
 		geziTiroKop = 30;
 		erronboTiroKop = 20;
+		barreraKop = 3;
 		
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
@@ -33,6 +36,8 @@ public abstract class HegazkinaTaldea extends Pixel{
         addElementua(new Hegazkina(new Koordenatua(x+1, y-1)));
         addElementua(new Hegazkina(new Koordenatua(x-2, y+1)));
         addElementua(new Hegazkina(new Koordenatua(x+2, y+1)));
+        
+        barrera = new BarreraTaldea(new Koordenatua(x,y));
     }
 	
 	public void addElementua(Pixel p) {
@@ -46,6 +51,18 @@ public abstract class HegazkinaTaldea extends Pixel{
 	public void setTiroMota(TiroMota pTiroMota) {
 		tiroMota = pTiroMota;
 	}
+	
+	public BarreraTaldea getBarrera() {
+		return barrera;
+	}
+	
+	public void barreraAktibatu() {
+		barrera.setAktibo(true);
+	}
+	
+	public void barreraDesaktibatu() {
+		barrera.setAktibo(false);
+	}
 
 	public void tiroaKontsumitu() {
 		if (tiroMota.motaChar()=='b') return;
@@ -57,6 +74,16 @@ public abstract class HegazkinaTaldea extends Pixel{
 		if (tiroMota.motaChar()=='t' && geziTiroKop<=0) return false;
 		if (tiroMota.motaChar()=='r' && erronboTiroKop<=0) return false;
 		return true;
+	}
+	
+	public void barreraKontsumitu() {barreraKop--;}
+	
+	public boolean barreraAktiboDago() {
+		return barrera.aktiboDago();
+	}
+	public boolean barrerakDaude() {
+		if (barreraKop > 0) return  true;
+		else return false;
 	}
 	
 	public int getTiroKopGezia() {return geziTiroKop;}
@@ -83,5 +110,6 @@ public abstract class HegazkinaTaldea extends Pixel{
 		for (Pixel p : pixelak) {
 			p.mugitu(dx, dy);
 		}
+		barrera.mugitu(dx, dy);
 	}
 }
