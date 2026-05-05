@@ -18,7 +18,6 @@ public class BarreraTaldea extends Pixel {
         int y = this.posizioa.getY() - 3;
 
         // Hegazkinaren forma
-        
         addElementua(new Barrera(new Koordenatua(x, y)));
         addElementua(new Barrera(new Koordenatua(x-1, y)));
         addElementua(new Barrera(new Koordenatua(x+1, y)));

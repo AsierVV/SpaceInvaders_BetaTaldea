@@ -419,12 +419,17 @@ public class Tableroa extends Observable {
 	// === HEGAZKINAREN MUGIMENDUA ===
 	public void mugituHegazkina(int dx, int dy) {
 		if (hegazkinaMugituDaiteke(dx, dy)) {
-	    	garbituHegazkina();
-	    	garbituBarrera();
-	    	hegazkina.mugitu(dx, dy);
-	    	margotuHegazkina();
 	    	if (hegazkina.barreraAktiboDago()) {
+		    	garbituHegazkina();
+	    		garbituBarrera();
+	    		hegazkina.mugitu(dx, dy);
 	    		margotuBarrera();
+	    		margotuHegazkina();
+	    	} else {
+		    	garbituHegazkina();
+		    	hegazkina.mugitu(dx, dy);
+		    	margotuHegazkina();
+	    		
 	    	}
 		}
 	}
