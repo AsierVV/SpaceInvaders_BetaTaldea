@@ -81,6 +81,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	public int getMailaProgresiboa() {return mailaProgresiboa;}
 		
 	public List<String> getEstadistikak() {return PartidaErregistroa.irakurriPartidak();}
+	
+	public String getZailtasuna() {return Tableroa.getTableroaEMA().getZailtasunMota();}
 		
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
@@ -135,6 +137,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("ETSAIAK_KOP_EGUNERATU");
+		} else if ("HURRENGO_MAILA".equals(arg)) {
+			setChanged();
+			notifyObservers("HURRENGO_MAILA");
 		} else if ("RESET".equals(arg)) {
 			setChanged();
 			notifyObservers("RESET");

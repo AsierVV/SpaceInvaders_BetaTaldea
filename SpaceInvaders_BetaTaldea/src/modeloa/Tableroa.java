@@ -89,6 +89,8 @@ public class Tableroa extends Observable {
         		if (hurrengoMailaProgEskatuta) {
         			hurrengoMailaProgEskatuta = false;
         			hurrengoMailaProgresiboa();
+        			setChanged();
+        			notifyObservers("HURRENGO_MAILA");
         			return;
         		}
         		

@@ -38,7 +38,6 @@ public class EstadistikaFinalak extends JPanel implements Observer{
 
 	private EstadistikaFinalak() {
 		estadisFrame = new JFrame("PARTIDAREN ESTADISTIKAK");
-		estadisFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		panelOsoa = new JPanel();
 		panelOsoa.setLayout(new BorderLayout(0, 20));
@@ -239,7 +238,9 @@ public class EstadistikaFinalak extends JPanel implements Observer{
 	    estadistikak.setForeground(Color.BLACK);	// Hizkien kolorea
 	    botoiakPanel.add(estadistikak);
 	    
-	    estadistikak.addActionListener(e -> estadisFrame.setVisible(false));	// Botoia pultsatu
+	    estadistikak.addActionListener(e -> {
+	    	PartidenErregistroa.getEMA().bistaratu();	// Botoia pultsatu
+	    });
 	    
 	    
 	    panelOsoa.add(botoiakPanel, BorderLayout.SOUTH);
