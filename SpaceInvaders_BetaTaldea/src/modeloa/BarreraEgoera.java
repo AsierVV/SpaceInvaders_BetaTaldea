@@ -7,7 +7,7 @@ public class BarreraEgoera implements Egoera {
 	
 	@Override
 	public char getMota() {
-		return 'j';
+		return 'p';
 	}
 
 }
