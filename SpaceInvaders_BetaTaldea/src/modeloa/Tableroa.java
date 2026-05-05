@@ -631,6 +631,7 @@ public class Tableroa extends Observable {
 	private void partidaAmaitu() {
 		gameOver = true;
 		amaituJokoa();
+		puntuazioFinalaLortu();
 	}
 	private void partidaIrabazi() {
 		partidaAmaitu();
@@ -678,6 +679,57 @@ public class Tableroa extends Observable {
 			if (k.getY() >= altuera-1) return true;
 		}
 		return false;
+	}
+	
+	// === PUNTUAZIO FINALA KALKULATU ===
+	private void puntuazioFinalaLortu() {
+		if (!irabaziDuzu) return;
+		
+		// Denboragatik bonifikazioa
+		switch(zailtasunMota) {
+			case "Erraza":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*30;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Normala":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*60;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*40;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Zaila":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*80;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*40;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Ezinezkoa":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*100;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*20;
+				break;
+			case "Progresiboa":
+				if (denboraSegundoak <= 60) puntuazioa = puntuazioa*100;
+				else if (denboraSegundoak <= 80) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 100) puntuazioa = puntuazioa*20;
+				break;
+		}
+		
+		// Soberan utzi diren tiroengatik bonifikazioa
+		int tiroErronboSoberanPuntuazioa = hegazkina.getTiroKopErronbo() * 30;
+		int tiroGeziSoberanPuntuazioa = hegazkina.getTiroKopGezia() * 10;
+
+		switch(hegazkina.getMotaChar()) {
+			case 'g':
+				puntuazioa = puntuazioa + tiroGeziSoberanPuntuazioa;
+				break;
+			case 'b':
+				puntuazioa = puntuazioa + tiroErronboSoberanPuntuazioa;
+				break;
+			case 'r':
+				puntuazioa = puntuazioa + tiroGeziSoberanPuntuazioa;
+				puntuazioa = puntuazioa + tiroErronboSoberanPuntuazioa;
+				break;
+		}
 	}
 	
 	// === ETSAIA EZABATU ===
