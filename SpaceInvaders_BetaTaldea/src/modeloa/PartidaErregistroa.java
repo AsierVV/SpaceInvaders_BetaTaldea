@@ -1,10 +1,15 @@
 package modeloa;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class PartidaErregistroa {
 
@@ -17,7 +22,7 @@ public class PartidaErregistroa {
 		// Denbora segundutik --> mm:ss -ra pasatu
 		int min = pDenbora/60;
 		int seg = pDenbora%60;
-		String dataString = String.format("%02d:%02d", min, seg);	// Partida denbora beti izateko mm:ss formatoa
+		String denbString = String.format("%02d:%02d", min, seg);	// Partida denbora beti izateko mm:ss formatoa
 
 		
 		String pData = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
@@ -31,13 +36,39 @@ public class PartidaErregistroa {
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(fitxategia, true));
 
-			writer.println(pJokalari + "#" +  pData + "#" + pEmaitza + "#" + pZailtasuna + "#" + pPuntuazioa + "#" + dataString + "#" + pHegazkinMota + "#" + pEtsaiMota);
+			writer.println(pJokalari + "#" +  pData + "#" + pEmaitza + "#" + pZailtasuna + "#" + pPuntuazioa + "#" + denbString + "#" + pHegazkinMota + "#" + pEtsaiMota);
 
 			writer.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static List<String> irakurriPartidak() {
+		List<String> partidak = new ArrayList<String>();
+
+		File fitx = new File(fitxategia);
+
+		if (!fitx.exists()) {
+			return partidak;
+		}
+
+		try {
+			Scanner sarrera = new Scanner(new FileReader(fitxategia));
+
+			while (sarrera.hasNextLine()) {
+				String lerroa = sarrera.nextLine();
+				partidak.add(lerroa);
+			}
+
+			sarrera.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return partidak;
 	}
 	
 }

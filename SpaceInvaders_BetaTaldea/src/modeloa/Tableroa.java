@@ -208,6 +208,10 @@ public class Tableroa extends Observable {
     public List<Koordenatua> getTiroenKoordenatuak() {
     	return tiroak.stream().map(t->t.getPosizioa()).toList();
     }
+    
+    public String getJokalariIzena() {
+    	return jokalariIzena;
+    }
 
 	// === JOKOA HASTEKO METODOA ===
     public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pZailtasunMota, String pJokalariIzena) {

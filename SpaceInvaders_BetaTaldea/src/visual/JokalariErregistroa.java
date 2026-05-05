@@ -80,9 +80,7 @@ public class JokalariErregistroa extends JPanel{
 	}
 	
 	public static JokalariErregistroa getEMA() {
-		if (nireEMA == null) {
-			nireEMA = new JokalariErregistroa();
-		}
+		if (nireEMA == null) nireEMA = new JokalariErregistroa();
 		return nireEMA;
 	}
 	

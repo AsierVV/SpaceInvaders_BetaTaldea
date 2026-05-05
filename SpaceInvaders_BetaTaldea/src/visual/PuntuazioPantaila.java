@@ -212,7 +212,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {
 			eguneratuTiroMota();
 		} else if ("RESET".equals(arg)) {
-			JokoKudeatzailea.getEMA().deleteObserver(this);
+			o.deleteObserver(this);	// "o" notifyObservers() mezua bidali duen Observable-a da, kasu hontan JokoKudeatzailea
 			frame.dispose();
 			nireEMA = null;
 		} else if ("IRABAZI".equals(arg) || "GALDU".equals(arg)) {

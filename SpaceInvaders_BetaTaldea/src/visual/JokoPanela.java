@@ -109,7 +109,7 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
 			tirokaEginAudioa();
 		} else if ("RESET".equals(arg)) {
-			JokoKudeatzailea.getEMA().deleteObserver(this);
+			o.deleteObserver(this);	// "o" notifyObservers() mezua bidali duen Observable-a da, kasu hontan JokoKudeatzailea
 			frame.dispose();
 			nireEMA = null;
 		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {

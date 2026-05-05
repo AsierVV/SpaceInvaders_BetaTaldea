@@ -1,5 +1,6 @@
 package modeloa;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -78,6 +79,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	public int getPuntuazioa() {return Tableroa.getTableroaEMA().getPuntuazioa();}
 	
 	public int getMailaProgresiboa() {return mailaProgresiboa;}
+		
+	public List<String> getEstadistikak() {return PartidaErregistroa.irakurriPartidak();}
 		
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
