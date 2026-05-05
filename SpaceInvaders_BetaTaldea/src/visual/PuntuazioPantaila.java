@@ -36,15 +36,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	private JLabel bakarraLabel;
 	private JLabel geziLabel;
 	private JLabel erronboLabel;
-	
-	/* COSAS PARA AÑADIR EN ESTE PANEL
-		- Marcador
-		- Tiempo de juego
-		- Enemigos restantes
-		- Tipo de disparo actual
-		- Munición restante		
-	 */
-	
+	private JLabel barreraLabel;
 	
 	public PuntuazioPantaila() {
 		frame = new JFrame("Puntuazioa");
@@ -102,36 +94,45 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    JPanel munizioPanel;
 	    switch(JokoKudeatzailea.getEMA().getHegazkinaMota()) {
 		    case 'g':
-		    	munizioPanel = new JPanel(new GridLayout(2,1));
+		    	munizioPanel = new JPanel(new GridLayout(3,1));
 	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    barreraLabel = new JLabel("", JLabel.CENTER);
+	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
 	    	    bakarraLabel.setForeground(Color.WHITE);
 	    	    geziLabel = new JLabel("", JLabel.CENTER);
 	    	    geziLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(barreraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(geziLabel, BorderLayout.CENTER);
 	    	    panel.add(munizioPanel);
 	    	    break;
 	    	case 'b':
-	    		munizioPanel = new JPanel(new GridLayout(2,1));
+	    		munizioPanel = new JPanel(new GridLayout(3,1));
 	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    barreraLabel = new JLabel("", JLabel.CENTER);
+	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
 	    	    bakarraLabel.setForeground(Color.WHITE);
 	    	    erronboLabel = new JLabel("", JLabel.CENTER);
 	    	    erronboLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(barreraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(erronboLabel, BorderLayout.CENTER);
 	    	    panel.add(munizioPanel);
 	    	    break;
 	    	case 'r':
-	    		munizioPanel = new JPanel(new GridLayout(3,1));
+	    		munizioPanel = new JPanel(new GridLayout(4,1));
 	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    barreraLabel = new JLabel("", JLabel.CENTER);
+	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
 	    	    bakarraLabel.setForeground(Color.WHITE);
 	    	    geziLabel = new JLabel("", JLabel.CENTER);
 	    	    geziLabel.setForeground(Color.WHITE);
 	    	    erronboLabel = new JLabel("", JLabel.CENTER);
 	    	    erronboLabel.setForeground(Color.WHITE);
+	    	    munizioPanel.add(barreraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(bakarraLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(geziLabel, BorderLayout.CENTER);
 	    	    munizioPanel.add(erronboLabel, BorderLayout.CENTER);
@@ -202,14 +203,17 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	private void eguneratuTiroKop() {
 	    switch(JokoKudeatzailea.getEMA().getHegazkinaMota()) {
 	    case 'g':
+	    	barreraLabel.setText("Barrera kop: " + JokoKudeatzailea.getEMA().getBarreraKop());
 	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
 			geziLabel.setText("Gezi tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopGezia());
 			break;
 	    case 'b':
+	    	barreraLabel.setText("Barrera kop: " + JokoKudeatzailea.getEMA().getBarreraKop());
 	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
 			erronboLabel.setText("Erronbo tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopErronbo());
 			break;
 	    case 'r':
+	    	barreraLabel.setText("Barrera kop: " + JokoKudeatzailea.getEMA().getBarreraKop());
 	    	bakarraLabel.setText("Tiro bakarra kop: ∞");
 			geziLabel.setText("Gezi tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopGezia());
 			erronboLabel.setText("Erronbo tiro kop: " + JokoKudeatzailea.getEMA().getTiroKopErronbo());

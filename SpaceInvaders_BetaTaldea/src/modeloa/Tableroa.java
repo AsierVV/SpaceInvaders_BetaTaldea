@@ -80,6 +80,7 @@ public class Tableroa extends Observable {
         		
         		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
         		mugituTiroak();
+    			barreraEtsaiJoDu();
     			//mugituHegazkinaControl();
         		
         		// HAU BAKARRIK ERABILIKO DA MAILA PROGRESIBOAN
@@ -107,7 +108,6 @@ public class Tableroa extends Observable {
         		// Konprobatu 100ms pasatu diren
         		if (mugituHegazkinaKont <= 0) {
         			mugituHegazkinaControl();
-        			barreraEtsaiJoDu();
         			mugituHegazkinaKont = 1;
         			
             		// Konprobatu 300ms pasatu diren
@@ -214,6 +214,10 @@ public class Tableroa extends Observable {
     
     public String getJokalariIzena() {
     	return jokalariIzena;
+    }
+    
+    public int getBarreraKop() {
+    	return hegazkina.getBarreraKop();
     }
 
 	// === JOKOA HASTEKO METODOA ===
@@ -402,6 +406,8 @@ public class Tableroa extends Observable {
 				hegazkina.barreraAktibatu();
 				hegazkina.barreraKontsumitu();
 				margotuBarrera();
+				setChanged();
+				notifyObservers("BARRERAK_KOP_EGUNERATU");
 			}
 		}
 	       
@@ -520,6 +526,8 @@ public class Tableroa extends Observable {
 	
 	// === BARRERA ETSAIEN BAT JO ===
 	private void barreraEtsaiJoDu() {
+		if (!hegazkina.barreraAktiboDago()) return;
+		
 		List<Koordenatua> hurrengoKoordenatuak = hegazkina.getBarrera().getKoordenatuLista();
 		for (Koordenatua k : hurrengoKoordenatuak) {
 	        EtsaiaTaldea e = kolpatutakoEtsaia(k.getX(), k.getY());
@@ -528,6 +536,7 @@ public class Tableroa extends Observable {
 	        	garbituBarrera();
 	            etsaiaEzabatu(e.getIndizea());
 	            hegazkina.barreraDesaktibatu();
+	            return;
 	        }
 	    }
 	}
@@ -838,7 +847,11 @@ public class Tableroa extends Observable {
 	}
 	
 	private boolean hegazkinaMugituDaiteke(int dx, int dy) {
-	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
+		if (hegazkina.barreraAktiboDago() && !barreraMugituDaiteke(dx, dy)) {
+	    	return false;
+	    }
+		
+		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
 	        int xBerria = k.getX() + dx;
 	        int yBerria = k.getY() + dy;
 
@@ -851,6 +864,16 @@ public class Tableroa extends Observable {
 		    if (mota != 'u' && !hegazkinarenKoordenatuaDa(xBerria, yBerria)) return false;
 	    }
 	    return true;
+	}
+	
+	private boolean barreraMugituDaiteke(int dx, int dy) {
+		for (Koordenatua k : hegazkina.getBarrera().getKoordenatuLista()) {
+			int xBerria = k.getX() + dx;
+			int yBerria = k.getY() + dy;
+
+			if (!posizioBaliozkoa(xBerria, yBerria)) return false;
+		}
+		return true;
 	}
 	
 	private boolean etsaiaMugituDaiteke(int dx, int dy, EtsaiaTaldea e) {
@@ -892,7 +915,6 @@ public class Tableroa extends Observable {
         }
         return true;
     }
-    
     
     private List<Koordenatua> tiroarenHurrengoKoordenatuak(List<Koordenatua> koordenatuak, int dx, int dy) {
     	List<Koordenatua> koordenatuBerriak = new ArrayList<>();
