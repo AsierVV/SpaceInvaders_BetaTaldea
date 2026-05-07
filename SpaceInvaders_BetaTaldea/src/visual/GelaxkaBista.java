@@ -39,9 +39,12 @@ public class GelaxkaBista extends JLabel implements Observer{
 	    case 'c':
 	        setBackground(Color.CYAN);
 	        break;
-	    case 't' , 'p':
+	    case 't' :
 	        setBackground(Color.WHITE);
 	        break;
+	    case 'p':
+	    	setBackground(Color.GRAY);
+	    	break;
         }
 	}
 	

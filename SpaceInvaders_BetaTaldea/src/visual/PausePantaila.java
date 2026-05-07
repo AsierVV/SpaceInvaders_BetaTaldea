@@ -47,6 +47,10 @@ public class PausePantaila extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_SPACE:
 			JokoKudeatzailea.getEMA().startStopJokoa();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			System.exit(0);
+			break;
 		}
 	}
 

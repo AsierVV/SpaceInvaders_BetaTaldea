@@ -25,7 +25,9 @@ public class Tableroa extends Observable {
 	
 	private Timer timer;
 	private Timer timerEtsai;
+	private Timer timerHegazkina;
 	private final int abiaduraTimer = 50;			//50ms
+	private final int abiaduraHegazkina = 70;		//70ms
 	private int denboraSegundoak = 0;
 	private long azkenDenboraEguneraketa = 0;
 	private int puntuazioa = 0;
@@ -34,9 +36,8 @@ public class Tableroa extends Observable {
 	private int etsaiAbiadura = 200;				//200ms (default)
 	private int puntuazioBiderkatzailea = 1;		//x1 (default)
 	
-	private int mugituHegazkinaKont = 1;			//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
-	private int tiroEginKont = 2;					//300ms, beraz 100ms * 3 --> Bian hasi parametroa, horrela 100ms pasatzen diren hirugarren aldian 300ms pasatu dira.
-	private int etsaiekTiroEginKont = 7;			//800ms, beraz 100ms * 8 --> Zazpian hasi parametroa, horrela 100ms pasatzen diren zortzigarren aldian 800ms pasatu dira.
+	private int tiroEginKont = 5;					//300ms, beraz 50ms * 6 --> Bostean hasi parametroa, horrela 50ms pasatzen diren seigarren aldian 300ms pasatu dira.
+	private int etsaiekTiroEginKont = 19;			//1000ms, beraz 50ms * 20 --> Hemeretzian hasi parametroa, horrela 50ms pasatzen diren hogeigarren aldian 1000ms pasatu dira.
 	
 	private long azkenTiroa = 0;
     private final long tiroKadentzia= 300;			//300ms
@@ -73,16 +74,38 @@ public class Tableroa extends Observable {
             }
         }
         
-        // --- TIMERRRA ERAIKI ---
+        // --- TIMERRRAK ERAIKI ---
+        timerHegazkina = new Timer(abiaduraHegazkina, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mugituHegazkinaControl();			
+			}
+		});
+        
         timer = new Timer(abiaduraTimer, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
         		
-        		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
+        		// 50ms
         		mugituTiroak();
     			barreraEtsaiJoDu();
-    			//mugituHegazkinaControl();
         		
+    			// Konprobatu 300ms pasatu diren
+        		if (tiroEginKont <= 0) {
+					tiroakSortu();
+					tiroEginKont = 5;
+					
+        		} else tiroEginKont--;
+        		
+        		// Konprobatu 1000ms pasatu diren
+        		if (etsaiekTiroEginKont <= 0) {
+        			if (zailtasunPortaera.etsaiekTiroEginBeharDute()) {
+					    etsaiekTiroEgin();
+					}
+        			etsaiekTiroEginKont = 19;
+        			
+        		} else etsaiekTiroEginKont--;
+    			
         		// HAU BAKARRIK ERABILIKO DA MAILA PROGRESIBOAN
         		// Hurrengo nivel progresiboa eskatuta badago, aurrera egin
         		// Hau hemen egiten dugu arazoak ekiditeko; izan ere, mugituTiroak metodoaren while barruan hurrengo mailara joatea eskatzen badugu,
@@ -94,7 +117,7 @@ public class Tableroa extends Observable {
         			notifyObservers("HURRENGO_MAILA");
         			return;
         		}
-        		
+
         		// Konprobatu 1s pasatu den
         		long orain = System.currentTimeMillis();
         		if (orain - azkenDenboraEguneraketa > 1000) {
@@ -103,30 +126,7 @@ public class Tableroa extends Observable {
         			
         			setChanged();
         			notifyObservers("DENBORA_EGUNERATU");
-        		}
-        		
-        		// Konprobatu 100ms pasatu diren
-        		if (mugituHegazkinaKont <= 0) {
-        			mugituHegazkinaControl();
-        			mugituHegazkinaKont = 1;
-        			
-            		// Konprobatu 300ms pasatu diren
-            		if (tiroEginKont <= 0) {
-    					tiroakSortu();
-    					tiroEginKont = 2;
-    					
-            		} else tiroEginKont--;
-            		
-            		// Konprobatu 1000ms pasatu diren
-            		if (etsaiekTiroEginKont <= 0) {
-            			if (zailtasunPortaera.etsaiekTiroEginBeharDute()) {
-    					    etsaiekTiroEgin();
-    					}
-            			etsaiekTiroEginKont = 9;
-            			
-            		} else etsaiekTiroEginKont--;
-            		
-        		} else mugituHegazkinaKont--;
+        		}	
             }
         });
     }
@@ -250,12 +250,9 @@ public class Tableroa extends Observable {
     	setChanged();
         notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
         
-        if (!timer.isRunning()) {
-        	timer.start();
-        }
-        if (!timerEtsai.isRunning()) {
-            timerEtsai.start();
-        }
+        if (!timer.isRunning()) timer.start();
+        if (!timerEtsai.isRunning()) timerEtsai.start();
+        if (!timerHegazkina.isRunning()) timerHegazkina.start();
         
         azkenDenboraEguneraketa = System.currentTimeMillis();
         
@@ -277,11 +274,13 @@ public class Tableroa extends Observable {
     public void amaituJokoa() {
     	timer.stop();
     	timerEtsai.stop();
+    	timerHegazkina.stop();
     }
     public void startStopJokoa() {
     	if (timer.isRunning()) {
     		timer.stop();
         	timerEtsai.stop();
+        	timerHegazkina.stop();
     		setChanged();
         	notifyObservers("STOP");
     	} else if (!timer.isRunning()) {
@@ -289,6 +288,7 @@ public class Tableroa extends Observable {
         	notifyObservers("START");
         	timer.start();
         	timerEtsai.start();
+        	timerHegazkina.start();
     	}
     }
     
@@ -378,9 +378,7 @@ public class Tableroa extends Observable {
 		}
 	}
 	public void etsaiekTiroEgin() {
-	    
-	    if (timer.isRunning() && timerEtsai.isRunning()) {
-		    			
+	    if (timer.isRunning() && timerEtsai.isRunning()) {	
 		    for (EtsaiaTaldea e : etsaiak) {
 		        if (Math.random() < 0.3) {	// Tiro egiteko probabilitatea -> %30
 			        

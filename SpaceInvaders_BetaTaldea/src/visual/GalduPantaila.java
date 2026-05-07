@@ -32,13 +32,8 @@ public class GalduPantaila extends JPanel implements Observer, KeyListener{
 
 	private JFrame bukFrame = new JFrame("Game Over!");
 	private static GalduPantaila nireEMA = null;
-	
-	
-	//public GalduPantaila(JFrame pBukFrame) {
+
 	public GalduPantaila() {
-	
-		//bukFrame = pBukFrame;
-		
 		setBackground(new Color(0, 0, 0));
 		add(getBukaera());
 		
@@ -83,7 +78,7 @@ public class GalduPantaila extends JPanel implements Observer, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_ENTER:
 			JokoKudeatzailea.getEMA().jokoaReset();
 			break;
 		case KeyEvent.VK_ESCAPE:

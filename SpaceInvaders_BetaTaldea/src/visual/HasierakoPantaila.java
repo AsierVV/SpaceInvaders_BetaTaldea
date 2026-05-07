@@ -123,34 +123,16 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    	maila = "Progresiboa";
 	    	eguneratuTestua();
 	        break;
-	        
-	    case KeyEvent.VK_G:
-	        motaHegazkina = "GREEN";
+	    case KeyEvent.VK_H:
+	    	if ("GREEN".equals(motaHegazkina)) motaHegazkina = "BLUE";		// GREEN --> BLUE
+	    	else if ("BLUE".equals(motaHegazkina)) motaHegazkina = "RED";	// BLUE --> RED
+	    	else motaHegazkina = "GREEN";									// RED --> GREEN
 	        eguneratuTestua();
 	        break;
-
-	    case KeyEvent.VK_B:
-	        motaHegazkina = "BLUE";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_R:
-	        motaHegazkina = "RED";
-	        eguneratuTestua();
-	        break;
-
 	    case KeyEvent.VK_E:
-	        motaEtsaia = "RED";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_P:
-	        motaEtsaia = "PURPLE";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_C:
-	        motaEtsaia = "CYAN";
+	    	if ("RED".equals(motaEtsaia)) motaEtsaia = "CYAN";			// RED --> CYAN
+	    	else if ("CYAN".equals(motaEtsaia)) motaEtsaia = "PURPLE";	// CYAN --> PURPLE
+	    	else motaEtsaia = "RED";									// PURPLE --> RED
 	        eguneratuTestua();
 	        break;
 	    case KeyEvent.VK_ESCAPE:
