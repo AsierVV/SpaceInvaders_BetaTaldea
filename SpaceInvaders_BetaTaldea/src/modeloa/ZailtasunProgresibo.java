@@ -40,4 +40,19 @@ public class ZailtasunProgresibo implements ZailtasunPortaera{
 	public boolean mugimenduTiroAdimendunaErabili() {
 		return mailaProgresiboa >= 3;
 	}
+
+	@Override
+	public int geziKopLortu() {
+		return 60;
+	}
+
+	@Override
+	public int erronboKopLortu() {
+		return 30;
+	}
+
+	@Override
+	public int barreraKopLortu() {
+		return 10;
+	}
 }

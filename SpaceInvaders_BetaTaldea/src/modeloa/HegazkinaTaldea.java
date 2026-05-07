@@ -8,9 +8,9 @@ public abstract class HegazkinaTaldea extends Pixel{
 	private TiroMota tiroMota;
 	private BarreraTaldea barrera;
 	
-	private int geziTiroKop;
-	private int erronboTiroKop;
-	private int barreraKop;
+	private int geziTiroKop = 0;
+	private int erronboTiroKop = 0;
+	private int barreraKop = 0;
 	
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
@@ -18,9 +18,9 @@ public abstract class HegazkinaTaldea extends Pixel{
     }
 	
 	private void sortuHegazkinaTaldea() {
-		geziTiroKop = 30;
-		erronboTiroKop = 20;
-		barreraKop = 3;
+		//geziTiroKop = 30;
+		//erronboTiroKop = 20;
+		//barreraKop = 3;
 		
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
@@ -94,7 +94,15 @@ public abstract class HegazkinaTaldea extends Pixel{
 	
 	public abstract void tiroMotaAldatu();
 	
+	public void defaultTiroMotaEzarri() {setTiroMota(new TiroBakarra());}
+	
 	public abstract char getMotaChar();
+	
+	public void munizioaEzarri(int pGeziKop, int pErronboKop, int pBarreraKop) {
+		geziTiroKop = pGeziKop;
+		erronboTiroKop = pErronboKop;
+		barreraKop = pBarreraKop;
+	}
 
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {

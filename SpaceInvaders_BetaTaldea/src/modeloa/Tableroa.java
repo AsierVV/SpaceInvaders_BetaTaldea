@@ -298,6 +298,14 @@ public class Tableroa extends Observable {
     	puntuazioBiderkatzailea = zailtasunPortaera.puntuazioBiderkatzaileaLortu();
     }
     
+    private void hegazkinarenBaliabideakEzarri() {
+    	hegazkina.munizioaEzarri(
+    		zailtasunPortaera.geziKopLortu(),
+    		zailtasunPortaera.erronboKopLortu(),
+    		zailtasunPortaera.barreraKopLortu()
+    		);
+    }
+    
     // === ZAILTASUN MOTAK ===
     public boolean isErraza() {
     	return "Erraza".equals(zailtasunMota);
@@ -316,6 +324,7 @@ public class Tableroa extends Observable {
 	// === HEGAZKINA SORTU ===
     private void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
+        hegazkinarenBaliabideakEzarri();
         margotuHegazkina();
 	}
     
@@ -334,12 +343,6 @@ public class Tableroa extends Observable {
 			 *		3. Maila -> 8-12
 			 *		4. Maila -> 10-15
 			 */
-	    
-	    // Etsaiak "PURPLE" direnean asko okupatzen dute eta errorea ematen du 20 baino gehiago sortu behar badira,
-	    // izan ere ez dira sartzen pantailan --> Hau konpontzeko momentuz purple etsaiak 18-ra limitatu dira
-	    //if ("PURPLE".equals(mota)) {
-	    //    kopurua = Math.min(kopurua, 18);	// kopurua eta 18 balioetatik txikiena hartzen du, beraz ez da inoiz 18 baino etsai purple gehiago egongo
-	    //}
 	    
 	    int ind = 1;
 	    int saiakerak = 0;
@@ -935,11 +938,23 @@ public class Tableroa extends Observable {
     	tiroak.clear();		// Tiro zerrenda garbitu
     	etsaiak.clear();	// Etsai zerrenda garbitu (ez luke beharrezkoa izango)
     	
+    	if (hegazkina.barreraAktiboDago()) hegazkina.barreraDesaktibatu();
+    	
     	sortuEtsaiak(motaEtsaia);
-    	sortuHegazkina(motaHegazkina);
+    	
+    	hegazkina.defaultTiroMotaEzarri();
+    	hegazkinaHasierakoPosizioraEraman();
+    	margotuHegazkina();	// Hegazkina ez dugu berriro sortuko, bakarrik margotuko dugu berriz hasierako koordenatuaetan
     	
     	setChanged();
     	notifyObservers("ETSAIAK_KOP_EGUNERATU");
+    }
+    
+    private void hegazkinaHasierakoPosizioraEraman() {
+    	int dx = 50 - hegazkina.getPosizioa().getX();	// X koordenatuan hasierako posiziora heltzeko mugitu behar den X koordenatuko pixel kantitatea lortzen dugu
+    	int dy = 55 - hegazkina.getPosizioa().getY();	// Y koordenatuan hasierako posiziora heltzeko mugitu behar den Y koordenatuko pixel kantitatea lortzen dugu
+
+    	hegazkina.mugitu(dx, dy);	// Hegazkina mugitzeko aldi batean hasierako posiziora
     }
     
     private void tableroaGarbitu() {

@@ -30,4 +30,19 @@ public class ZailtasunNormala implements ZailtasunPortaera{
 	public boolean mugimenduTiroAdimendunaErabili() {
 		return false;
 	}
+
+	@Override
+	public int geziKopLortu() {
+		return 20;
+	}
+
+	@Override
+	public int erronboKopLortu() {
+		return 5;
+	}
+
+	@Override
+	public int barreraKopLortu() {
+		return 3;
+	}
 }
