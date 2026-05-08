@@ -18,10 +18,6 @@ public abstract class HegazkinaTaldea extends Pixel{
     }
 	
 	private void sortuHegazkinaTaldea() {
-		//geziTiroKop = 30;
-		//erronboTiroKop = 20;
-		//barreraKop = 3;
-		
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
 
@@ -106,20 +102,19 @@ public abstract class HegazkinaTaldea extends Pixel{
 
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
-		List<Koordenatua> koordenatuak = new ArrayList<>();
-        for (Pixel p : pixelak) {
-            koordenatuak.addAll(p.getKoordenatuLista()); // addAll erabiltzen da "getKoordenatuak" lista bat itzultzen duelako
-        }
-        return koordenatuak;
+		return pixelak.stream()
+			// Pixel bakoitzak koordenatuen lista bat bueltatzen duenez, flatMap erabiltzen dugu lista txiki guztiak lista bakar batean elkartzeko.
+			.flatMap(p -> p.getKoordenatuLista().stream())
+			.toList();
 	}
 
 	@Override
 	public void mugitu(int dx, int dy) {
 		posizioa.setX(posizioa.getX()+dx);
     	posizioa.setY(posizioa.getY()+dy);
-		for (Pixel p : pixelak) {
-			p.mugitu(dx, dy);
-		}
+		
+    	pixelak.stream().forEach(p -> p.mugitu(dx, dy));
+
 		barrera.mugitu(dx, dy);
 	}
 }

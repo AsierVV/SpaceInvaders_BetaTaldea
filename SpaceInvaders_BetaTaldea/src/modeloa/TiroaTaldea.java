@@ -15,9 +15,9 @@ public class TiroaTaldea extends Pixel{
     }
 	
 	private void sortuTiroaTaldea(List<Koordenatua> pKoordenatuak) {
-        for (Koordenatua k : pKoordenatuak) {
-        	addElementua(new Tiroa(new Koordenatua(k.getX(),k.getY())));	// Elementu berria gehitzerakoan koordenatuaren kopia berria sortu behar dugu, bestela arazoak ematen ditu
-        }
+        pKoordenatuak.stream()
+        	.map(k -> new Tiroa(new Koordenatua(k.getX(), k.getY())))	// Tiro taldearen pixel berri bakoitza sortu
+        	.forEach(this::addElementua);;	// Pixel berri bakoitza sartu "pixelak" listan
     }
 	public int getDy() {
 	    return dy;
@@ -39,19 +39,17 @@ public class TiroaTaldea extends Pixel{
 	
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
-		List<Koordenatua> koordenatuak = new ArrayList<>();
-        for (Pixel p : pixelak) {
-            koordenatuak.addAll(p.getKoordenatuLista());
-        }
-        return koordenatuak;
+		return pixelak.stream()
+			// Pixel bakoitzak koordenatuen lista bat bueltatzen duenez, flatMap erabiltzen dugu lista txiki guztiak lista bakar batean elkartzeko.
+			.flatMap(p -> p.getKoordenatuLista().stream())
+			.toList();
 	}
 
 	@Override
 	public void mugitu(int dx, int dy) {
 		posizioa.setX(posizioa.getX()+dx);
     	posizioa.setY(posizioa.getY()+dy);
-	    for (Pixel p : pixelak) {
-	    	p.mugitu(dx, dy);
-	    }
+	    
+    	pixelak.stream().forEach(p -> p.mugitu(dx, dy));
 	}
 }
