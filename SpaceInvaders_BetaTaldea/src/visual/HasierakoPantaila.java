@@ -61,7 +61,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    eguneratuTestua();
 	    lblAukera.setForeground(Color.WHITE);
 
-	    has.add(lblAukera, BorderLayout.NORTH);
+	    has.add(lblAukera, BorderLayout.SOUTH);
 		
 	    return has;
 	}
