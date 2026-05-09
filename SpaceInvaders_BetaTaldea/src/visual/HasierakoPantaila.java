@@ -141,6 +141,15 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    case KeyEvent.VK_I:
 	    	hasiFrame.setVisible(false);
 	    	Kontrolak.getEMA().erakutsi();
+	    	break;
+	    case KeyEvent.VK_C:
+	    	hasiFrame.setVisible(false);
+	    	KredituPantaila.getEMA().erakutsi();
+	    	break;
+	    case KeyEvent.VK_P:
+	    	hasiFrame.setVisible(false);
+	    	PuntuazioSistemaPantaila.getEMA().erakutsi();
+	    	break;
 	    }
 	}
 
