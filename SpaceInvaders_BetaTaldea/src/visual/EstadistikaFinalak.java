@@ -250,7 +250,14 @@ public class EstadistikaFinalak extends JPanel implements Observer{
 		List<String> partidak = JokoKudeatzailea.getEMA().getEstadistikak();
 		
 		if (partidak.isEmpty()) {
-			// HUTSIK
+			jokalaria 		= "Ez dira daturik gorde";
+			data 			= "-";
+			emaitza			= "-";
+			zailtasuna		= "-";
+			puntuazioa		= "-";
+			denb 			= "-";
+			hegazkinMota 	= "-"; 
+			etsaiMota 		= "-";
 		} else {
 			String azkenLerroa = partidak.get(partidak.size() - 1);	// Fitxategiaren azken lerroa hartzeko; hau da, jokatu den azken partida
 			String[] zatiak = azkenLerroa.split("#");

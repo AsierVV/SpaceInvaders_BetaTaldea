@@ -168,17 +168,6 @@ public class Tableroa extends Observable {
     	return this.jokoHasita;
     }
     
-    private void etsaiakBizirik() {
-    	if (etsaiak.isEmpty()) {
-    		if (zailtasunMota.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
-    			hurrengoMailaProgEskatuta = true;
-    		} else {
-        		irabaziDuzu = true;
-        		partidaIrabazi();    			
-    		}
-		}
-    }
-    
     public int getDenboraSegundoak(){
     	return denboraSegundoak;
     }
@@ -202,7 +191,6 @@ public class Tableroa extends Observable {
     public String getZailtasunMota() {
     	return this.zailtasunMota;
     }
-
 
     public int getPuntuazioa() {
     	return puntuazioa;
@@ -440,7 +428,6 @@ public class Tableroa extends Observable {
 		    	garbituHegazkina();
 		    	hegazkina.mugitu(dx, dy);
 		    	margotuHegazkina();
-	    		
 	    	}
 		}
 	}
@@ -641,6 +628,7 @@ public class Tableroa extends Observable {
 		amaituJokoa();
 		puntuazioFinalaLortu();
 	}
+	
 	private void partidaIrabazi() {
 		partidaAmaitu();
 		
@@ -661,6 +649,7 @@ public class Tableroa extends Observable {
 		setChanged();
 		notifyObservers("PARTIDA_AMAITUTA");
 	}
+	
 	private void partidaGaldu() {
 		partidaAmaitu();
 		
@@ -682,10 +671,22 @@ public class Tableroa extends Observable {
 		setChanged();
 		notifyObservers("PARTIDA_AMAITUTA");
 	}
+	
 	private boolean etsaiaBeheraHelduDa(EtsaiaTaldea e) {
 		return e.getKoordenatuLista().stream()
 				.anyMatch(k -> k.getY() >= altuera - 1);
 	}
+	
+    private void etsaiakBizirik() {
+    	if (etsaiak.isEmpty()) {
+    		if (zailtasunMota.equals("Progresiboa") && JokoKudeatzailea.getEMA().getMailaProgresiboa() < 4) {
+    			hurrengoMailaProgEskatuta = true;
+    		} else {
+        		irabaziDuzu = true;
+        		partidaIrabazi();    			
+    		}
+		}
+    }
 	
 	// === PUNTUAZIO FINALA KALKULATU ===
 	private void puntuazioFinalaLortu() {

@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,6 +46,8 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    panel = new JPanel();
 	    panel.setLayout(new GridLayout(6, 1, 0, 5));
 	    panel.setPreferredSize(new Dimension(150, 500));
+		panel.setBackground(Color.BLACK);
+		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 	    
 	    frame.getContentPane().add(panel);
 	    frame.pack();
@@ -57,35 +60,35 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	// === HASIERATU LABELAK ===
 	private void hasieratuLabelak() {
 	    JPanel denboraPanel = new JPanel(new BorderLayout());
-	    denboraPanel.setBackground(Color.BLACK);
+	    denboraPanel.setBackground(Color.DARK_GRAY);
 	    denboraLabel = new JLabel("", JLabel.CENTER);
 	    denboraLabel.setForeground(Color.WHITE);
 	    denboraPanel.add(denboraLabel, BorderLayout.CENTER);
 	    panel.add(denboraPanel);
 	    
 	    JPanel zailtasunaPanel = new JPanel(new BorderLayout());
-	    zailtasunaPanel.setBackground(Color.BLACK);
+	    zailtasunaPanel.setBackground(Color.DARK_GRAY);
 	    zailtasunaLabel = new JLabel("", JLabel.CENTER);
 	    zailtasunaLabel.setForeground(Color.WHITE);
 	    zailtasunaPanel.add(zailtasunaLabel, BorderLayout.CENTER);
 	    panel.add(zailtasunaPanel);
 	    
 	    JPanel puntuakPanel = new JPanel(new BorderLayout());
-	    puntuakPanel.setBackground(Color.BLACK);
+	    puntuakPanel.setBackground(Color.DARK_GRAY);
 	    puntuakLabel = new JLabel("", JLabel.CENTER);
 	    puntuakLabel.setForeground(Color.WHITE);
 	    puntuakPanel.add(puntuakLabel, BorderLayout.CENTER);
 	    panel.add(puntuakPanel);
 	    
 	    JPanel etsaiPanel = new JPanel(new BorderLayout());
-	    etsaiPanel.setBackground(Color.BLACK);
+	    etsaiPanel.setBackground(Color.DARK_GRAY);
 	    etsaiLabel = new JLabel("", JLabel.CENTER);
 	    etsaiLabel.setForeground(Color.WHITE);
 	    etsaiPanel.add(etsaiLabel, BorderLayout.CENTER);
 	    panel.add(etsaiPanel);
 
 	    JPanel tiroMotaPanel = new JPanel(new BorderLayout());
-	    tiroMotaPanel.setBackground(Color.BLACK);
+	    tiroMotaPanel.setBackground(Color.DARK_GRAY);
 	    tiroMotaLabel = new JLabel("", JLabel.CENTER);
 	    tiroMotaLabel.setForeground(Color.WHITE);
 	    tiroMotaPanel.add(tiroMotaLabel, BorderLayout.CENTER);
@@ -95,7 +98,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    switch(JokoKudeatzailea.getEMA().getHegazkinaMota()) {
 		    case 'g':
 		    	munizioPanel = new JPanel(new GridLayout(3,1));
-	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    munizioPanel.setBackground(Color.DARK_GRAY);
 	    	    barreraLabel = new JLabel("", JLabel.CENTER);
 	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
@@ -109,7 +112,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    	    break;
 	    	case 'b':
 	    		munizioPanel = new JPanel(new GridLayout(3,1));
-	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    munizioPanel.setBackground(Color.DARK_GRAY);
 	    	    barreraLabel = new JLabel("", JLabel.CENTER);
 	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
@@ -123,7 +126,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 	    	    break;
 	    	case 'r':
 	    		munizioPanel = new JPanel(new GridLayout(4,1));
-	    	    munizioPanel.setBackground(Color.BLACK);
+	    	    munizioPanel.setBackground(Color.DARK_GRAY);
 	    	    barreraLabel = new JLabel("", JLabel.CENTER);
 	    	    barreraLabel.setForeground(Color.WHITE);
 	    	    bakarraLabel = new JLabel("", JLabel.CENTER);
@@ -156,7 +159,7 @@ public class PuntuazioPantaila extends JPanel implements Observer{
 		int seg = denbora%60;
 		
 	    denboraLabel.setText(String.format("Denbora: %02d:%02d", min, seg));
-	    	// % --> balore bat sartzeko
+	    	// % --> balio bat sartzeko
 	    	// 0 --> 0-ekin bete
 	    	// 2 --> gutxienez 2 zifra
 	    	// d --> zenbaki osoa

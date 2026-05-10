@@ -86,15 +86,11 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			frame.toFront();
 		} else if ("GALDU".equals(arg)) {
 		    frame.dispose();
-		    //JFrame frame = new JFrame("Game Over!");
 		    stopAudioa();
-		    //frame.setContentPane(new GalduPantaila(frame));
 		    GalduPantaila.getEMA();
 		} else if ("IRABAZI".equals(arg)) {
 			frame.dispose();
-		    //JFrame frame = new JFrame("Irabazi duzu!");
 		    stopAudioa();
-		    //frame.setContentPane(new IrabaziPantaila(frame));
 		    IrabaziPantaila.getEMA();
 		} else if ("STOP".equals(arg)) {	    	
 		    framePause.setContentPane(new PausePantaila(framePause));
@@ -125,7 +121,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -138,7 +133,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -164,7 +158,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			clipMenu.loop(Clip.LOOP_CONTINUOUSLY);
 			clipMenu.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -182,7 +175,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			clip.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -195,7 +187,6 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			c.open(audioa);
 			c.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

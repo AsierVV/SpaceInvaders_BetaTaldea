@@ -6,7 +6,6 @@ public class HutsuneEgoera implements Egoera{
 	
 	@Override
 	public char getMota() {
-		// TODO Auto-generated method stub
 		return 'u';
 	}
 

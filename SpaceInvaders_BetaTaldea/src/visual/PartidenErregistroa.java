@@ -90,13 +90,28 @@ public class PartidenErregistroa extends JPanel{
 
 		List<String> partidak = JokoKudeatzailea.getEMA().getEstadistikak();
 
+		if (partidak.isEmpty()) {
+			modeloTaula.addRow(new Object[] {
+				"Ez dago partidarik gordeta",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-"
+			});
+			return;
+		}
+		
 		int i = 1;
 
 		for (String lerroa : partidak) {
 			String[] zatiak = lerroa.split("#");
 
 			if (zatiak.length >= 8) {
-				Object[] fila = {
+				Object[] zutabeLerro = {
 					i,
 					zatiak[0],
 					zatiak[1],
@@ -108,7 +123,7 @@ public class PartidenErregistroa extends JPanel{
 					zatiak[7]
 				};
 
-				modeloTaula.addRow(fila);	// Lerro berria gehitzen du taulan
+				modeloTaula.addRow(zutabeLerro);	// Lerro berria gehitzen du taulan
 				i++;
 			}
 		}

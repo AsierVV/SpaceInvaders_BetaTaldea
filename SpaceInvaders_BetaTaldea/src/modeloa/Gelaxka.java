@@ -13,7 +13,7 @@ public class Gelaxka extends Observable{
 	}
 
 	public void setEgoera(Egoera pEgoera) {
-		this.egoera= pEgoera	;
+		this.egoera= pEgoera;
 		setChanged();
 		notifyObservers();
 	}
