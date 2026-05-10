@@ -30,4 +30,19 @@ public class ZailtasunEzinezkoa implements ZailtasunPortaera{
 	public boolean mugimenduTiroAdimendunaErabili() {
 		return true;
 	}
+
+	@Override
+	public int geziKopLortu() {
+		return 30;
+	}
+
+	@Override
+	public int erronboKopLortu() {
+		return 20;
+	}
+
+	@Override
+	public int barreraKopLortu() {
+		return 8;
+	}
 }

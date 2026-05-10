@@ -6,9 +6,11 @@ import java.util.List;
 public abstract class HegazkinaTaldea extends Pixel{
 	private List<Pixel> pixelak = new ArrayList<Pixel>();
 	private TiroMota tiroMota;
+	private BarreraTaldea barrera;
 	
-	private int geziTiroKop;
-	private int erronboTiroKop;
+	private int geziTiroKop = 0;
+	private int erronboTiroKop = 0;
+	private int barreraKop = 0;
 	
 	public HegazkinaTaldea(Koordenatua pPosizioa) {
         super(pPosizioa);
@@ -16,9 +18,6 @@ public abstract class HegazkinaTaldea extends Pixel{
     }
 	
 	private void sortuHegazkinaTaldea() {
-		geziTiroKop = 30;
-		erronboTiroKop = 20;
-		
         int x = this.posizioa.getX();
         int y = this.posizioa.getY();
 
@@ -33,6 +32,8 @@ public abstract class HegazkinaTaldea extends Pixel{
         addElementua(new Hegazkina(new Koordenatua(x+1, y-1)));
         addElementua(new Hegazkina(new Koordenatua(x-2, y+1)));
         addElementua(new Hegazkina(new Koordenatua(x+2, y+1)));
+        
+        barrera = new BarreraTaldea(new Koordenatua(x,y));
     }
 	
 	public void addElementua(Pixel p) {
@@ -45,6 +46,18 @@ public abstract class HegazkinaTaldea extends Pixel{
 	
 	public void setTiroMota(TiroMota pTiroMota) {
 		tiroMota = pTiroMota;
+	}
+	
+	public BarreraTaldea getBarrera() {
+		return barrera;
+	}
+	
+	public void barreraAktibatu() {
+		barrera.setAktibo(true);
+	}
+	
+	public void barreraDesaktibatu() {
+		barrera.setAktibo(false);
 	}
 
 	public void tiroaKontsumitu() {
@@ -59,29 +72,49 @@ public abstract class HegazkinaTaldea extends Pixel{
 		return true;
 	}
 	
+	public void barreraKontsumitu() {barreraKop--;}
+	
+	public boolean barreraAktiboDago() {
+		return barrera.aktiboDago();
+	}
+	public boolean barrerakDaude() {
+		if (barreraKop > 0) return  true;
+		else return false;
+	}
+	
 	public int getTiroKopGezia() {return geziTiroKop;}
 	
 	public int getTiroKopErronbo() {return erronboTiroKop;}
 	
+	public int getBarreraKop() {return barreraKop;}
+	
 	public abstract void tiroMotaAldatu();
 	
+	public void defaultTiroMotaEzarri() {setTiroMota(new TiroBakarra());}
+	
 	public abstract char getMotaChar();
+	
+	public void munizioaEzarri(int pGeziKop, int pErronboKop, int pBarreraKop) {
+		geziTiroKop = pGeziKop;
+		erronboTiroKop = pErronboKop;
+		barreraKop = pBarreraKop;
+	}
 
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
-		List<Koordenatua> koordenatuak = new ArrayList<>();
-        for (Pixel p : pixelak) {
-            koordenatuak.addAll(p.getKoordenatuLista()); // addAll erabiltzen da "getKoordenatuak" lista bat itzultzen duelako
-        }
-        return koordenatuak;
+		return pixelak.stream()
+			// Pixel bakoitzak koordenatuen lista bat bueltatzen duenez, flatMap erabiltzen dugu lista txiki guztiak lista bakar batean elkartzeko.
+			.flatMap(p -> p.getKoordenatuLista().stream())
+			.toList();
 	}
 
 	@Override
 	public void mugitu(int dx, int dy) {
 		posizioa.setX(posizioa.getX()+dx);
     	posizioa.setY(posizioa.getY()+dy);
-		for (Pixel p : pixelak) {
-			p.mugitu(dx, dy);
-		}
+		
+    	pixelak.stream().forEach(p -> p.mugitu(dx, dy));
+
+		barrera.mugitu(dx, dy);
 	}
 }

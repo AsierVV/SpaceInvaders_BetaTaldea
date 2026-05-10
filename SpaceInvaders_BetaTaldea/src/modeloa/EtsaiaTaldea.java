@@ -1,6 +1,7 @@
-package modeloa;
+	package modeloa;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class EtsaiaTaldea extends Pixel{
@@ -69,21 +70,17 @@ public abstract class EtsaiaTaldea extends Pixel{
 		
 		if (tiroak.isEmpty()) return etsaiaAusazkoMugimendua();
 
-		Koordenatua tiroHurbilena = null;
-		int distantziaTxikiena = Integer.MAX_VALUE;
+		Koordenatua tiroHurbilena = tiroak.stream()
+				.min(Comparator.comparingInt(k ->	// Tiroak konparatzen ditu etsaiarekiko distantziarekin, eta distantzia txikienarekin (.min) geratzen da.
+					Math.abs(k.getX() - posizioa.getX()) +
+					Math.abs(k.getY() - posizioa.getY())
+					))
+				.orElse(null);
 		
-		for (Koordenatua k : tiroak) {
-			int dx = Math.abs(k.getX() - posizioa.getX());
-			int dy = Math.abs(k.getY() - posizioa.getY());
-			int distantzia = dx + dy;
-			
-			if (distantzia < distantziaTxikiena) {
-				distantziaTxikiena = distantzia;
-				tiroHurbilena = k;
-			}
-		}
+		// Hemen distantzia txikiena kalkulatzen dugu, tiro hurbilena lortu eta gero
+		int distantziaTxikiena = Math.abs(tiroHurbilena.getX() - posizioa.getX()) + Math.abs(tiroHurbilena.getY() - posizioa.getY());
 		
-		if (distantziaTxikiena > 10) return etsaiaAusazkoMugimendua();
+		if (distantziaTxikiena > 5) return etsaiaAusazkoMugimendua();
 		
 		// Mugituko dena
 		int dXE = 0;
@@ -102,19 +99,17 @@ public abstract class EtsaiaTaldea extends Pixel{
 		
 	@Override
 	public List<Koordenatua> getKoordenatuLista() {
-		List<Koordenatua> koordenatuak = new ArrayList<>();
-        for (Pixel p : pixelak) {
-            koordenatuak.addAll(p.getKoordenatuLista());
-        }
-        return koordenatuak;
+		return pixelak.stream()
+				// Pixel bakoitzak koordenatuen lista bat bueltatzen duenez, flatMap erabiltzen dugu lista txiki guztiak lista bakar batean elkartzeko.
+				.flatMap(p -> p.getKoordenatuLista().stream())
+				.toList();
 	}
 
 	@Override
 	public void mugitu(int dx, int dy) {
 		posizioa.setX(posizioa.getX()+dx);
     	posizioa.setY(posizioa.getY()+dy);
-	    for (Pixel p : pixelak) {
-	    	p.mugitu(dx, dy);
-	    }
+	    
+    	pixelak.stream().forEach(p -> p.mugitu(dx, dy));
 	}
 }

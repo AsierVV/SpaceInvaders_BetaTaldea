@@ -23,20 +23,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class Kontrolak extends JPanel implements Observer, KeyListener{
+public class PuntuazioSistemaPantaila extends JPanel implements Observer, KeyListener{
+
+	private JFrame punFrame = new JFrame("Space Invaders - Puntuazio Sistema");
+	private static PuntuazioSistemaPantaila nireEMA = null;
 	
-	private JFrame konFrame = new JFrame("Space Invaders - Kontrolak");
-	private static Kontrolak nireEMA = null;
-	
-	private Kontrolak() {
+	private PuntuazioSistemaPantaila() {
 		setBackground(new Color(0, 0, 0));
-		add(getKontrolak());
+		add(getPuntuazioSistema());
 		
-		konFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		konFrame.setContentPane(this);
-		konFrame.pack();
-		konFrame.setLocationRelativeTo(null);
-		konFrame.setVisible(true);
+		punFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		punFrame.setContentPane(this);
+		punFrame.pack();
+		punFrame.setLocationRelativeTo(null);
+		punFrame.setVisible(true);
         
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -46,28 +46,28 @@ public class Kontrolak extends JPanel implements Observer, KeyListener{
 
 	}
 	
-	public static Kontrolak getEMA() {
+	public static PuntuazioSistemaPantaila getEMA() {
 		if (nireEMA == null) {
-			nireEMA = new Kontrolak();
+			nireEMA = new PuntuazioSistemaPantaila();
 		}
 		return nireEMA;
 	}
 	
-	public JPanel getKontrolak() {
+	public JPanel getPuntuazioSistema() {
 	    JPanel konI = new JPanel();
 	    konI.setLayout(new BorderLayout());
 	    konI.setBackground(Color.BLACK);
 
-	    ImageIcon kontrolak = new ImageIcon(getClass().getResource("kontrolak.png"));
-	    JLabel lblKontrolak = new JLabel(kontrolak);
-	    lblKontrolak.setHorizontalAlignment(JLabel.CENTER);
+	    ImageIcon puntuazioa = new ImageIcon(getClass().getResource("puntuazioSistema.png"));
+	    JLabel lblPuntuazio = new JLabel(puntuazioa);
+	    lblPuntuazio.setHorizontalAlignment(JLabel.CENTER);
 
-	    konI.add(lblKontrolak, BorderLayout.CENTER);
+	    konI.add(lblPuntuazio, BorderLayout.CENTER);
 	    return konI;
 	}
 	
 	public void erakutsi() {
-	    konFrame.setVisible(true);
+	    punFrame.setVisible(true);
 	    this.requestFocusInWindow();
 	}
 
@@ -77,8 +77,8 @@ public class Kontrolak extends JPanel implements Observer, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_I:
-			konFrame.setVisible(false);
+		case KeyEvent.VK_P:
+			punFrame.setVisible(false);
 			HasierakoPantaila.getEMA().erakutsi();
 			break;
 		}
@@ -89,4 +89,5 @@ public class Kontrolak extends JPanel implements Observer, KeyListener{
 
 	@Override
 	public void update(Observable o, Object arg) {}
+	
 }

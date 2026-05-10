@@ -38,6 +38,10 @@ public class Gelaxka extends Observable{
 		setEgoera(new TiroEgoera());
 	}
 	
+	public void jarriBarrera() {
+		setEgoera(new BarreraEgoera());
+	}
+	
 	public Koordenatua getGelaxkaKord() {
 		return gelaxkaPosizioa;
 	}

@@ -21,26 +21,26 @@ public class Tableroa extends Observable {
 	
 	private String motaEtsaia;
 	private String motaHegazkina;
+	private String jokalariIzena;
 	
 	private Timer timer;
 	private Timer timerEtsai;
-	private final int abiaduraTimer = 50;	//50ms
+	private Timer timerHegazkina;
+	private final int abiaduraTimer = 50;			//50ms
+	private final int abiaduraHegazkina = 70;		//70ms
 	private int denboraSegundoak = 0;
 	private long azkenDenboraEguneraketa = 0;
 	private int puntuazioa = 0;
 	
-	private int etsaiKop = 4;					//4 etsai (default)
-	private int etsaiAbiadura = 200;			//200ms (default)
-	private int puntuazioBiderkatzailea = 1;	//x1 (default)
+	private int etsaiKop = 4;						//4 etsai (default)
+	private int etsaiAbiadura = 200;				//200ms (default)
+	private int puntuazioBiderkatzailea = 1;		//x1 (default)
 	
-	private int mugituHegazkinaKont = 1;	//100ms, beraz 50ms * 2 --> Batean hasi parametroa, horrela 50ms-ko timerra deitzen den bigarren aldian 100ms pasatu dira.
-	private int tiroEginKont = 2;			//300ms, beraz 100ms * 3 --> Bian hasi parametroa, horrela 100ms pasatzen diren hirugarren aldian 300ms pasatu dira.
+	private int tiroEginKont = 5;					//300ms, beraz 50ms * 6 --> Bostean hasi parametroa, horrela 50ms pasatzen diren seigarren aldian 300ms pasatu dira.
+	private int etsaiekTiroEginKont = 19;			//1000ms, beraz 50ms * 20 --> Hemeretzian hasi parametroa, horrela 50ms pasatzen diren hogeigarren aldian 1000ms pasatu dira.
 	
 	private long azkenTiroa = 0;
-    private final long tiroKadentzia= 300;	//300ms
-    
-    private long azkenEtsaiTiroa = 0;
-    private final long etsaiTiroDenbora = 800;
+    private final long tiroKadentzia= 300;			//300ms
 	
 	private final int zabalera = 100;
     private final int altuera = 60;
@@ -54,6 +54,7 @@ public class Tableroa extends Observable {
     private boolean gameOver;
     private boolean jokoHasita = false;
     private boolean irabaziDuzu = false;
+    private boolean partidaGordeta = false;
     
     private String zailtasunMota;
     private ZailtasunPortaera zailtasunPortaera;
@@ -73,13 +74,21 @@ public class Tableroa extends Observable {
             }
         }
         
-        // --- TIMERRRA ERAIKI ---
+        // --- TIMERRRAK ERAIKI ---
+        timerHegazkina = new Timer(abiaduraHegazkina, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mugituHegazkinaControl();			
+			}
+		});
+        
         timer = new Timer(abiaduraTimer, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
         		
-        		// 50ms-ro mugitu tiroak eta hegazkina kontrola konprobatau
+        		// 50ms
         		mugituTiroak();
+    			barreraEtsaiJoDu();
         		
         		// HAU BAKARRIK ERABILIKO DA MAILA PROGRESIBOAN
         		// Hurrengo nivel progresiboa eskatuta badago, aurrera egin
@@ -88,9 +97,27 @@ public class Tableroa extends Observable {
         		if (hurrengoMailaProgEskatuta) {
         			hurrengoMailaProgEskatuta = false;
         			hurrengoMailaProgresiboa();
+        			setChanged();
+        			notifyObservers("HURRENGO_MAILA");
         			return;
         		}
+    			
+    			// Konprobatu 300ms pasatu diren
+        		if (tiroEginKont <= 0) {
+					tiroakSortu();
+					tiroEginKont = 5;
+					
+        		} else tiroEginKont--;
         		
+        		// Konprobatu 1000ms pasatu diren
+        		if (etsaiekTiroEginKont <= 0) {
+        			if (zailtasunPortaera.etsaiekTiroEginBeharDute()) {
+					    etsaiekTiroEgin();
+					}
+        			etsaiekTiroEginKont = 19;
+        			
+        		} else etsaiekTiroEginKont--;
+
         		// Konprobatu 1s pasatu den
         		long orain = System.currentTimeMillis();
         		if (orain - azkenDenboraEguneraketa > 1000) {
@@ -99,21 +126,7 @@ public class Tableroa extends Observable {
         			
         			setChanged();
         			notifyObservers("DENBORA_EGUNERATU");
-        		}
-        		
-        		// Konprobatu 100ms pasatu diren
-        		if (mugituHegazkinaKont <= 0) {
-        			mugituHegazkinaControl();
-        			mugituHegazkinaKont = 1;
-        			
-            		// Konprobatu 300ms pasatu diren
-            		if (tiroEginKont <= 0) {
-    					tiroakSortu();
-    					tiroEginKont = 2;
-        				
-            		} else tiroEginKont--;
-            		
-        		} else mugituHegazkinaKont--;
+        		}	
             }
         });
     }
@@ -198,13 +211,22 @@ public class Tableroa extends Observable {
     public List<Koordenatua> getTiroenKoordenatuak() {
     	return tiroak.stream().map(t->t.getPosizioa()).toList();
     }
+    
+    public String getJokalariIzena() {
+    	return jokalariIzena;
+    }
+    
+    public int getBarreraKop() {
+    	return hegazkina.getBarreraKop();
+    }
 
 	// === JOKOA HASTEKO METODOA ===
-    public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pZailtasunMota) {
+    public void hasiJokoa(String pMotaHegazkina, String pMotaEtsaia, String pZailtasunMota, String pJokalariIzena) {
 
     	motaHegazkina = pMotaHegazkina;
     	motaEtsaia = pMotaEtsaia;
     	zailtasunMota = pZailtasunMota;
+    	jokalariIzena = pJokalariIzena;
     	
     	zailtasunPortaera = ZailtasunFactory.nireEMA().sortuZailtasuna(zailtasunMota);
     	zailtasunaAplikatu();
@@ -228,12 +250,9 @@ public class Tableroa extends Observable {
     	setChanged();
         notifyObservers("PUNTUAZIO_PANTAILA_EGUNERATU");
         
-        if (!timer.isRunning()) {
-        	timer.start();
-        }
-        if (!timerEtsai.isRunning()) {
-            timerEtsai.start();
-        }
+        if (!timer.isRunning()) timer.start();
+        if (!timerEtsai.isRunning()) timerEtsai.start();
+        if (!timerHegazkina.isRunning()) timerHegazkina.start();
         
         azkenDenboraEguneraketa = System.currentTimeMillis();
         
@@ -255,11 +274,13 @@ public class Tableroa extends Observable {
     public void amaituJokoa() {
     	timer.stop();
     	timerEtsai.stop();
+    	timerHegazkina.stop();
     }
     public void startStopJokoa() {
     	if (timer.isRunning()) {
     		timer.stop();
         	timerEtsai.stop();
+        	timerHegazkina.stop();
     		setChanged();
         	notifyObservers("STOP");
     	} else if (!timer.isRunning()) {
@@ -267,6 +288,7 @@ public class Tableroa extends Observable {
         	notifyObservers("START");
         	timer.start();
         	timerEtsai.start();
+        	timerHegazkina.start();
     	}
     }
     
@@ -274,6 +296,14 @@ public class Tableroa extends Observable {
     	etsaiKop = zailtasunPortaera.etsaiKopLortu();
     	etsaiAbiadura = zailtasunPortaera.etsaiAbiaduraLortu();
     	puntuazioBiderkatzailea = zailtasunPortaera.puntuazioBiderkatzaileaLortu();
+    }
+    
+    private void hegazkinarenBaliabideakEzarri() {
+    	hegazkina.munizioaEzarri(
+    		zailtasunPortaera.geziKopLortu(),
+    		zailtasunPortaera.erronboKopLortu(),
+    		zailtasunPortaera.barreraKopLortu()
+    		);
     }
     
     // === ZAILTASUN MOTAK ===
@@ -294,6 +324,7 @@ public class Tableroa extends Observable {
 	// === HEGAZKINA SORTU ===
     private void sortuHegazkina(String mota) {
         hegazkina = HegazkinaFactory.nireEMA().sortuHegazkina(mota, new Koordenatua(50,55));
+        hegazkinarenBaliabideakEzarri();
         margotuHegazkina();
 	}
     
@@ -301,17 +332,17 @@ public class Tableroa extends Observable {
 	private void sortuEtsaiak(String mota) {
 		Random r = new Random();
 	    int kopurua = etsaiKop + r.nextInt(etsaiKop/2 + 1); // r.nextInt(5) --> 0 eta 4 arteko zenbaki bat ematen du
-			/* ETSAI KOPURUAK:
+			/* ETSAI KOPURUAK:			Azalpena: etsaiKop/2 + 1 erbiltzen dugu etsai kopuruaren erdia gehitu ahal izateko: 4/2 + 1 = 3 -> r.nextInt(3) -> 0-2 arteko etsai gehiketa
 			 *	- Erraza -> 4-6
 			 *	- Normala -> 8-12
-			 *	- Zaila -> 12-18
+			 *	- Zaila -> 8-12
+			 *	- Ezinezkoa -> 10-15
+			 *	- Progresiboa:
+			 *		1. Maila -> 4-6
+			 *		2. Maila -> 6-9
+			 *		3. Maila -> 8-12
+			 *		4. Maila -> 10-15
 			 */
-	    
-	    // Etsaiak "PURPLE" direnean asko okupatzen dute eta errorea ematen du 20 baino gehiago sortu behar badira,
-	    // izan ere ez dira sartzen pantailan --> Hau konpontzeko momentuz purple etsaiak 18-ra limitatu dira
-	    if ("PURPLE".equals(mota)) {
-	        kopurua = Math.min(kopurua, 18);	// kopurua eta 18 balioetatik txikiena hartzen du, beraz ez da inoiz 18 baino etsai purple gehiago egongo
-	    }
 	    
 	    int ind = 1;
 	    int saiakerak = 0;
@@ -333,7 +364,7 @@ public class Tableroa extends Observable {
 	}
 	 
 	// === TIROA SORTU ===
-	public void tiroaSortu() {
+	public void hegazkinaTiroaSortu() {
 		int x = hegazkina.getPosizioa().getX();
 		int y = hegazkina.getPosizioa().getY() - 3;							//Hegazkinaren gainean sortzeko. Oharra: tiroa (x, y-3) koordenatuan sortzen da (x, y-2)-an sortu beharrean,
 	 																		//izan ere, bestela tiro handiekin kolisioa sortzen da hegazkinarekin
@@ -352,33 +383,38 @@ public class Tableroa extends Observable {
 			 		setChanged();
 			 		notifyObservers("TIRO_KOP_EGUNERATU");
 		 		}
-			}
-		}
-	 }
-	public void etsaiekTiroEgin() {
-	    long orain = System.currentTimeMillis();
-
-	    if (orain - azkenEtsaiTiroa < etsaiTiroDenbora) return;
-
-	    azkenEtsaiTiroa = orain;
-		Random r = new Random();
-		for (EtsaiaTaldea e : etsaiak) {
-	        //Probabilidad de disparo (40%)
-	        if (r.nextInt(100) < 40) {
-	        
-	        int x = e.getPosizioa().getX();
-	        int y = e.getPosizioa().getY() + 2; // debajo del enemigo
-	        
-	        List<Koordenatua> koordenatuak = List.of(new Koordenatua(x, y));
-	        
-	        if (tiroaSortuDaiteke(koordenatuak)) {
-	            TiroaTaldea t = new TiroaTaldea(koordenatuak, 1);
-	            tiroak.add(t);
-	            margotuTiroa(t);
-	        }
-	     }
+	 		}
 		}
 	}
+
+	public void etsaiekTiroEgin() {
+		if (!(timer.isRunning() && timerEtsai.isRunning())) return;
+
+		etsaiak.stream()
+			.filter(e -> Math.random() < 0.3)	// Tiro egiteko probabilitatea -> %30
+			.map(e -> {
+				int x = e.getPosizioa().getX();
+				int y = e.getPosizioa().getY() + 2;	// Etsaiaren azpian
+				return List.of(new Koordenatua(x, y));
+			})
+			.filter(koordenatuak -> tiroaSortuDaiteke(koordenatuak))
+			.map(koordenatuak -> new TiroaTaldea(koordenatuak, 1))
+			.forEach(t -> {
+				tiroak.add(t);
+				margotuTiroa(t);
+			});
+	}
+	
+	// === BARRERA SORTU ===
+		public void barreraEgin() {
+			if(hegazkina.barrerakDaude() && barreraSortuDaiteke()) {
+				hegazkina.barreraAktibatu();
+				hegazkina.barreraKontsumitu();
+				margotuBarrera();
+				setChanged();
+				notifyObservers("BARRERAK_KOP_EGUNERATU");
+			}
+		}
 	       
 	// === TIROA ALDATU ===
 	// Metodo honekin tiroa aldatzen da tekla bakarra erabiliz --> 'r' tekla
@@ -394,19 +430,24 @@ public class Tableroa extends Observable {
 	// === HEGAZKINAREN MUGIMENDUA ===
 	public void mugituHegazkina(int dx, int dy) {
 		if (hegazkinaMugituDaiteke(dx, dy)) {
-	    	garbituHegazkina();
-	    	hegazkina.mugitu(dx, dy);
-	    	margotuHegazkina();
+	    	if (hegazkina.barreraAktiboDago()) {
+		    	garbituHegazkina();
+	    		garbituBarrera();
+	    		hegazkina.mugitu(dx, dy);
+	    		margotuBarrera();
+	    		margotuHegazkina();
+	    	} else {
+		    	garbituHegazkina();
+		    	hegazkina.mugitu(dx, dy);
+		    	margotuHegazkina();
+	    		
+	    	}
 		}
 	}
 	 
 	// === ETSAIEN MUGIMENDUA ===
 	public void mugituEtsaiak() {
 		if (gameOver && !irabaziDuzu) partidaGaldu();
-		
-		if (zailtasunPortaera.etsaiekTiroEginBeharDute()) {
-		    etsaiekTiroEgin();
-		}
 		
 		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
 		while (it.hasNext()) {			
@@ -480,12 +521,27 @@ public class Tableroa extends Observable {
 	    }
 
 	    // Tiro guztiak iteratu eta gero, ezabatzeko markatutako tiroak tablerotik garbitzen ditugu
-	    for (TiroaTaldea t : ezabatzekoTiroak) {
-	        garbituTiroa(t);
-	    }
+	    ezabatzekoTiroak.stream().forEach(t -> garbituTiroa(t));
 	    
 	    // Eta amaitzeko, ezabatzeko markatutako tiroak zerrendatik kentzen ditugu
 	    tiroak.removeAll(ezabatzekoTiroak);
+	}
+	
+	// === BARRERA ETSAIEN BAT JO ===
+	private void barreraEtsaiJoDu() {
+		if (!hegazkina.barreraAktiboDago()) return;
+		
+		EtsaiaTaldea etsaia = hegazkina.getBarrera().getKoordenatuLista().stream()
+			.map(k -> kolpatutakoEtsaia(k.getX(), k.getY()))	// Barreraren koordenatu bakoitzeko posizio horretan dagoen etsaian bihurtzen du, etsairik ez badago null itzultzen du
+			.filter(e -> e != null)	// Null direnak ez ditu hartzen
+			.findFirst()	// Aurkitutako lehenengo etsaia hartzen du (normalean bakarrik aurkituko du etsai bat)
+			.orElse(null);	// Ezer ez badu aurkitzen null itzultzen du
+		
+		if (etsaia != null) {
+			garbituBarrera();
+			etsaiaEzabatu(etsaia.getIndizea());
+			hegazkina.barreraDesaktibatu();
+		}
 	}
 	
 	// === TIROEN MUGIMENDURAKO METODO LAGUNGARRIAK ===
@@ -496,31 +552,47 @@ public class Tableroa extends Observable {
 	    }
 		// Tiroa etsaiarena bada, hegazkina jo duen konprobatu
 	    if (t.etsaiarenaDa()) {
-	        return tiroakHegazkinaJoDu(hurrengoKoordenatuak);
+	    	return tiroakHegazkinaJoDu(hurrengoKoordenatuak) || tiroakBarreraJoDu(hurrengoKoordenatuak);
 	    }
 	    return false;
 	}
 	
 	private boolean tiroakEtsaiaJoDu(List<Koordenatua> hurrengoKoordenatuak) {
-	    for (Koordenatua k : hurrengoKoordenatuak) {
-	        EtsaiaTaldea e = kolpatutakoEtsaia(k.getX(), k.getY());
-
-	        if (e != null) {	// Etsairen bat aurkitu bada, ezabatu egiten da
-	            etsaiaEzabatu(e.getIndizea());
-	            return true;
-	        }
+	    EtsaiaTaldea etsaia = hurrengoKoordenatuak.stream()
+	    		.map(k -> kolpatutakoEtsaia(k.getX(), k.getY()))	// Koordenatua bakoitzeko kolpatutako etsaiak bilatzen dira
+	    		.filter(e -> e != null)	// Null direnak ez dira hartzen
+	    		.findFirst()	// Aurkitutako lehenengo etsaia hartzen da
+	    		.orElse(null);	// Ez bada ezer aurkitzen null itzultzen da
+	    
+	    if (etsaia != null) {	// Etsairen bat aurkitu bada, ezabatu egiten da
+            etsaiaEzabatu(etsaia.getIndizea());
+            return true;
 	    }
 	    return false;	// Ez badu etsairik jo
 	}
 	
 	private boolean tiroakHegazkinaJoDu(List<Koordenatua> hurrengoKoordenatuak) {
-	    for (Koordenatua k : hurrengoKoordenatuak) {
-	        if (kolpatutakoHegazkina(k.getX(), k.getY())) {	// Koordenatu horretan hegazkina badago, partida galtzen da
-	            partidaGaldu();
-	            return true;
-	        }
+		// anyMatch -> Koordenaturen bat baldintza betetzen badu, joDu true izango da
+	    boolean joDu = hurrengoKoordenatuak.stream().anyMatch(k -> kolpatutakoHegazkina(k.getX(), k.getY()));
+		
+	    if (joDu) {
+	    	partidaGaldu();
+	    	return true;
 	    }
 	    return false;	// Ez badu hegazkina jo
+	}
+	
+	private boolean tiroakBarreraJoDu(List<Koordenatua> hurrengoKoordenatuak) {
+		if (!hegazkina.barreraAktiboDago()) return false;
+		
+		boolean joDu = hurrengoKoordenatuak.stream().anyMatch(k -> kolpatutakoBarrera(k.getX(), k.getY()));
+		
+		if (joDu) {
+			garbituBarrera();
+        	hegazkina.barreraDesaktibatu();
+            return true;
+		}
+	    return false;
 	}
 	
 	private boolean tiroakBesteTiroBatJoDu(TiroaTaldea t, List<Koordenatua> hurrengoKoordenatuak, List<TiroaTaldea> ezabatzekoTiroak) {
@@ -537,77 +609,150 @@ public class Tableroa extends Observable {
 	}
 
     private EtsaiaTaldea kolpatutakoEtsaia(int x, int y) {
-        for (EtsaiaTaldea e : etsaiak) {
-            for (Koordenatua k : e.getKoordenatuLista()) {
-                if (k.getX() == x && k.getY() == y) {
-                    return e;
-                }
-            }
-        }
-        return null;
+        return etsaiak.stream()
+        		.filter(e -> e.getKoordenatuLista().stream()			// Filtro bat egiten dugu baldintza betetzen dutenekin geratzeko
+        				.anyMatch(k -> k.getX() == x && k.getY() == y))	// Baldintza: etsaiaren kordenaturen bat x eta y-rekin kointziditzea
+        		.findFirst()	// Aurkitutako lehenengo etsaia hartzen dugu (normalean etsai baten bat aurkitzen bada, bakarra  izango da)
+        		.orElse(null);	// Etsairik ez bada aurkitzen null bueltatu
     }
     
     private TiroaTaldea kolpatutakoTiroa(int x, int y, TiroaTaldea nireTiroa) {
-	    for (TiroaTaldea t : tiroak) {
-	        if (t != nireTiroa) {
-	            for (Koordenatua k : t.getKoordenatuLista()) {
-	                if (k.getX() == x && k.getY() == y) {
-	                    return t;
-	                }
-	            }
-	        }
-	    }
-	    return null;
+	    return tiroak.stream()
+	    		.filter(t -> t != nireTiroa)	// Tiroa ez bada sartutako tiroa filtroa pasatzen du
+	    		.filter(t -> t.getKoordenatuLista().stream()		// Filtro bat egiten dugu baldintza betetzen dutenekin geratzeko
+	    			.anyMatch(k -> k.getX() == x && k.getY() == y))	// Baldintza: tiroaren kordenaturen bat x eta y-rekin kointziditzea
+	    		.findFirst()	// Aurkitutako lehenengo tiroa hartzen dugu
+	    		.orElse(null);	// Tirorik ez bada aurkitzen null itzultzen da
 	}
     
 	private boolean kolpatutakoHegazkina(int x, int y) {
-	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
-	        if (k.getX() == x && k.getY() == y) {
-	            return true;
-	        }
-	    }
-	    return false;
+	    return hegazkina.getKoordenatuLista().stream()
+	    		.anyMatch(k -> k.getX() == x && k.getY() == y);
+	}
+	
+	private boolean kolpatutakoBarrera(int x, int y) {
+		return hegazkina.getBarrera().getKoordenatuLista().stream()
+				.anyMatch(k -> k.getX() == x && k.getY() == y);
 	}
 		 
 	// === PARTIDA AMAITZEKO METODOAK ===
 	private void partidaAmaitu() {
 		gameOver = true;
 		amaituJokoa();
+		puntuazioFinalaLortu();
 	}
 	private void partidaIrabazi() {
 		partidaAmaitu();
+		
+		if (!partidaGordeta) {
+			PartidaErregistroa.gordePartida(
+					jokalariIzena,
+					"IRABAZI",
+					puntuazioa,
+					denboraSegundoak,
+					zailtasunMota,
+					motaHegazkina,
+					motaEtsaia
+					);
+			partidaGordeta = true;
+		}
+		
 		JokoKudeatzailea.getEMA().setIrabazi(true);
 		setChanged();
 		notifyObservers("PARTIDA_AMAITUTA");
 	}
 	private void partidaGaldu() {
 		partidaAmaitu();
+		
+		if (!partidaGordeta) {
+			PartidaErregistroa.gordePartida(
+					jokalariIzena,
+					"GALDU",
+					puntuazioa,
+					denboraSegundoak,
+					zailtasunMota,
+					motaHegazkina,
+					motaEtsaia
+					);
+			partidaGordeta = true;
+		}
+		
+		
 		JokoKudeatzailea.getEMA().setIrabazi(false);
 		setChanged();
 		notifyObservers("PARTIDA_AMAITUTA");
 	}
 	private boolean etsaiaBeheraHelduDa(EtsaiaTaldea e) {
-		for (Koordenatua k : e.getKoordenatuLista()) {
-			if (k.getY() >= altuera-1) return true;
+		return e.getKoordenatuLista().stream()
+				.anyMatch(k -> k.getY() >= altuera - 1);
+	}
+	
+	// === PUNTUAZIO FINALA KALKULATU ===
+	private void puntuazioFinalaLortu() {
+		if (!irabaziDuzu) return;
+		
+		// Denboragatik bonifikazioa
+		switch(zailtasunMota) {
+			case "Erraza":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*30;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Normala":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*60;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*40;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Zaila":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*80;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*40;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*10;
+				break;
+			case "Ezinezkoa":
+				if (denboraSegundoak <= 20) puntuazioa = puntuazioa*100;
+				else if (denboraSegundoak <= 40) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 60) puntuazioa = puntuazioa*20;
+				break;
+			case "Progresiboa":
+				if (denboraSegundoak <= 60) puntuazioa = puntuazioa*100;
+				else if (denboraSegundoak <= 80) puntuazioa = puntuazioa*50;
+				else if (denboraSegundoak <= 100) puntuazioa = puntuazioa*20;
+				break;
 		}
-		return false;
+		
+		// Soberan utzi diren tiroengatik bonifikazioa
+		int tiroErronboSoberanPuntuazioa = hegazkina.getTiroKopErronbo() * 30;
+		int tiroGeziSoberanPuntuazioa = hegazkina.getTiroKopGezia() * 10;
+
+		switch(hegazkina.getMotaChar()) {
+			case 'g':
+				puntuazioa = puntuazioa + tiroGeziSoberanPuntuazioa;
+				break;
+			case 'b':
+				puntuazioa = puntuazioa + tiroErronboSoberanPuntuazioa;
+				break;
+			case 'r':
+				puntuazioa = puntuazioa + tiroGeziSoberanPuntuazioa;
+				puntuazioa = puntuazioa + tiroErronboSoberanPuntuazioa;
+				break;
+		}
 	}
 	
 	// === ETSAIA EZABATU ===
 	private void etsaiaEzabatu(int ind) {
-		boolean eliminatuta = false;
-		Iterator<EtsaiaTaldea> it = etsaiak.iterator();
-		while (it.hasNext() && !eliminatuta) {
-			EtsaiaTaldea e = it.next();
-			if (e.getIndizea() == ind) {
-				it.remove();
-				garbituEtsaia(e);
-				eliminatuta = true;
-				puntuazioa = puntuazioa + 20*puntuazioBiderkatzailea;
-				setChanged();
-				notifyObservers("ETSAIAK_KOP_EGUNERATU");
-			}
+		EtsaiaTaldea ezabatzekoEtsaia = etsaiak.stream()
+				.filter(e -> e.getIndizea() == ind)	// Filter baten bidez nahi dugun etsaiarekin bakarrik geratzen gara
+				.findFirst()	// Badakigu etsai bakarra egongo dela ind horrekin, baina FindFirst erabili behar dugu filter komandotik objetu bakarrarekin geratzeko
+				.orElse(null);
+		
+		if (ezabatzekoEtsaia != null) {
+			etsaiak.remove(ezabatzekoEtsaia);
+			garbituEtsaia(ezabatzekoEtsaia);
+			puntuazioa = puntuazioa + 20*puntuazioBiderkatzailea;
+			setChanged();
+			notifyObservers("ETSAIAK_KOP_EGUNERATU");
 		}
+		
 		etsaiakBizirik();	// Etsai guztiak hilda badaude, partida irabazten dugu.
 	}
 
@@ -624,7 +769,7 @@ public class Tableroa extends Observable {
 		if (dx!=0 || dy!=0) mugituHegazkina(dx, dy);
 	}
 	private void tiroakSortu() {
-		if (tiroEgin) tiroaSortu();
+		if (tiroEgin) hegazkinaTiroaSortu();
 	}
 	 
 
@@ -643,11 +788,17 @@ public class Tableroa extends Observable {
 	
 	public void tiroaSakatu() {
 		if (!tiroEgin) {
-			tiroaSortu();
+			hegazkinaTiroaSortu();
 			tiroEgin = true;
 		}
 	}
 	public void tiroaAskatu() {tiroEgin = false;}
+	
+	public void barreraSakatu() {
+		if(!hegazkina.barreraAktiboDago()) {
+			barreraEgin();
+		}
+	}
 	
 	// === PIXELAK MARGOTZEKO ETA GARBITZEKO METODOAK ===
 	private void margotuHegazkina() {
@@ -668,19 +819,25 @@ public class Tableroa extends Observable {
     private void garbituTiroa(TiroaTaldea t) {
 		t.getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
     }
+    private void margotuBarrera() {
+    	hegazkina.getBarrera().getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].jarriBarrera());
+    }
+    private void garbituBarrera() {
+    	hegazkina.getBarrera().getKoordenatuLista().stream().forEach(k->tableroMatrizea[k.getX()][k.getY()].hutsikUtzi());
+    }
 	
 	// === COMPOSITE PATROIERAKO METODOAK ===
 	private boolean hegazkinarenKoordenatuaDa(int x, int y) {
-	    
-		//return hegazkina.getKoordenatuLista().stream()
-		for (Koordenatua k : hegazkina.getKoordenatuLista()) { // hegazkina.getKoordenatuak --> hegazkina pixel guztien koordenatuen lista bat itzultzen du
-	        if (k.getX() == x && k.getY() == y) return true;
-	    }
-	    return false;
+		return hegazkina.getKoordenatuLista().stream()
+				.anyMatch(k -> k.getX() == x && k.getY() == y);
 	}
 	
 	private boolean hegazkinaMugituDaiteke(int dx, int dy) {
-	    for (Koordenatua k : hegazkina.getKoordenatuLista()) {
+		if (hegazkina.barreraAktiboDago() && !barreraMugituDaiteke(dx, dy)) {
+	    	return false;
+	    }
+		
+		for (Koordenatua k : hegazkina.getKoordenatuLista()) {
 	        int xBerria = k.getX() + dx;
 	        int yBerria = k.getY() + dy;
 
@@ -695,12 +852,19 @@ public class Tableroa extends Observable {
 	    return true;
 	}
 	
+	private boolean barreraMugituDaiteke(int dx, int dy) {
+		return hegazkina.getBarrera().getKoordenatuLista().stream()
+				.allMatch(k -> posizioBaliozkoa(k.getX() + dx, k.getY() + dy));	// allMatch erabiliz, koordenatu guztiak baldintza bete behar dute (baliozko koordenatua izatea)
+	}
+	
 	private boolean etsaiaMugituDaiteke(int dx, int dy, EtsaiaTaldea e) {
 	    // Kordenatu berrien lista bat sortzen dugu, eta gero lista horren kordenatu guztiak libre dauden konprobatzen dugu.
-		List<Koordenatua> kordBerriak = new ArrayList<>(); 
+		List<Koordenatua> kordBerriak = e.getKoordenatuLista().stream()
+				.map(k -> new Koordenatua(k.getX() + dx, k.getY() + dy))
+				.toList();
 		
-		e.getKoordenatuLista().stream().forEach(k->kordBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy)));
-		
+		// Goiko .stream guztia sartu daiteke ere beheko metodo honetan "kordBerriak" sartu den lekuan, eta horrela lerroa bakarrean egin guztia,
+		// baina askoz ulergarriagoa da horrela
 		return koordenatuakLibreDaudeEtsaia(kordBerriak, e.getIndizea());
 	}
 	
@@ -735,34 +899,29 @@ public class Tableroa extends Observable {
         return true;
     }
     
-    
     private List<Koordenatua> tiroarenHurrengoKoordenatuak(List<Koordenatua> koordenatuak, int dx, int dy) {
-    	List<Koordenatua> koordenatuBerriak = new ArrayList<>();
-
-    	for (Koordenatua k : koordenatuak) {
-    		koordenatuBerriak.add(new Koordenatua(k.getX() + dx, k.getY() + dy));
-    	}
-
-    	return koordenatuBerriak;
+    	return koordenatuak.stream()
+    			.map(k -> new Koordenatua(k.getX() + dx, k.getY() + dy))
+    			.toList();
     }
 
     private boolean koordenatuGuztiakBaliozkoak(List<Koordenatua> koordenatuak) {
-    	for (Koordenatua k : koordenatuak) {
-    		if (!posizioBaliozkoa(k.getX(), k.getY())) return false;
-    	}
-    	return true;
+    	return koordenatuak.stream()
+    			.allMatch(k -> posizioBaliozkoa(k.getX(), k.getY()));
     }
 
     private boolean tiroaSortuDaiteke(List<Koordenatua> koordenatuak) {
-    	for (Koordenatua k : koordenatuak) {
-    		int x = k.getX();
-    		int y = k.getY();
-
-    		if (!posizioBaliozkoa(x, y)) return false;
-    		if (hegazkinarenKoordenatuaDa(x, y)) return false;
-    		if (tableroMatrizea[x][y].getMota() == 't') return false;
-    	}
-    	return true;
+    	return koordenatuak.stream()
+    			.allMatch(k -> 	// allMatch honekin lortu nahi dugu konprobatzea listaren koordenatu guztiak hurrengo baldintza guztiak betetzea
+    					posizioBaliozkoa(k.getX(), k.getY()) &&
+    					!hegazkinarenKoordenatuaDa(k.getX(), k.getY()) &&
+    					tableroMatrizea[k.getX()][k.getY()].getMota() != 't' &&
+    					tableroMatrizea[k.getX()][k.getY()].getMota() != 'p');
+    }
+    
+    private boolean barreraSortuDaiteke() {
+    	return hegazkina.getBarrera().getKoordenatuLista().stream()
+    			.allMatch(k -> posizioBaliozkoa(k.getX(), k.getY()));
     }
     
     // === PROGRESIBO MODUA ===
@@ -772,20 +931,30 @@ public class Tableroa extends Observable {
     	zailtasunaAplikatu();
     	
     	// Zailtasun berria aplikatu eta gero, etsaien timerra eguneratu behar dugu
-    	if (timerEtsai != null) {
-            timerEtsai.setDelay(etsaiAbiadura);
-        }
+    	timerEtsai.setDelay(etsaiAbiadura);
     	
     	tableroaGarbitu();	// Tableroa guztiz garbitu berriro hasteko
     	
     	tiroak.clear();		// Tiro zerrenda garbitu
     	etsaiak.clear();	// Etsai zerrenda garbitu (ez luke beharrezkoa izango)
     	
+    	if (hegazkina.barreraAktiboDago()) hegazkina.barreraDesaktibatu();
+    	
     	sortuEtsaiak(motaEtsaia);
-    	sortuHegazkina(motaHegazkina);
+    	
+    	hegazkina.defaultTiroMotaEzarri();
+    	hegazkinaHasierakoPosizioraEraman();
+    	margotuHegazkina();	// Hegazkina ez dugu berriro sortuko, bakarrik margotuko dugu berriz hasierako koordenatuaetan
     	
     	setChanged();
     	notifyObservers("ETSAIAK_KOP_EGUNERATU");
+    }
+    
+    private void hegazkinaHasierakoPosizioraEraman() {
+    	int dx = 50 - hegazkina.getPosizioa().getX();	// X koordenatuan hasierako posiziora heltzeko mugitu behar den X koordenatuko pixel kantitatea lortzen dugu
+    	int dy = 55 - hegazkina.getPosizioa().getY();	// Y koordenatuan hasierako posiziora heltzeko mugitu behar den Y koordenatuko pixel kantitatea lortzen dugu
+
+    	hegazkina.mugitu(dx, dy);	// Hegazkina mugitzeko aldi batean hasierako posiziora
     }
     
     private void tableroaGarbitu() {

@@ -6,37 +6,29 @@ import modeloa.JokoKudeatzailea;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
-import java.awt.event.ActionEvent;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class Kontrolak extends JPanel implements Observer, KeyListener{
+public class KredituPantaila extends JPanel implements Observer, KeyListener{
+
+	private JFrame kreFrame = new JFrame("Space Invaders - Kredituak");
+	private static KredituPantaila nireEMA = null;
 	
-	private JFrame konFrame = new JFrame("Space Invaders - Kontrolak");
-	private static Kontrolak nireEMA = null;
-	
-	private Kontrolak() {
+	private KredituPantaila() {
 		setBackground(new Color(0, 0, 0));
-		add(getKontrolak());
+		add(getKredituak());
 		
-		konFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		konFrame.setContentPane(this);
-		konFrame.pack();
-		konFrame.setLocationRelativeTo(null);
-		konFrame.setVisible(true);
+		kreFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		kreFrame.setContentPane(this);
+		kreFrame.pack();
+		kreFrame.setLocationRelativeTo(null);
+		kreFrame.setVisible(true);
         
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -46,28 +38,28 @@ public class Kontrolak extends JPanel implements Observer, KeyListener{
 
 	}
 	
-	public static Kontrolak getEMA() {
+	public static KredituPantaila getEMA() {
 		if (nireEMA == null) {
-			nireEMA = new Kontrolak();
+			nireEMA = new KredituPantaila();
 		}
 		return nireEMA;
 	}
 	
-	public JPanel getKontrolak() {
+	public JPanel getKredituak() {
 	    JPanel konI = new JPanel();
 	    konI.setLayout(new BorderLayout());
 	    konI.setBackground(Color.BLACK);
 
-	    ImageIcon kontrolak = new ImageIcon(getClass().getResource("kontrolak.png"));
-	    JLabel lblKontrolak = new JLabel(kontrolak);
-	    lblKontrolak.setHorizontalAlignment(JLabel.CENTER);
+	    ImageIcon kredituak = new ImageIcon(getClass().getResource("kredituak.png"));
+	    JLabel lblKredituak = new JLabel(kredituak);
+	    lblKredituak.setHorizontalAlignment(JLabel.CENTER);
 
-	    konI.add(lblKontrolak, BorderLayout.CENTER);
+	    konI.add(lblKredituak, BorderLayout.CENTER);
 	    return konI;
 	}
 	
 	public void erakutsi() {
-	    konFrame.setVisible(true);
+		kreFrame.setVisible(true);
 	    this.requestFocusInWindow();
 	}
 
@@ -77,8 +69,8 @@ public class Kontrolak extends JPanel implements Observer, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_I:
-			konFrame.setVisible(false);
+		case KeyEvent.VK_C:
+			kreFrame.setVisible(false);
 			HasierakoPantaila.getEMA().erakutsi();
 			break;
 		}

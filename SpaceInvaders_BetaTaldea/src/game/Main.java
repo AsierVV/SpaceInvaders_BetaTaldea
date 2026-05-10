@@ -4,6 +4,7 @@ import visual.JokoPanela;
 import visual.PuntuazioPantaila;
 import modeloa.JokoKudeatzailea;
 import visual.HasierakoPantaila;
+import visual.JokalariErregistroa;
 	
 public class Main {
 	
@@ -11,6 +12,6 @@ public class Main {
 		JokoKudeatzailea.getEMA();
 		JokoPanela.getEMA();
 		PuntuazioPantaila.getEMA();
-		HasierakoPantaila.getEMA();
+		JokalariErregistroa.getEMA();
 	}
 }

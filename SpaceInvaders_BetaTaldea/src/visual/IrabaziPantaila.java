@@ -74,12 +74,14 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_ENTER:
 			JokoKudeatzailea.getEMA().jokoaReset();
 			break;
 		case KeyEvent.VK_ESCAPE:
 			System.exit(0);
 			break;
+		case KeyEvent.VK_P:
+			EstadistikaFinalak.getEMA().bistaratu();
 		}
 	}
 
@@ -89,7 +91,7 @@ public class IrabaziPantaila extends JPanel implements Observer, KeyListener{
 	@Override
 	public void update(Observable o, Object arg) {
 		if ("RESET".equals(arg)) {
-			JokoKudeatzailea.getEMA().deleteObserver(this);
+			o.deleteObserver(this);	// "o" notifyObservers() mezua bidali duen Observable-a da, kasu hontan JokoKudeatzailea
 			bukFrame.dispose();
 			nireEMA = null;
 		}

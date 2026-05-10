@@ -1,5 +1,6 @@
 package modeloa;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,11 +24,11 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	}
 
 	// === JOKOA HASTEKO ===
-    public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila) {
+    public void irekiJokoa(String motaHegazkina, String motaEtsaia, String maila, String izena) {
     	mailaProgresiboa = 1;
     	JokoPanela.getEMA();
     	PuntuazioPantaila.getEMA();
-    	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila);
+    	Tableroa.getTableroaEMA().hasiJokoa(motaHegazkina, motaEtsaia, maila, izena);
     }
     
     // === JOKOA RESETEATU ===
@@ -79,6 +80,12 @@ public class JokoKudeatzailea extends Observable implements Observer{
 	
 	public int getMailaProgresiboa() {return mailaProgresiboa;}
 		
+	public List<String> getEstadistikak() {return PartidaErregistroa.irakurriPartidak();}
+	
+	public String getZailtasuna() {return Tableroa.getTableroaEMA().getZailtasunMota();}
+	
+	public int getBarreraKop() {return Tableroa.getTableroaEMA().getBarreraKop();}
+		
 	// === TEKLATUKO EKINTZAK ===
 	public void ezkerraSakatu() {Tableroa.getTableroaEMA().ezkerraSakatu();}
 	public void ezkerraAskatu() {Tableroa.getTableroaEMA().ezkerraAskatu();}
@@ -101,6 +108,8 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		notifyObservers("TIRO_MOTA_EGUNERATU");
 	}
 	
+	public void barreraSakatu() {Tableroa.getTableroaEMA().barreraSakatu();}
+	
 	public void startStopJokoa() {Tableroa.getTableroaEMA().startStopJokoa();}
     
 	// === TABLEROATIK JASOTAKO EVENTUAK BISTETARA BIRBIDALI ===
@@ -121,7 +130,7 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("DENBORA_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("DENBORA_EGUNERATU");
-		} else if ("TIRO_KOP_EGUNERATU".equals(arg)) {
+		} else if ("TIRO_KOP_EGUNERATU".equals(arg) || "BARRERAK_KOP_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("TIRO_KOP_EGUNERATU");
 		} else if ("PUNTUAZIO_PANTAILA_EGUNERATU".equals(arg)) {
@@ -130,6 +139,9 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("ETSAIAK_KOP_EGUNERATU".equals(arg)) {
 			setChanged();
 			notifyObservers("ETSAIAK_KOP_EGUNERATU");
+		} else if ("HURRENGO_MAILA".equals(arg)) {
+			setChanged();
+			notifyObservers("HURRENGO_MAILA");
 		} else if ("RESET".equals(arg)) {
 			setChanged();
 			notifyObservers("RESET");

@@ -18,6 +18,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	private String motaEtsaia = "RED";
 	private JLabel lblAukera;
 	private String maila = "Erraza";
+	private String jokalariIzena = "";
 	
 	private HasierakoPantaila() {
 		setBackground(new Color(0, 0, 0));
@@ -55,7 +56,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    has.add(lblAlien, BorderLayout.CENTER);
 
 	    
-	    // TEXTO ABAJO
+	    // Azpiko testua
 	    lblAukera = new JLabel("", JLabel.CENTER);
 	    eguneratuTestua();
 	    lblAukera.setForeground(Color.WHITE);
@@ -67,6 +68,10 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	
 	private void eguneratuTestua() {
 	    lblAukera.setText("Hegazkina: " + motaHegazkina + " | Etsaia: " + motaEtsaia + " | Maila: " + maila);
+	}
+	
+	public void setJokalariIzena(String pIzena) {
+		jokalariIzena = pIzena;
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	public void keyPressed(KeyEvent e) {
 	    switch (e.getKeyCode()) {
 	    case KeyEvent.VK_SPACE:
-	        JokoKudeatzailea.getEMA().irekiJokoa(motaHegazkina, motaEtsaia, maila);
+	        JokoKudeatzailea.getEMA().irekiJokoa(motaHegazkina, motaEtsaia, maila, jokalariIzena);
 	        break;
 	    case KeyEvent.VK_1:
 	    	maila = "Erraza";
@@ -118,34 +123,16 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    	maila = "Progresiboa";
 	    	eguneratuTestua();
 	        break;
-	        
-	    case KeyEvent.VK_G:
-	        motaHegazkina = "GREEN";
+	    case KeyEvent.VK_H:
+	    	if ("GREEN".equals(motaHegazkina)) motaHegazkina = "BLUE";		// GREEN --> BLUE
+	    	else if ("BLUE".equals(motaHegazkina)) motaHegazkina = "RED";	// BLUE --> RED
+	    	else motaHegazkina = "GREEN";									// RED --> GREEN
 	        eguneratuTestua();
 	        break;
-
-	    case KeyEvent.VK_B:
-	        motaHegazkina = "BLUE";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_R:
-	        motaHegazkina = "RED";
-	        eguneratuTestua();
-	        break;
-
 	    case KeyEvent.VK_E:
-	        motaEtsaia = "RED";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_P:
-	        motaEtsaia = "PURPLE";
-	        eguneratuTestua();
-	        break;
-
-	    case KeyEvent.VK_C:
-	        motaEtsaia = "CYAN";
+	    	if ("RED".equals(motaEtsaia)) motaEtsaia = "CYAN";			// RED --> CYAN
+	    	else if ("CYAN".equals(motaEtsaia)) motaEtsaia = "PURPLE";	// CYAN --> PURPLE
+	    	else motaEtsaia = "RED";									// PURPLE --> RED
 	        eguneratuTestua();
 	        break;
 	    case KeyEvent.VK_ESCAPE:
@@ -154,6 +141,15 @@ public class HasierakoPantaila extends JPanel implements Observer, KeyListener{
 	    case KeyEvent.VK_I:
 	    	hasiFrame.setVisible(false);
 	    	Kontrolak.getEMA().erakutsi();
+	    	break;
+	    case KeyEvent.VK_C:
+	    	hasiFrame.setVisible(false);
+	    	KredituPantaila.getEMA().erakutsi();
+	    	break;
+	    case KeyEvent.VK_P:
+	    	hasiFrame.setVisible(false);
+	    	PuntuazioSistemaPantaila.getEMA().erakutsi();
+	    	break;
 	    }
 	}
 
