@@ -151,6 +151,12 @@ public class JokoKudeatzailea extends Observable implements Observer{
 		} else if ("PARTIDA_AMAITUTA".equals(arg) && !partidaIrabazita) {
 			setChanged();
 			notifyObservers("GALDU");
+		} else if ("BARRERA_TIROKATUTA".equals(arg)) {
+			setChanged();
+			notifyObservers("BARRERA_TIROKATUTA");
+		} else if ("TIROA_TIROKATUTA".equals(arg)) {
+			setChanged();
+			notifyObservers("TIROA_TIROKATUTA");
 		}
 	}
 }

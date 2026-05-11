@@ -491,6 +491,8 @@ public class Tableroa extends Observable {
 	        if (tiroakBesteTiroBatJoDu(t, hurrengoKoordenatuak, ezabatzekoTiroak)) {
 	            garbituTiroa(t);
 	            it.remove();
+	        	setChanged();
+	        	notifyObservers("TIROA_TIROKATUTA");
 	            continue;	// Hurrengo tiroarekin jarraitu
 	        }
 
@@ -577,6 +579,8 @@ public class Tableroa extends Observable {
 		if (joDu) {
 			garbituBarrera();
         	hegazkina.barreraDesaktibatu();
+        	setChanged();
+        	notifyObservers("BARRERA_TIROKATUTA");
             return true;
 		}
 	    return false;

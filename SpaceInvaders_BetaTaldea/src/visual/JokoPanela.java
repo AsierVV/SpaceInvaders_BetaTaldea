@@ -110,6 +110,10 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 			nireEMA = null;
 		} else if ("TIRO_MOTA_EGUNERATU".equals(arg)) {
 			tiroAldatuAudioa();
+		} else if ("BARRERA_TIROKATUTA".equals(arg)) {
+			barreraAudioa();
+		} else if ("TIROA_TIROKATUTA".equals(arg)) {
+			tiroaTirokatutaAudioa();
 		}
 	}
 	
@@ -117,6 +121,30 @@ public class JokoPanela extends JPanel implements Observer, KeyListener{
 		AudioInputStream audioa;
 		try {
 			audioa = AudioSystem.getAudioInputStream(getClass().getResource("etsaiaHil.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void barreraAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("barreraOff.wav"));
+			Clip c = AudioSystem.getClip();
+			c.open(audioa);
+			c.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void tiroaTirokatutaAudioa() {
+		AudioInputStream audioa;
+		try {
+			audioa = AudioSystem.getAudioInputStream(getClass().getResource("tiroaTirokatuta.wav"));
 			Clip c = AudioSystem.getClip();
 			c.open(audioa);
 			c.start();
